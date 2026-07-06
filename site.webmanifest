@@ -1,0 +1,10 @@
+{
+  "name": "Alsalaymeh Group",
+  "short_name": "Alsalaymeh",
+  "description": "Construction & engineering excellence in Jordan.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#14110d",
+  "theme_color": "#14110d",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
