@@ -41,86 +41,184 @@
     applyLang();
   }
 
-  /* ---------------- Isometric block tower ---------------- */
-  // Projection helpers
-  const ISO = { w: 46, h: 26, z: 30 };
-  function isoPt(x, y, z) {
-    return {
-      X: (x - y) * (ISO.w / 2),
-      Y: (x + y) * (ISO.h / 2) - z * ISO.z,
-    };
+  /* ---------------- Isometric villa builder ---------------- */
+  // A modern two-storey villa drawn as ~35 separate architectural pieces
+  // (foundation, stone walls, glazing, slabs, timber band, roof, pool,
+  // palm, lamps) so GSAP can scatter and reassemble it like a real build.
+  const U = 34, HZ = 30;
+  const NS = "http://www.w3.org/2000/svg";
+  function proj(gx, gy, gz) {
+    return { X: (gx - gy) * U * 0.866, Y: (gx + gy) * U * 0.5 - gz * HZ };
   }
-  const FACES = {
-    top: (p) => `M ${p.X} ${p.Y - ISO.z} l ${ISO.w / 2} ${ISO.h / 2} l ${-ISO.w / 2} ${ISO.h / 2} l ${-ISO.w / 2} ${-ISO.h / 2} Z`,
-    left: (p) => `M ${p.X - ISO.w / 2} ${p.Y - ISO.z + ISO.h / 2} l ${ISO.w / 2} ${ISO.h / 2} l 0 ${ISO.z} l ${-ISO.w / 2} ${-ISO.h / 2} Z`,
-    right: (p) => `M ${p.X + ISO.w / 2} ${p.Y - ISO.z + ISO.h / 2} l ${-ISO.w / 2} ${ISO.h / 2} l 0 ${ISO.z} l ${ISO.w / 2} ${-ISO.h / 2} Z`,
+  function shade(hex, f) {
+    const n = parseInt(hex.slice(1), 16);
+    const c = (v) => Math.min(255, Math.round(v * f));
+    return `rgb(${c((n >> 16) & 255)},${c((n >> 8) & 255)},${c(n & 255)})`;
+  }
+  function poly(pts, fill, op) {
+    const p = document.createElementNS(NS, "polygon");
+    p.setAttribute("points", pts.map((q) => q.X.toFixed(1) + "," + q.Y.toFixed(1)).join(" "));
+    p.setAttribute("fill", fill);
+    if (op != null) p.setAttribute("fill-opacity", op);
+    return p;
+  }
+  function stroke(d, color, w, op) {
+    const p = document.createElementNS(NS, "path");
+    p.setAttribute("d", d);
+    p.setAttribute("fill", "none");
+    p.setAttribute("stroke", color);
+    p.setAttribute("stroke-width", w);
+    p.setAttribute("stroke-linecap", "round");
+    if (op != null) p.setAttribute("stroke-opacity", op);
+    return p;
+  }
+  function circle(pt, r, fill, op) {
+    const c = document.createElementNS(NS, "circle");
+    c.setAttribute("cx", pt.X.toFixed(1)); c.setAttribute("cy", pt.Y.toFixed(1));
+    c.setAttribute("r", r); c.setAttribute("fill", fill);
+    if (op != null) c.setAttribute("fill-opacity", op);
+    return c;
+  }
+  function boxFaces(g, x, y, z, w, d, h, base, opts = {}) {
+    const t = opts.top || shade(base, 1.14);
+    const L = opts.left || shade(base, 0.82);
+    const R = opts.right || shade(base, 0.64);
+    const o = opts.opacity;
+    g.appendChild(poly([proj(x, y, z + h), proj(x + w, y, z + h), proj(x + w, y + d, z + h), proj(x, y + d, z + h)], t, o));
+    g.appendChild(poly([proj(x, y + d, z + h), proj(x + w, y + d, z + h), proj(x + w, y + d, z), proj(x, y + d, z)], L, o));
+    g.appendChild(poly([proj(x + w, y, z + h), proj(x + w, y + d, z + h), proj(x + w, y + d, z), proj(x + w, y, z)], R, o));
+  }
+
+  const VC = {
+    plat: "#c9c2b0", deck: "#d8d1bf", white: "#eae6dc", stone: "#cdb896",
+    wood: "#a97e4f", glass: "#2c4257", glassLite: "#9cc3d6",
+    copper: "#c1703f", copper2: "#e0946a", green: "#4d7d58", green2: "#40684a",
+    water: "#37b6c9", waterLite: "#a5e8ef", trunk: "#8c6a48",
   };
 
-  // Tower plan: [z, list of [x,y]] — a stepped skyline tower
-  function towerPlan() {
-    const lv = [];
-    const full = (n) => { const a = []; for (let x = 0; x < n; x++) for (let y = 0; y < n; y++) a.push([x + (4 - n) / 2, y + (4 - n) / 2]); return a; };
-    lv.push({ z: 0, cells: full(4) });
-    lv.push({ z: 1, cells: full(3) });
-    lv.push({ z: 2, cells: full(3) });
-    lv.push({ z: 3, cells: full(2) });
-    lv.push({ z: 4, cells: full(2) });
-    lv.push({ z: 5, cells: [[1.5, 1.5]] });
-    lv.push({ z: 6, cells: [[1.5, 1.5]] });
-    return lv;
-  }
-
-  const PALETTES = {
-    navy: [
-      { t: "#2e3f63", l: "#16213a", r: "#1e2c4a" },
-      { t: "#3a4d77", l: "#1a2745", r: "#243356" },
-    ],
-    gold: { t: "#e3c567", l: "#8f6f1e", r: "#c9a227" },
-  };
-
-  function buildTower(svgId, opts) {
+  function buildVilla(svgId) {
     const svg = document.getElementById(svgId);
     if (!svg) return [];
-    const NS = "http://www.w3.org/2000/svg";
-    const plan = towerPlan();
-    const cubes = [];
-    plan.forEach((level, li) => {
-      // paint back-to-front for correct overlap
-      const cells = level.cells.slice().sort((a, b) => a[0] + a[1] - (b[0] + b[1]));
-      cells.forEach(([x, y], ci) => {
-        const p = isoPt(x, y, level.z);
-        const g = document.createElementNS(NS, "g");
-        const isGold = (li + ci) % 7 === 3 || (level.z >= 5);
-        const pal = isGold ? PALETTES.gold : PALETTES.navy[(x + y + li) % 2];
-        [["top", pal.t], ["left", pal.l], ["right", pal.r]].forEach(([f, fill]) => {
-          const path = document.createElementNS(NS, "path");
-          path.setAttribute("d", FACES[f](p));
-          path.setAttribute("fill", fill);
-          g.appendChild(path);
-        });
-        svg.appendChild(g);
-        cubes.push({ el: g, z: level.z, order: level.z * 100 + x + y });
+    svg.innerHTML = "";
+    const parts = [];
+    const part = (fn) => {
+      const g = document.createElementNS(NS, "g");
+      fn(g);
+      svg.appendChild(g);
+      parts.push({ el: g });
+    };
+    const B = (x, y, z, w, d, h, c, opts) => part((g) => boxFaces(g, x, y, z, w, d, h, c, opts));
+    const winR = (x, y0, y1, z0, z1, mullion) => part((g) => {
+      g.appendChild(poly([proj(x, y0, z1), proj(x, y1, z1), proj(x, y1, z0), proj(x, y0, z0)], VC.glass));
+      const a = proj(x, y0 + 0.1, z1 - 0.12), b = proj(x, y1 - 0.1, z0 + 0.18);
+      g.appendChild(stroke(`M ${a.X} ${a.Y} L ${b.X} ${b.Y}`, "#ffffff", 1.4, 0.16));
+      if (mullion) {
+        const m0 = proj(x, (y0 + y1) / 2, z1), m1 = proj(x, (y0 + y1) / 2, z0);
+        g.appendChild(stroke(`M ${m0.X} ${m0.Y} L ${m1.X} ${m1.Y}`, "#1d2f40", 2));
+      }
+    });
+    const winL = (y, x0, x1, z0, z1) => part((g) => {
+      g.appendChild(poly([proj(x0, y, z1), proj(x1, y, z1), proj(x1, y, z0), proj(x0, y, z0)], shade(VC.glass, 1.18)));
+      const a = proj(x0 + 0.1, y, z1 - 0.12), b = proj(x1 - 0.1, y, z0 + 0.18);
+      g.appendChild(stroke(`M ${a.X} ${a.Y} L ${b.X} ${b.Y}`, "#ffffff", 1.4, 0.14));
+    });
+
+    /* — build order = real construction order (bottom → top) — */
+    B(0, 0, 0, 11.2, 8, 0.4, VC.plat);                                   // ground platform
+    B(7.05, 1.28, 0.26, 0.7, 1.35, 0.14, VC.deck);                       // entry step 1
+    B(7.75, 1.4, 0.12, 0.55, 1.1, 0.14, VC.deck);                        // entry step 2
+    B(7.9, 4.7, 0.4, 3.1, 2.6, 0.32, VC.deck);                           // pool rim
+    part((g) => {                                                        // pool water + ripples
+      g.appendChild(poly([proj(8.13, 4.93, 0.66), proj(10.77, 4.93, 0.66), proj(10.77, 7.07, 0.66), proj(8.13, 7.07, 0.66)], VC.water));
+      const r1 = proj(8.7, 5.5, 0.66), r2 = proj(9.5, 6.2, 0.66);
+      g.appendChild(stroke(`M ${r1.X} ${r1.Y} q 18 5 40 0`, VC.waterLite, 1.6, 0.85));
+      g.appendChild(stroke(`M ${r2.X} ${r2.Y} q 15 4 33 0`, VC.waterLite, 1.5, 0.7));
+    });
+    B(0.5, 6.7, 0.4, 2.0, 0.6, 0.6, VC.green);                           // hedge 1
+    B(2.9, 6.7, 0.4, 1.4, 0.6, 0.5, VC.green2);                          // hedge 2
+    B(1, 1, 0.4, 6, 4.2, 2.35, VC.stone);                                // ground floor volume
+    part((g) => {                                                        // entrance door (copper frame)
+      g.appendChild(poly([proj(7, 1.3, 2.34), proj(7, 1.98, 2.34), proj(7, 1.98, 0.4), proj(7, 1.3, 0.4)], VC.copper));
+      g.appendChild(poly([proj(7, 1.37, 2.26), proj(7, 1.91, 2.26), proj(7, 1.91, 0.4), proj(7, 1.37, 0.4)], "#e8b26a"));
+      g.appendChild(circle(proj(7, 1.48, 1.32), 1.7, VC.copper2));
+    });
+    winR(7, 2.25, 3.05, 0.95, 2.3);                                      // ground windows (front-right)
+    winR(7, 3.35, 4.15, 0.95, 2.3);
+    winR(7, 4.45, 5.05, 0.95, 2.3);
+    winL(5.2, 1.5, 3.1, 0.95, 2.3);                                      // ground windows (front-left)
+    winL(5.2, 3.5, 5.1, 0.95, 2.3);
+    B(0.55, 0.55, 2.75, 7.05, 5.05, 0.35, VC.white);                     // first-floor slab (cantilever)
+    part((g) => {                                                        // timber band + plank joints
+      boxFaces(g, 2.4, 0.9, 3.1, 4.82, 4.42, 0.5, VC.wood);
+      [3.27, 3.43].forEach((z) => {
+        const a = proj(7.22, 0.9, z), b = proj(7.22, 5.32, z);
+        g.appendChild(stroke(`M ${a.X} ${a.Y} L ${b.X} ${b.Y}`, shade(VC.wood, 0.7), 1.1));
+        const c2 = proj(2.4, 5.32, z), d2 = proj(7.22, 5.32, z);
+        g.appendChild(stroke(`M ${c2.X} ${c2.Y} L ${d2.X} ${d2.Y}`, shade(VC.wood, 0.62), 1.1));
       });
     });
-    svg.setAttribute("viewBox", "-140 -240 280 340");
-    return cubes;
+    B(2.5, 1, 3.6, 4.6, 4.2, 1.8, VC.white);                             // upper volume
+    winR(7.1, 1.25, 3.15, 3.85, 5.1, true);                              // upper corner glazing
+    part((g) => {                                                        // lit upper window
+      g.appendChild(poly([proj(7.1, 3.5, 5.1), proj(7.1, 4.95, 5.1), proj(7.1, 4.95, 3.85), proj(7.1, 3.5, 3.85)], "#e8b26a"));
+      const w0 = proj(7.1, 4.22, 5.1), w1 = proj(7.1, 4.22, 3.85);
+      g.appendChild(stroke(`M ${w0.X} ${w0.Y} L ${w1.X} ${w1.Y}`, "#b9843e", 2));
+    });
+    winL(5.2, 2.95, 4.55, 3.85, 5.1);
+    B(7.5, 0.75, 3.1, 0.07, 1.9, 0.8, VC.glassLite, { opacity: 0.45 }); // glass balustrades
+    B(7.5, 2.85, 3.1, 0.07, 1.9, 0.8, VC.glassLite, { opacity: 0.45 });
+    B(2.7, 5.52, 3.1, 2.0, 0.07, 0.8, VC.glassLite, { opacity: 0.45 });
+    B(2.2, 0.7, 5.4, 5.2, 4.8, 0.32, "#e5e0d4");                         // roof slab
+    B(7.3, 0.7, 5.38, 0.12, 4.8, 0.36, VC.copper);                       // copper fascia (right)
+    B(2.2, 5.4, 5.38, 5.2, 0.12, 0.36, VC.copper);                       // copper fascia (left)
+    [3.1, 4.15, 5.2].forEach((px) => B(px, 1.1, 5.72, 0.16, 3.4, 0.16, VC.wood)); // pergola beams
+    B(6.3, 4.5, 5.72, 0.7, 0.7, 0.35, VC.glass, { top: VC.glassLite });  // skylight
+    part((g) => {                                                        // palm trunk
+      for (let i = 0; i < 4; i++)
+        boxFaces(g, 5.3 + i * 0.02, 7.0 + i * 0.02, 0.4 + i * 0.62, 0.3, 0.3, 0.64, VC.trunk, {
+          top: shade(VC.trunk, 1.15 - i * 0.04),
+          left: shade(VC.trunk, 0.95 - i * 0.04),
+          right: shade(VC.trunk, 0.82 - i * 0.04),
+        });
+    });
+    part((g) => {                                                        // palm crown
+      const A = proj(5.47, 7.17, 3.05);
+      [-165, -135, -100, -65, -30, 5].forEach((deg) => {
+        const a = (deg * Math.PI) / 180;
+        const ex = A.X + Math.cos(a) * 62, ey = A.Y + Math.sin(a) * 34 + 16;
+        const cx = A.X + Math.cos(a) * 34, cy = A.Y + Math.sin(a) * 26 - 20;
+        g.appendChild(stroke(`M ${A.X} ${A.Y} Q ${cx} ${cy} ${ex} ${ey}`, VC.green, 5.5));
+      });
+      g.appendChild(circle({ X: A.X - 5, Y: A.Y + 6 }, 3.2, "#7a5836"));
+      g.appendChild(circle({ X: A.X + 5, Y: A.Y + 7 }, 3.2, "#6d4f33"));
+    });
+    [3.4, 4.3].forEach((py) => part((g) => {                             // garden lamps
+      boxFaces(g, 8.6, py, 0.4, 0.16, 0.16, 0.55, VC.copper);
+      const top = proj(8.68, py + 0.08, 1.02);
+      g.appendChild(circle(top, 5, VC.copper2, 0.25));
+      g.appendChild(circle(top, 2.2, VC.copper2));
+    }));
+
+    const bb = svg.getBBox();
+    svg.setAttribute("viewBox", `${(bb.x - 24).toFixed(0)} ${(bb.y - 24).toFixed(0)} ${(bb.width + 48).toFixed(0)} ${(bb.height + 48).toFixed(0)}`);
+    return parts;
   }
 
   /* ---------------- GSAP scenes ---------------- */
   function heroTowerScene() {
-    const cubes = buildTower("isoTower");
-    if (!cubes.length || !window.gsap) return;
-    const els = cubes.map((c) => c.el);
+    const parts = buildVilla("isoTower");
+    if (!parts.length || !window.gsap) return;
+    const els = parts.map((p) => p.el);
 
-    // scatter → assemble on load
-    cubes.forEach((c) => {
+    // scattered pieces fly in and assemble in construction order
+    parts.forEach((p) => {
       const a = Math.random() * Math.PI * 2;
-      const d = 260 + Math.random() * 320;
-      gsap.set(c.el, {
+      const d = 300 + Math.random() * 380;
+      gsap.set(p.el, {
         x: Math.cos(a) * d,
-        y: Math.sin(a) * d - 160,
-        rotation: gsap.utils.random(-160, 160),
-        scale: 0.2,
+        y: Math.sin(a) * d - 180,
+        rotation: gsap.utils.random(-140, 140),
+        scale: 0.25,
         opacity: 0,
         transformOrigin: "center",
       });
@@ -129,21 +227,21 @@
       x: 0, y: 0, rotation: 0, scale: 1, opacity: 1,
       duration: 1.5,
       ease: "expo.out",
-      stagger: { each: 0.028, from: "start" },
+      stagger: { each: 0.045, from: "start" },
       delay: 0.35,
       onComplete: () => {
         gsap.to("#isoTower", { y: -10, duration: 3.2, yoyo: true, repeat: -1, ease: "sine.inOut" });
       },
     });
 
-    // disassemble on scroll away from hero
-    cubes.forEach((c) => {
+    // disassemble and scatter while scrolling away from the hero
+    parts.forEach((p, i) => {
       const a = Math.random() * Math.PI * 2;
-      const d = 150 + Math.random() * 260 + c.z * 30;
-      gsap.to(c.el, {
+      const d = 160 + Math.random() * 280 + i * 6;
+      gsap.to(p.el, {
         x: Math.cos(a) * d,
-        y: -Math.abs(Math.sin(a)) * d - c.z * 40,
-        rotation: gsap.utils.random(-120, 120),
+        y: -Math.abs(Math.sin(a)) * d - 90 - i * 5,
+        rotation: gsap.utils.random(-110, 110),
         opacity: 0,
         ease: "none",
         scrollTrigger: {
@@ -157,24 +255,22 @@
   }
 
   function processTowerScene() {
-    const cubes = buildTower("isoProcess");
-    if (!cubes.length || !window.gsap) return;
-    // start scattered; assemble with scrub while section scrolls
-    cubes.sort((a, b) => a.order - b.order);
-    cubes.forEach((c, i) => {
+    const parts = buildVilla("isoProcess");
+    if (!parts.length || !window.gsap) return;
+    parts.forEach((p, i) => {
       const side = i % 2 ? 1 : -1;
-      gsap.set(c.el, {
-        x: side * (240 + Math.random() * 200),
-        y: -300 - Math.random() * 200,
-        rotation: gsap.utils.random(-140, 140),
+      gsap.set(p.el, {
+        x: side * (260 + Math.random() * 220),
+        y: -320 - Math.random() * 220,
+        rotation: gsap.utils.random(-130, 130),
         opacity: 0,
         transformOrigin: "center",
       });
     });
-    gsap.to(cubes.map((c) => c.el), {
+    gsap.to(parts.map((p) => p.el), {
       x: 0, y: 0, rotation: 0, opacity: 1,
       ease: "power2.out",
-      stagger: { each: 0.02 },
+      stagger: { each: 0.03 },
       scrollTrigger: {
         trigger: "#process",
         start: "top 75%",

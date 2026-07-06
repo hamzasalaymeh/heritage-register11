@@ -4,7 +4,7 @@
   "description": "Construction & engineering excellence in Jordan.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0f1c",
-  "theme_color": "#0a0f1c",
+  "background_color": "#14110d",
+  "theme_color": "#14110d",
   "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
 }
