@@ -5,7 +5,7 @@ import { simulate } from './simulator.js';
 import { MemoryStore } from './memory.js';
 import { AgentBus } from './agents.js';
 import { SYSTEM_PROMPT, buildUserMessage } from './prompt.js';
-import type { BrainEvent, ModuleId } from './types.js';
+import type { BrainEvent, ConversationTurn, ModuleId } from './types.js';
 
 export interface EngineOptions {
   apiKey?: string;
@@ -31,10 +31,16 @@ export class BrainEngine {
   }
 
   /**
-   * Run one reasoning session, emitting BrainEvents through `send`.
-   * Resolves when the session is complete.
+   * Run one reasoning turn, emitting BrainEvents through `send`. `history`
+   * carries prior turns of this conversation (multi-turn context); on success
+   * this turn is appended to it. Resolves when the turn is complete.
    */
-  async think(prompt: string, send: (e: BrainEvent) => void, signal?: AbortSignal): Promise<void> {
+  async think(
+    prompt: string,
+    history: ConversationTurn[],
+    send: (e: BrainEvent) => void,
+    signal?: AbortSignal,
+  ): Promise<void> {
     const sessionId = randomUUID();
     send({ type: 'session_start', sessionId, prompt, mode: this.mode });
 
@@ -71,14 +77,17 @@ export class BrainEngine {
     };
 
     try {
-      if (this.client) {
-        await this.runClaude(prompt, recalled, callbacks, signal);
-      } else {
-        await simulate(prompt, callbacks, signal);
-      }
+      const userContent = buildUserMessage(prompt, recalled);
+      const raw = this.client
+        ? await this.runClaude(userContent, history, callbacks, signal)
+        : await simulate(prompt, callbacks, signal);
 
-      // 3. Persist what was learned to long-term memory.
       if (!signal?.aborted) {
+        // 3. Extend short-term conversational context (capped at 8 turns).
+        history.push({ role: 'user', content: userContent }, { role: 'assistant', content: raw });
+        if (history.length > 16) history.splice(0, history.length - 16);
+
+        // 4. Persist what was learned to long-term memory.
         const toRemember = lesson ?? `Asked: "${prompt.slice(0, 160)}" → ${finalAnswer.slice(0, 200)}`;
         const memory = this.memory.write(toRemember, [...touchedModules]);
         send({ type: 'memory_write', memory });
@@ -92,23 +101,30 @@ export class BrainEngine {
   }
 
   private async runClaude(
-    prompt: string,
-    recalled: Awaited<ReturnType<MemoryStore['recall']>>,
+    userContent: string,
+    history: ConversationTurn[],
     callbacks: ParserCallbacks,
     signal?: AbortSignal,
-  ): Promise<void> {
+  ): Promise<string> {
     const parser = new StreamParser(callbacks);
     const stream = this.client!.messages.stream(
       {
         model: this.opts.model,
         max_tokens: 16000,
         system: SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: buildUserMessage(prompt, recalled) }],
+        messages: [
+          ...history.map((t) => ({ role: t.role, content: t.content })),
+          { role: 'user' as const, content: userContent },
+        ],
       },
       { signal },
     );
     stream.on('text', (delta) => parser.push(delta));
-    await stream.finalMessage();
+    const final = await stream.finalMessage();
     parser.finish();
+    return final.content
+      .filter((b) => b.type === 'text')
+      .map((b) => b.text)
+      .join('');
   }
 }

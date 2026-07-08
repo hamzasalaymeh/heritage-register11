@@ -40,6 +40,14 @@ export function think(prompt: string) {
   }
 }
 
+/** Clears the server-side conversational context (multi-turn history). */
+export function newThread() {
+  if (socket?.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ type: 'new_session' }));
+    useBrain.getState().resetConversation();
+  }
+}
+
 export async function fetchMemories() {
   try {
     const res = await fetch('/api/memory');

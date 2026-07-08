@@ -60,7 +60,11 @@ const PATHS: ModuleId[][] = [
  * so the brain still comes alive. Emits the same callback sequence as the
  * Claude-backed engine.
  */
-export async function simulate(prompt: string, cb: ParserCallbacks, signal?: AbortSignal) {
+export async function simulate(
+  prompt: string,
+  cb: ParserCallbacks,
+  signal?: AbortSignal,
+): Promise<string> {
   const p = prompt.slice(0, 60);
   const path = pick(PATHS);
   const steps: ReasoningStep[] = path.map((module, i) => ({
@@ -72,10 +76,10 @@ export async function simulate(prompt: string, cb: ParserCallbacks, signal?: Abo
   }));
 
   for (const step of steps) {
-    if (signal?.aborted) return;
+    if (signal?.aborted) return '';
     cb.onStepStart(step.id, step.module);
     for (const word of step.text.split(/(?<=\s)/)) {
-      if (signal?.aborted) return;
+      if (signal?.aborted) return '';
       cb.onStepToken(step.id, step.module, word);
       await sleep(24 + Math.random() * 40);
     }
@@ -90,9 +94,21 @@ export async function simulate(prompt: string, cb: ParserCallbacks, signal?: Abo
     `when the live Claude reasoning engine is connected. Add your API key to \`server/.env\` and restart ` +
     `to see real reasoning stream through the brain.`;
   for (const word of answer.split(/(?<=\s)/)) {
-    if (signal?.aborted) return;
+    if (signal?.aborted) return '';
     cb.onAnswerToken(word);
     await sleep(14);
   }
   cb.onAnswerEnd(answer, 0.62);
+
+  // Return the raw protocol text so multi-turn history stays format-consistent.
+  return (
+    steps
+      .map(
+        (s) =>
+          `<step module="${s.module}" confidence="${s.confidence}"${
+            s.targets.length ? ` to="${s.targets.join(',')}"` : ''
+          }>\n${s.text}\n</step>`,
+      )
+      .join('\n') + `\n<answer confidence="0.62">\n${answer}\n</answer>`
+  );
 }

@@ -1,11 +1,14 @@
 import 'dotenv/config';
 import http from 'node:http';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import express from 'express';
 import cors from 'cors';
 import { WebSocketServer, WebSocket } from 'ws';
 import { BrainEngine } from './engine.js';
 import { MODULES } from './modules.js';
-import type { BrainEvent, ClientMessage } from './types.js';
+import type { BrainEvent, ClientMessage, ConversationTurn } from './types.js';
 
 const PORT = Number(process.env.PORT ?? 8787);
 const MODEL = process.env.BRAIN_MODEL ?? 'claude-opus-4-8';
@@ -32,6 +35,15 @@ app.delete('/api/memory', (_req, res) => {
 });
 app.get('/api/agents/log', (_req, res) => res.json(engine.bus.history()));
 
+// Production: serve the built client if it exists (single-service deployment).
+// The Dockerfile copies client/dist → server/public.
+const here = path.dirname(fileURLToPath(import.meta.url));
+const staticDir = path.resolve(here, '../public');
+if (fs.existsSync(staticDir)) {
+  app.use(express.static(staticDir));
+  app.get(/^\/(?!api|ws).*/, (_req, res) => res.sendFile(path.join(staticDir, 'index.html')));
+}
+
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server, path: '/ws' });
 
@@ -42,6 +54,8 @@ wss.on('connection', (ws: WebSocket) => {
   send({ type: 'hello', mode: engine.mode, model: MODEL });
 
   let session: AbortController | null = null;
+  // Short-term conversational context, scoped to this connection.
+  const history: ConversationTurn[] = [];
 
   ws.on('message', async (raw) => {
     let msg: ClientMessage;
@@ -49,6 +63,11 @@ wss.on('connection', (ws: WebSocket) => {
       msg = JSON.parse(raw.toString());
     } catch {
       return send({ type: 'error', message: 'Invalid JSON message' });
+    }
+
+    if (msg.type === 'new_session') {
+      history.length = 0;
+      return;
     }
 
     if (msg.type === 'clear_memory') {
@@ -61,7 +80,7 @@ wss.on('connection', (ws: WebSocket) => {
       if (!prompt) return send({ type: 'error', message: 'Empty prompt' });
       if (session) session.abort(); // one live session per socket
       session = new AbortController();
-      await engine.think(prompt, send, session.signal);
+      await engine.think(prompt, history, send, session.signal);
       session = null;
     }
   });

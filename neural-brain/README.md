@@ -22,7 +22,8 @@ written to long-term memory ──▶ the final answer streams in with a confide
 | Hundreds of animated nodes + glowing edges | `client/src/lib/brain.ts`, `NeuralCanvas`, `NeuronNode`, `SignalEdge` (React Flow) |
 | Real-time neuron activation per reasoning step | `server/src/parser.ts` → WebSocket → `client/src/store.ts` |
 | Claude-powered reasoning engine | `server/src/engine.ts` (streams `claude-opus-4-8`) |
-| Long-term / persistent memory | `server/src/memory.ts` (JSON store, recall + Hebbian reinforcement) |
+| Long-term / persistent memory | `server/src/memory.ts` + `embedding.ts` (vector recall via cosine similarity + Hebbian reinforcement) |
+| Multi-turn conversations | per-connection history in `server/src/index.ts` → Claude context; “new thread” button in the UI |
 | 10 cognitive modules | `server/src/modules.ts`, `client/src/lib/brain.ts` |
 | Agent-to-agent communication | `server/src/agents.ts` → `AgentComms` panel + edge pulses |
 | Decision confidence | per-step `confidence` attr + `ConfidenceGauge` |
@@ -98,9 +99,10 @@ npm run dev                   # → http://localhost:5173 (proxies /ws and /api)
 
 ## How it works
 
-1. **Prompt → recall.** The server scores long-term memories by keyword overlap ×
-   reinforcement strength × recency and injects the best matches into Claude's context.
-   Recalled memories glow green in the Memory panel and fire the Memory cortex.
+1. **Prompt → recall.** The server embeds the prompt (local hashed n-gram vectors),
+   ranks long-term memories by cosine similarity × reinforcement strength × recency,
+   and injects the best matches into Claude's context. Recalled memories glow green in
+   the Memory panel and fire the Memory cortex.
 2. **Streamed reasoning.** A system prompt makes Claude emit its reasoning as a
    protocol of tagged steps —
    `<step module="logic" confidence="0.85" to="planning,risk">…</step>` — which an
@@ -114,8 +116,12 @@ npm run dev                   # → http://localhost:5173 (proxies /ws and /api)
 5. **Synthesis + learning.** The `<answer confidence="…">` streams into the Thought
    Stream and drives the confidence gauge. The final Learning step's `REMEMBER:` lesson
    is persisted to disk — the brain genuinely knows more next session.
+6. **Multi-turn context.** Each WebSocket connection keeps a conversation thread (last
+   8 turns) that is replayed to Claude, so follow-up questions work naturally. The
+   **⟲ NEW THREAD** button clears short-term context (long-term memory is kept).
 
 Full details, wire protocol, and design decisions: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
+Production deployment (Render / Railway / Docker): **[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)**.
 
 ## Simulation mode
 

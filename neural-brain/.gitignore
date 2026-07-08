@@ -4,3 +4,4 @@ dist/
 server/data/memory.json
 *.log
 .DS_Store
+server/public/

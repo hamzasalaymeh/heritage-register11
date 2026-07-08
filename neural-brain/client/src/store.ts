@@ -35,11 +35,15 @@ interface BrainState {
   heatHistory: HeatSample[];
   pulses: EdgePulse[];
   expanded: Record<ModuleId, boolean>;
+  /** Number of turns in the current conversation thread. */
+  turns: number;
 
   handleEvent(e: BrainEvent): void;
   setConnected(v: boolean): void;
   setMemories(m: MemoryRecord[]): void;
   toggleModule(m: ModuleId): void;
+  /** Local reset when the user starts a new conversation thread. */
+  resetConversation(): void;
   /** Called on an interval: decays activations and samples the heatmap. */
   tick(sample: boolean): void;
 }
@@ -86,11 +90,14 @@ export const useBrain = create<BrainState>((set, get) => ({
   heatHistory: [],
   pulses: [],
   expanded: allExpanded(),
+  turns: 0,
 
   setConnected: (v) => set({ connected: v }),
   setMemories: (m) => set({ memories: m }),
   toggleModule: (m) =>
     set((s) => ({ expanded: { ...s.expanded, [m]: !s.expanded[m] } })),
+  resetConversation: () =>
+    set({ turns: 0, steps: [], answer: '', answerConfidence: null, recalled: [], error: null }),
 
   handleEvent: (e) => {
     const s = get();
@@ -101,6 +108,7 @@ export const useBrain = create<BrainState>((set, get) => ({
       case 'session_start':
         set({
           thinking: true,
+          turns: s.turns + 1,
           prompt: e.prompt,
           steps: [],
           answer: '',

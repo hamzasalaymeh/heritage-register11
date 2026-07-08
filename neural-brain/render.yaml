@@ -1,0 +1,21 @@
+# Render Blueprint — deploy Neural Brain as a single web service.
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: neural-brain
+    runtime: docker
+    rootDir: neural-brain
+    dockerfilePath: ./Dockerfile
+    plan: starter # WebSockets + persistent disk require a paid instance
+    healthCheckPath: /api/health
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false # set the value in the Render dashboard (never commit keys)
+      - key: BRAIN_MODEL
+        value: claude-opus-4-8
+      - key: MEMORY_FILE
+        value: /app/data/memory.json
+    disk:
+      name: brain-memory
+      mountPath: /app/data
+      sizeGB: 1

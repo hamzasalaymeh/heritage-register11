@@ -54,7 +54,14 @@ export type BrainEvent =
 /** Messages the client sends to the server. */
 export type ClientMessage =
   | { type: 'think'; prompt: string }
+  | { type: 'new_session' }
   | { type: 'clear_memory' };
+
+/** One turn of short-term conversational context (multi-turn support). */
+export interface ConversationTurn {
+  role: 'user' | 'assistant';
+  content: string;
+}
 
 export interface ReasoningStep {
   id: string;

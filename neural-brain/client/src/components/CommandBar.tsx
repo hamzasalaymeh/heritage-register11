@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { useBrain } from '../store';
-import { think } from '../lib/ws';
+import { newThread, think } from '../lib/ws';
 
 const SUGGESTIONS = [
   'Design a savings plan to buy a house in 5 years',
@@ -14,6 +14,7 @@ export function CommandBar() {
   const [value, setValue] = useState('');
   const thinking = useBrain((s) => s.thinking);
   const connected = useBrain((s) => s.connected);
+  const turns = useBrain((s) => s.turns);
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -41,6 +42,17 @@ export function CommandBar() {
       <button type="submit" disabled={thinking || !connected || !value.trim()}>
         {thinking ? 'THINKING' : 'THINK'}
       </button>
+      {turns > 0 && (
+        <button
+          type="button"
+          className="new-thread-btn"
+          onClick={newThread}
+          disabled={thinking}
+          title="Forget the current conversation context and start fresh (long-term memory is kept)"
+        >
+          ⟲ NEW THREAD · {turns} turn{turns > 1 ? 's' : ''}
+        </button>
+      )}
       {!thinking && (
         <div className="suggestions">
           {SUGGESTIONS.map((s) => (
