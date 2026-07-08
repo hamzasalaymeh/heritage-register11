@@ -315,87 +315,198 @@
     return parts;
   }
 
+  // A four-storey sculpted residential building (like the ICH project):
+  // stacked stone piers, glass strips, cantilevered balconies with glass
+  // balustrades and copper trims — a different silhouette from the villa.
+  function buildApartment(svgId) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return [];
+    svg.innerHTML = "";
+    const defs = document.createElementNS(NS, "defs");
+    defs.innerHTML = `
+      <filter id="${svgId}-blur" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="7"/></filter>
+      <linearGradient id="${svgId}-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a6f8e"/><stop offset="1" stop-color="#1e3346"/></linearGradient>
+      <linearGradient id="${svgId}-lit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4c986"/><stop offset="1" stop-color="#d99a4e"/></linearGradient>
+      <linearGradient id="${svgId}-c" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0946a"/><stop offset="1" stop-color="#a5592f"/></linearGradient>`;
+    svg.appendChild(defs);
+    const GLASS = `url(#${svgId}-g)`, LIT = `url(#${svgId}-lit)`, CANOPY = `url(#${svgId}-c)`;
+    const parts = [];
+    const part = (fn) => { const g = document.createElementNS(NS, "g"); fn(g); svg.appendChild(g); parts.push({ el: g }); };
+    const B = (x, y, z, w, d, h, c, o) => part((g) => boxFaces(g, x, y, z, w, d, h, c, o));
+    // glass on the +x (right) facade
+    const glassR = (x, y0, y1, z0, z1, fill) => part((g) => {
+      const p = poly([proj(x, y0, z1), proj(x, y1, z1), proj(x, y1, z0), proj(x, y0, z0)], fill || GLASS);
+      p.setAttribute("stroke", VC.copper); p.setAttribute("stroke-width", "1.4"); g.appendChild(p);
+      const a = proj(x, y0 + 0.1, z1 - 0.1), b = proj(x, y1 - 0.1, z0 + 0.14);
+      g.appendChild(stroke(`M ${a.X} ${a.Y} L ${b.X} ${b.Y}`, "#ffffff", 1.3, fill ? 0.28 : 0.16));
+    });
+    // glass on the +y (left) facade
+    const glassL = (y, x0, x1, z0, z1, fill) => part((g) => {
+      const p = poly([proj(x0, y, z1), proj(x1, y, z1), proj(x1, y, z0), proj(x0, y, z0)], fill ? fill : shade(VC.glass, 1.14));
+      p.setAttribute("stroke", VC.copper); p.setAttribute("stroke-width", "1.4"); g.appendChild(p);
+    });
+
+    const FL = 4, fh = 1.4, x0 = 1, x1 = 6, y0 = 1, y1 = 5;
+
+    /* ground shadow */
+    part((g) => {
+      const e = document.createElementNS(NS, "ellipse"); const c = proj(3.9, 3.4, 0);
+      e.setAttribute("cx", c.X); e.setAttribute("cy", c.Y + 22); e.setAttribute("rx", 250); e.setAttribute("ry", 80);
+      e.setAttribute("fill", "#000"); e.setAttribute("fill-opacity", "0.32"); e.setAttribute("filter", `url(#${svgId}-blur)`);
+      g.appendChild(e);
+    });
+    B(-0.2, -0.2, 0, 9, 8, 0.4, VC.plat);                                   // plaza
+    part((g) => {                                                           // paving stripes in the forecourt
+      for (let i = 0; i < 4; i++) {
+        const px = 6.4 + i * 0.5;
+        g.appendChild(poly([proj(px, 1, 0.41), proj(px + 0.28, 1, 0.41), proj(px + 0.28, 5, 0.41), proj(px, 5, 0.41)], shade(VC.deck, i % 2 ? 1.03 : 0.96)));
+      }
+    });
+    B(0.2, 5.6, 0.4, 3.2, 0.6, 0.55, VC.green);                             // hedge row
+    B(3.7, 5.6, 0.4, 1.6, 0.6, 0.42, VC.green2);
+
+    for (let f = 0; f < FL; f++) {
+      const z = 0.4 + f * fh;
+      const lit = (f + 1) % 2 === 0;                                        // warm-lit alternating floors
+      B(x0, y0, z, x1 - x0, y1 - y0, fh, VC.stone);                          // stone core
+      // recessed floor shadow line under each slab
+      part((g) => {
+        const a = proj(x1, y0, z + fh - 0.02), b = proj(x1, y1, z + fh - 0.02);
+        g.appendChild(stroke(`M ${a.X} ${a.Y} L ${b.X} ${b.Y}`, "#000", 4, 0.12));
+      });
+      if (f === 0) {                                                        // double-height glazed lobby + sign
+        glassR(x1, 1.5, 4.5, z + 0.2, z + fh + 0.9, LIT);
+        part((g) => {                                                       // copper entrance portal
+          g.appendChild(poly([proj(x1, 2.5, z + 1.9), proj(x1, 3.5, z + 1.9), proj(x1, 3.5, z + 0.4), proj(x1, 2.5, z + 0.4)], VC.copper));
+          const sgn = proj(x1, 1.7, z + 1.7);
+          g.appendChild(circle(sgn, 4, VC.copper2));
+        });
+        glassL(y1, 1.6, 4.4, z + 0.2, z + fh + 0.9, shade(VC.glass, 1.14));
+      } else {
+        // window strips with copper frames, piers left at the corners
+        glassR(x1, 1.55, 4.45, z + 0.18, z + fh - 0.1, lit ? LIT : null);
+        glassL(y1, 1.55, 4.45, z + 0.18, z + fh - 0.1, lit ? shade("#f4c986", 0.92) : null);
+        // cantilevered balcony, side alternates each floor → sculpted stagger
+        const front = f % 2 ? [1.4, 2.6] : [2.8, 4.0];
+        part((g) => {
+          boxFaces(g, x1, front[0], z, 0.6, front[1] - front[0], 0.16, VC.white);   // slab
+          boxFaces(g, x1 + 0.52, front[0], z, 0.1, front[1] - front[0], 0.02, VC.copper); // copper edge
+          boxFaces(g, x1 + 0.52, front[0], z + 0.16, 0.06, front[1] - front[0], 0.55, VC.glassLite, { opacity: 0.4 }); // glass balustrade
+          boxFaces(g, x1 + 0.5, front[0], z + 0.68, 0.1, front[1] - front[0], 0.05, VC.copper); // handrail
+        });
+      }
+    }
+
+    const ztop = 0.4 + FL * fh;
+    B(x0 - 0.15, y0 - 0.15, ztop, x1 - x0 + 0.3, y1 - y0 + 0.3, 0.32, "#e5e0d4"); // roof slab
+    B(x1 + 0.12, y0 - 0.15, ztop - 0.02, 0.12, y1 - y0 + 0.3, 0.4, VC.copper);     // copper fascia
+    B(2.4, 1.6, ztop + 0.32, 1.6, 1.5, 0.6, VC.stone);                             // rooftop core (stairs/lift)
+    part((g) => {                                                                  // rooftop sign
+      const s = proj(4, 2.2, ztop + 0.78);
+      g.appendChild(poly([proj(4, 1.7, ztop + 0.85), proj(4, 2.7, ztop + 0.85), proj(4, 2.7, ztop + 0.45), proj(4, 1.7, ztop + 0.45)], VC.copper));
+    });
+    [[6.6, 1.4], [6.6, 4.4]].forEach(([lx, ly]) => part((g) => {                    // entrance trees
+      for (let i = 0; i < 3; i++) boxFaces(g, lx + i * 0.02, ly + i * 0.02, 0.4 + i * 0.34, 0.2, 0.2, 0.36, VC.trunk);
+      const c = proj(lx + 0.1, ly + 0.1, 1.55);
+      g.appendChild(circle({ X: c.X - 4, Y: c.Y + 3 }, 8, VC.green2));
+      g.appendChild(circle({ X: c.X + 5, Y: c.Y + 4 }, 9, VC.green));
+      g.appendChild(circle({ X: c.X, Y: c.Y - 6 }, 8.5, shade(VC.green, 1.12)));
+    }));
+    [[7.4, 2.3], [7.4, 3.6]].forEach(([lx, ly]) => part((g) => {                    // plaza lamps
+      boxFaces(g, lx, ly, 0.4, 0.14, 0.14, 0.6, VC.copper);
+      const top = proj(lx + 0.07, ly + 0.07, 1.08);
+      g.appendChild(circle(top, 5, VC.copper2, 0.25)); g.appendChild(circle(top, 2.1, VC.copper2));
+    }));
+
+    const bb = svg.getBBox();
+    svg.setAttribute("viewBox", `${(bb.x - 24).toFixed(0)} ${(bb.y - 24).toFixed(0)} ${(bb.width + 48).toFixed(0)} ${(bb.height + 48).toFixed(0)}`);
+    return parts;
+  }
+
+  // pick a different silhouette on every visit; process section shows the other
+  const _forceKind = new URLSearchParams(location.search).get("struct");
+  const HERO_KIND = _forceKind === "villa" || _forceKind === "apartment"
+    ? _forceKind
+    : (Math.random() < 0.5 ? "apartment" : "villa");
+  const PROC_KIND = HERO_KIND === "villa" ? "apartment" : "villa";
+  const buildStructure = (id, kind) => (kind === "apartment" ? buildApartment(id) : buildVilla(id));
+
   /* ---------------- GSAP scenes ---------------- */
   function heroTowerScene() {
-    const parts = buildVilla("isoTower");
+    const parts = buildStructure("isoTower", HERO_KIND);
     if (!parts.length || !window.gsap) return;
     const els = parts.map((p) => p.el);
 
-    // scattered pieces fly in and assemble in construction order
+    // assemble on load — pieces stream in from far, all around the viewport
     parts.forEach((p) => {
       const a = Math.random() * Math.PI * 2;
-      const d = 300 + Math.random() * 380;
+      const d = 520 + Math.random() * 720;
       gsap.set(p.el, {
         x: Math.cos(a) * d,
-        y: Math.sin(a) * d - 180,
-        rotation: gsap.utils.random(-140, 140),
-        scale: 0.25,
+        y: Math.sin(a) * d - 160,
+        rotation: gsap.utils.random(-220, 220),
+        scale: 0.15,
         opacity: 0,
         transformOrigin: "center",
       });
     });
-    // scrub-driven disassembly, armed only once the villa is fully built so
-    // the tween's start state is locked to the assembled position — scrolling
-    // down scatters the pieces, scrolling back up rebuilds them, live
+
+    // scrub-driven explosion — armed after assembly so the locked start state
+    // is the fully-built structure. Scroll down = blast the pieces far across
+    // the whole hero; scroll back up = rebuild, all live with the scrollbar.
     const armScrub = () => {
       parts.forEach((p, i) => {
         const a = Math.random() * Math.PI * 2;
-        const d = 160 + Math.random() * 280 + i * 6;
+        const d = 620 + Math.random() * 820 + i * 10;   // strong, far, full-page
         gsap.fromTo(p.el,
-          { x: 0, y: 0, rotation: 0, opacity: 1 },
+          { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 },
           {
             x: Math.cos(a) * d,
-            y: -Math.abs(Math.sin(a)) * d - 90 - i * 5,
-            rotation: gsap.utils.random(-110, 110),
+            y: Math.sin(a) * d * 0.72 - 60 - i * 4,
+            rotation: gsap.utils.random(-260, 260),
+            scale: 0.4 + Math.random() * 0.3,
             opacity: 0,
             ease: "none",
             immediateRender: false,
-            scrollTrigger: {
-              trigger: "#hero",
-              start: "8% top",
-              end: "bottom top",
-              scrub: 0.6,
-            },
+            scrollTrigger: { trigger: "#hero", start: "6% top", end: "bottom top", scrub: 0.5 },
           });
       });
     };
 
     gsap.to(els, {
       x: 0, y: 0, rotation: 0, scale: 1, opacity: 1,
-      duration: 1.3,
+      duration: 1.5,
       ease: "expo.out",
-      stagger: { each: 0.03, from: "start" },
-      delay: 0.35,
+      stagger: { each: 0.028, from: "center" },
+      delay: 0.3,
       onComplete: () => {
-        gsap.to("#isoTower", { y: -10, duration: 3.2, yoyo: true, repeat: -1, ease: "sine.inOut" });
+        gsap.to("#isoTower", { y: -12, duration: 3.4, yoyo: true, repeat: -1, ease: "sine.inOut" });
         armScrub();
       },
     });
   }
 
   function processTowerScene() {
-    const parts = buildVilla("isoProcess");
+    const parts = buildStructure("isoProcess", PROC_KIND);
     if (!parts.length || !window.gsap) return;
+    // scattered wide, then assembles into the building as this section scrolls in
     parts.forEach((p, i) => {
-      const side = i % 2 ? 1 : -1;
+      const a = Math.random() * Math.PI * 2;
+      const d = 460 + Math.random() * 560 + i * 8;
       gsap.set(p.el, {
-        x: side * (260 + Math.random() * 220),
-        y: -320 - Math.random() * 220,
-        rotation: gsap.utils.random(-130, 130),
+        x: Math.cos(a) * d,
+        y: Math.sin(a) * d * 0.7 - 220,
+        rotation: gsap.utils.random(-220, 220),
+        scale: 0.3,
         opacity: 0,
         transformOrigin: "center",
       });
     });
     gsap.to(parts.map((p) => p.el), {
-      x: 0, y: 0, rotation: 0, opacity: 1,
+      x: 0, y: 0, rotation: 0, scale: 1, opacity: 1,
       ease: "power2.out",
-      stagger: { each: 0.03 },
-      scrollTrigger: {
-        trigger: "#process",
-        start: "top 75%",
-        end: "center center",
-        scrub: 0.8,
-      },
+      stagger: { each: 0.025 },
+      scrollTrigger: { trigger: "#process", start: "top 80%", end: "center center", scrub: 0.8 },
     });
   }
 

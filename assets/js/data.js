@@ -873,10 +873,10 @@ const PROJECTS = [
 
 /* Site-wide stats */
 const STATS = [
-  { value: 150, suffix: "+", key: "stat_projects" },
-  { value: 15, suffix: "+", key: "stat_years" },
-  { value: 120, suffix: "+", key: "stat_clients" },
-  { value: 250, suffix: "K+", key: "stat_sqm" },
-  { value: 80, suffix: "+", key: "stat_team" },
+  { value: 55, suffix: "+", key: "stat_projects" },
+  { value: 20, suffix: "+", key: "stat_years" },
+  { value: 30, suffix: "+", key: "stat_clients" },
+  { value: 120, suffix: "K+", key: "stat_sqm" },
+  { value: 45, suffix: "+", key: "stat_team" },
   { value: 98, suffix: "%", key: "stat_satisfaction" },
 ];
