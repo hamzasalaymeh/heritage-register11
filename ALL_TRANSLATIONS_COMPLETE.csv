@@ -1,0 +1,214 @@
+﻿رمز المسمى,النص العربي الحالي,النص الجديد (Arabic),النص الإنجليزي
+add_photos,إضافة صور,,Add photos
+add_site,إضافة موقع جديد,,Add new site
+add_site_hint,انقر على الخريطة لتحديد موقع الأصل الجديد,,Click on the map to place the new asset
+age_m,العمر التقريبي,,Approx. age
+airport_dist,يبعد,,distance
+airport_m,أقرب مطار,,Nearest airport
+airports_layer,المطارات,,Airports
+all_govs,كل المحافظات,,All governorates
+all_regions,كل المناطق,,All regions
+all_types,كل الأنواع,,All types
+ap_back,رجوع للخريطة,,Back to map
+ap_card,بطاقة A5,,A5 card
+ap_print,طباعة,,Print
+ap_share,مشاركة,,Share
+as_age,العمر التقريبي (سنة),,Approx. age (years)
+as_cancel,إلغاء,,Cancel
+as_class,التصنيف,,Classification
+as_coords,الإحداثيات,,Coordinates
+as_coords_req,الرجاء تحديد الموقع على الخريطة,,Please pick the location on the map
+as_decay,نسبة التهدّم (٪),,Deterioration (%)
+as_del_confirm,حذف هذا الموقع المُضاف نهائياً؟,,Permanently delete this added site?
+as_delete,حذف هذا الموقع,,Delete this site
+as_gov,المحافظة,,Governorate
+as_heritage,نوع التراث,,Heritage type
+as_name,اسم الموقع,,Site name
+as_name_req,الرجاء إدخال اسم الموقع,,Please enter the site name
+as_pick,تحديد على الخريطة,,Pick on map
+as_region,المنطقة الإدارية,,Region
+as_save,حفظ الموقع,,Save site
+as_saved,تمت إضافة الموقع بنجاح,,Site added successfully
+as_title,إضافة موقع تراثي جديد,,Add new heritage site
+as_type,نوع الموقع,,Site type
+as_user_badge,موقع مُضاف,,Added site
+assets,أصل تراثي,,heritage assets
+b_sat,قمر صناعي,,Satellite
+b_standard,قياسي,,Standard
+b_terrain,تضاريس,,Terrain
+basic_info,المعلومات الأساسية,,Basic information
+bldg,مبنى,,Building
+branch_m,الفرع,,Branch
+brand,السجل الوطني للتراث العمراني,,National Urban Heritage Register
+cat_all,كل التصنيفات,,All categories
+cat_lbl,تصنيف المبنى,,Building category
+class_m,الفئة,,Class
+cls_m,الفئة,,Class
+cls_title,فئة الأهمية,,Significance Class
+code_m,الكود,,Code
+compare_pick,اختر من ٢ إلى ٤ مناطق للمقارنة:,,Pick 2 to 4 regions to compare:
+compare_regions,مقارنة المناطق,,Compare regions
+compare_title,مقارنة بين منطقتين,,Compare two regions
+coords_m,الإحداثيات,,Coordinates
+copied,تم نسخ رابط الأصل,,Asset link copied
+credit_by,إعداد وتصميم,,Designed & developed by
+decay_lbl,نسبة التهدّم,,Deterioration
+decay_title,حالة التهدّم,,Deterioration
+decayflt_lbl,نسبة التهدّم لا تقل عن,,Deterioration at least
+decision_m,رقم القرار,,Decision no.
+deleted,تم الحذف,,Deleted
+detail_title,بيانات الاستمارة,,Survey Data
+dist,التوزيع حسب المنطقة,,Distribution by Region
+dl,تنزيل,,Download
+ed_bright,السطوع,,Brightness
+ed_cancel,إلغاء,,Cancel
+ed_contrast,التباين,,Contrast
+ed_crop,قص,,Crop
+ed_reset,إعادة تعيين,,Reset
+ed_rotate_l,تدوير يسار,,Rotate left
+ed_rotate_r,تدوير يمين,,Rotate right
+ed_save,حفظ التعديل,,Save edit
+ed_title,تعديل الصورة,,Edit photo
+elev_approx_note,الارتفاع تقديري مبني على نموذج تضاريس,,Elevation is an estimate from a terrain model
+elev_m,الارتفاع التقريبي,,Approx. elevation
+export,تصدير المُصفّى (CSV),,Export Filtered (CSV)
+export_excel,تصدير Excel منسّق,,Export formatted Excel
+exported,تم تصدير الملف بنجاح,,File exported successfully
+fav,حفظ,,Save
+faved,محفوظ ★,,Saved ★
+filters,عوامل التصفية,,Filters
+form_added,تم رفع الاستمارة,,Form uploaded
+form_title,استمارة الموقع (Word),,Site Form (Word)
+full_page,الصفحة الكاملة,,Full Page
+geo_context,السياق الجغرافي,,Geographic context
+gov_lbl,المحافظة,,Governorate
+gov_m,المحافظة,,Governorate
+group_gov,تجميع حسب المحافظة,,Group by governorate
+heat_map,الخريطة الحرارية,,Heat map
+heat_off,تم إيقاف الخريطة الحرارية,,Heat map disabled
+heat_on,الخريطة الحرارية مُفعّلة,,Heat map enabled
+her_m,نوع التراث,,Heritage type
+heritage_m,نوع التراث,,Heritage type
+hood_m,الحي,,Neighborhood
+kiosk_running,وضع العرض التقديمي قيد التشغيل,,Presentation mode running
+kiosk_stop,إيقاف,,Stop
+km_u,كم,,km
+kpi_govs,المحافظات,,Governorates
+kpi_regions,المناطق,,Regions
+kpi_total,إجمالي الأصول,,Total Assets
+kpi_visible,ظاهر حالياً,,Now Visible
+legend,مفتاح الخريطة,,Map legend
+legend_class,فئة الأهمية,,Significance class
+legend_cluster,التجمّعات,,Clusters
+legend_type,نوع الموقع,,Site type
+lg_a,فئة (أ) — أهمية عالية,,Class A — High significance
+lg_b,فئة (ب) — أهمية متوسطة,,Class B — Medium significance
+lg_bldg,مبنى,,Building
+lg_c,فئة (ج) — أهمية قليلة,,Class C — Low significance
+lg_cluster_d,الرقم = عدد المواقع المتجمّعة,,Number = clustered sites count
+lg_u,غير مصنّف,,Unclassified
+lg_zone,منطقة,,Zone
+lh_class,الفئة,,Class
+lh_decay,التهدّم,,Decay
+lh_name,اسم الموقع,,Site name
+lh_region,المنطقة / المحافظة,,Region / Governorate
+loading,موقع تراثي · جارِ التحميل,,heritage sites · loading
+m_u,م,,m
+materials_m,مواد البناء,,Building materials
+measure,أداة القياس,,Measure tool
+measure_clear,مسح القياس,,Clear measurement
+measure_on,القياس مُفعّل — ارسم على الخريطة,,Measuring — draw on the map
+media_add_doc,إضافة مستند (PDF),,Add document (PDF)
+media_add_photo,إضافة صور,,Add photos
+media_cover,الغلاف,,Cover
+media_delete,حذف,,Delete
+media_docs,المستندات,,Documents
+media_done,تم,,Done
+media_edit,تعديل,,Edit
+media_manage,إدارة الصور والمستندات,,Manage photos & documents
+media_no_photos,لا توجد صور بعد,,No photos yet
+media_open,فتح,,Open
+media_photos,الصور,,Photos
+media_set_cover,تعيين كغلاف,,Set as cover
+media_view_doc,عرض المستند,,View document
+nearby,القريبة,,Nearby
+no_form,لم تُرفع استمارة بعد. ارفع ملف Word الخاص بالموقع.,,No form uploaded yet. Upload the site's Word document.
+no_photos,لا توجد صور مرفقة بعد — أضف صوراً للموقع.,,No photos attached yet — add photos of the site.
+none,غير محدد,,N/A
+open,عرض التفاصيل,,View details
+overview,نظرة عامة,,Overview
+ownership_m,الملكية,,Ownership
+page_soon,تُفتح الصفحة المستقلة في النظام الكامل,,Dedicated page opens in the full system
+pdf_report,تقرير PDF رسمي,,Official PDF report
+photo_added,تمت إضافة الصور,,Photos added
+photos_title,الصور,,Photos
+proximity_m,القرب من المدينة,,Proximity to city
+qr_desc,امسح الرمز للوصول إلى صفحة هذا الأصل التراثي.,,Scan to open the dedicated page for this heritage asset.
+qr_share,رمز الاستجابة والمشاركة,,QR code & sharing
+qr_title,رمز الاستجابة السريعة,,QR Code
+reg_name,السجل الوطني للتراث العمراني,,National Urban Heritage Register
+region_avg_decay,متوسط التهدّم,,Avg. deterioration
+region_by_class,حسب التصنيف,,By classification
+region_by_gov,حسب المحافظة,,By governorate
+region_calc,احسب الإحصائيات,,Calculate stats
+region_clear,مسح,,Clear
+region_close,إنهاء الرسم,,Finish drawing
+region_count,عدد الأصول,,Assets count
+region_draw,رسم منطقة وإحصائياتها,,Draw region & stats
+region_hint,انقر على الخريطة لرسم حدود المنطقة، ثم اضغط (احسب),,"Click on the map to draw the region, then press (Calculate)"
+region_lbl,المنطقة الإدارية,,Administrative Region
+region_m,المنطقة,,Region
+region_need3,حدّد 3 نقاط على الأقل,,Mark at least 3 points
+region_none,لم يتم العثور على أصول داخل المنطقة,,No assets found inside the region
+region_profile,تقرير المنطقة الشامل,,Full region report
+region_stats,إحصائيات المنطقة المحدّدة,,Selected region statistics
+remove,حذف,,Remove
+reset,إعادة ضبط الفلاتر,,Reset Filters
+reset_done,تمت إعادة ضبط الفلاتر,,Filters reset
+saved_ok,تم الحفظ,,Saved
+search_ph,ابحث باسم الموقع، المحافظة، أو المنطقة…,,"Search by site name, governorate, or region…"
+share,مشاركة,,Share
+snapshot,حفظ صورة الخريطة,,Save map image
+sort_age,العمر (الأقدم),,Age (oldest)
+sort_by,ترتيب حسب,,Sort by
+sort_decay,نسبة التهدّم (الأعلى),,Deterioration (highest)
+sort_name,الاسم,,Name
+sort_region,المنطقة,,Region
+sort_risk,مؤشّر المخاطر (الأعلى),,Risk index (highest)
+storage_fail,تعذّر الحفظ — التخزين المحلي غير متاح في هذا الوضع.,,Could not save — local storage is unavailable in this mode.
+storage_off,تخزين المرفقات غير متاح عند فتح الملف مباشرةً (file://). شغّل المنصة عبر خادم محلي لتفعيل حفظ الصور والاستمارات.,,Attachment storage is unavailable when the file is opened directly (file://). Run the platform via a local server to enable saving photos and forms.
+style_m,الطراز المعماري,,Architectural style
+subtype_m,النوع الفرعي,,Subtype
+survey_info,بيانات الحصر الميداني,,Field survey data
+t_fit,عرض كامل المملكة,,Fit Kingdom
+t_fs,ملء الشاشة,,Fullscreen
+t_heat,الخريطة الحرارية,,Heat Map
+t_kiosk,وضع العرض التقديمي,,Presentation mode
+t_random,اكتشف أصلاً عشوائياً,,Discover a random asset
+t_share_view,مشاركة هذا العرض,,Share this view
+type_lbl,نوع الموقع,,Site Type
+type_m,النوع,,Type
+ungroup,قائمة عادية,,Flat list
+upload_form,رفع الاستمارة,,Upload form
+urgent,المواقع الأكثر إلحاحاً للترميم (تهدّم ≥ ٥٠٪),,Most urgent for restoration (decay ≥ 50%)
+use_m,التوظيف الحالي,,Current use
+v_dash,التحليلات,,Analytics
+v_list,القائمة,,List
+v_map,الخريطة,,Map
+view_copied,تم نسخ رابط العرض,,View link copied
+view_favs,عرض,,View
+visitors_m,استقبال الزوار,,Visitor access
+vs,مقابل,,vs
+welcome_start,ابدأ الاستكشاف,,Start exploring
+welcome_sub,منصة تفاعلية لاستكشاف الأصول التراثية العمرانية في المملكة العربية السعودية,,An interactive platform to explore urban heritage assets across Saudi Arabia
+welcome_title,مرحباً بك في السجل الوطني للتراث العمراني,,Welcome to the National Urban Heritage Register
+wf1_d,تصفّح آلاف المواقع التراثية على الخريطة,,Browse thousands of heritage sites on the map
+wf1_t,خريطة تفاعلية,,Interactive map
+wf2_d,إحصائيات ومؤشّرات لدعم اتخاذ القرار,,Statistics and indicators for decision-making
+wf2_t,تحليلات شاملة,,Comprehensive analytics
+wf3_d,تحديد المواقع الأكثر حاجة للترميم,,Identify sites most in need of restoration
+wf3_t,مؤشّر المخاطر,,Risk index
+works_m,الأعمال الجارية,,Ongoing works
+years_u,سنة,,yrs
+yr,سنة,,yrs
+zone,منطقة,,Zone/Area

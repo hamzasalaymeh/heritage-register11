@@ -1,0 +1,854 @@
+{
+  "add_photos": {
+    "ar": "إضافة صور",
+    "en": "Add photos"
+  },
+  "add_site": {
+    "ar": "إضافة موقع جديد",
+    "en": "Add new site"
+  },
+  "add_site_hint": {
+    "ar": "انقر على الخريطة لتحديد موقع الأصل الجديد",
+    "en": "Click on the map to place the new asset"
+  },
+  "age_m": {
+    "ar": "العمر التقريبي",
+    "en": "Approx. age"
+  },
+  "airport_dist": {
+    "ar": "يبعد",
+    "en": "distance"
+  },
+  "airport_m": {
+    "ar": "أقرب مطار",
+    "en": "Nearest airport"
+  },
+  "airports_layer": {
+    "ar": "المطارات",
+    "en": "Airports"
+  },
+  "all_govs": {
+    "ar": "كل المحافظات",
+    "en": "All governorates"
+  },
+  "all_regions": {
+    "ar": "كل المناطق",
+    "en": "All regions"
+  },
+  "all_types": {
+    "ar": "كل الأنواع",
+    "en": "All types"
+  },
+  "ap_back": {
+    "ar": "رجوع للخريطة",
+    "en": "Back to map"
+  },
+  "ap_card": {
+    "ar": "بطاقة A5",
+    "en": "A5 card"
+  },
+  "ap_print": {
+    "ar": "طباعة",
+    "en": "Print"
+  },
+  "ap_share": {
+    "ar": "مشاركة",
+    "en": "Share"
+  },
+  "as_age": {
+    "ar": "العمر التقريبي (سنة)",
+    "en": "Approx. age (years)"
+  },
+  "as_cancel": {
+    "ar": "إلغاء",
+    "en": "Cancel"
+  },
+  "as_class": {
+    "ar": "التصنيف",
+    "en": "Classification"
+  },
+  "as_coords": {
+    "ar": "الإحداثيات",
+    "en": "Coordinates"
+  },
+  "as_coords_req": {
+    "ar": "الرجاء تحديد الموقع على الخريطة",
+    "en": "Please pick the location on the map"
+  },
+  "as_decay": {
+    "ar": "نسبة التهدّم (٪)",
+    "en": "Deterioration (%)"
+  },
+  "as_del_confirm": {
+    "ar": "حذف هذا الموقع المُضاف نهائياً؟",
+    "en": "Permanently delete this added site?"
+  },
+  "as_delete": {
+    "ar": "حذف هذا الموقع",
+    "en": "Delete this site"
+  },
+  "as_gov": {
+    "ar": "المحافظة",
+    "en": "Governorate"
+  },
+  "as_heritage": {
+    "ar": "نوع التراث",
+    "en": "Heritage type"
+  },
+  "as_name": {
+    "ar": "اسم الموقع",
+    "en": "Site name"
+  },
+  "as_name_req": {
+    "ar": "الرجاء إدخال اسم الموقع",
+    "en": "Please enter the site name"
+  },
+  "as_pick": {
+    "ar": "تحديد على الخريطة",
+    "en": "Pick on map"
+  },
+  "as_region": {
+    "ar": "المنطقة الإدارية",
+    "en": "Region"
+  },
+  "as_save": {
+    "ar": "حفظ الموقع",
+    "en": "Save site"
+  },
+  "as_saved": {
+    "ar": "تمت إضافة الموقع بنجاح",
+    "en": "Site added successfully"
+  },
+  "as_title": {
+    "ar": "إضافة موقع تراثي جديد",
+    "en": "Add new heritage site"
+  },
+  "as_type": {
+    "ar": "نوع الموقع",
+    "en": "Site type"
+  },
+  "as_user_badge": {
+    "ar": "موقع مُضاف",
+    "en": "Added site"
+  },
+  "assets": {
+    "ar": "أصل تراثي",
+    "en": "heritage assets"
+  },
+  "b_sat": {
+    "ar": "قمر صناعي",
+    "en": "Satellite"
+  },
+  "b_standard": {
+    "ar": "قياسي",
+    "en": "Standard"
+  },
+  "b_terrain": {
+    "ar": "تضاريس",
+    "en": "Terrain"
+  },
+  "basic_info": {
+    "ar": "المعلومات الأساسية",
+    "en": "Basic information"
+  },
+  "bldg": {
+    "ar": "مبنى",
+    "en": "Building"
+  },
+  "branch_m": {
+    "ar": "الفرع",
+    "en": "Branch"
+  },
+  "brand": {
+    "ar": "السجل الوطني للتراث العمراني",
+    "en": "National Urban Heritage Register"
+  },
+  "cat_all": {
+    "ar": "كل التصنيفات",
+    "en": "All categories"
+  },
+  "cat_lbl": {
+    "ar": "تصنيف المبنى",
+    "en": "Building category"
+  },
+  "class_m": {
+    "ar": "الفئة",
+    "en": "Class"
+  },
+  "cls_m": {
+    "ar": "الفئة",
+    "en": "Class"
+  },
+  "cls_title": {
+    "ar": "فئة الأهمية",
+    "en": "Significance Class"
+  },
+  "code_m": {
+    "ar": "الكود",
+    "en": "Code"
+  },
+  "compare_pick": {
+    "ar": "اختر من ٢ إلى ٤ مناطق للمقارنة:",
+    "en": "Pick 2 to 4 regions to compare:"
+  },
+  "compare_regions": {
+    "ar": "مقارنة المناطق",
+    "en": "Compare regions"
+  },
+  "compare_title": {
+    "ar": "مقارنة بين منطقتين",
+    "en": "Compare two regions"
+  },
+  "coords_m": {
+    "ar": "الإحداثيات",
+    "en": "Coordinates"
+  },
+  "copied": {
+    "ar": "تم نسخ رابط الأصل",
+    "en": "Asset link copied"
+  },
+  "credit_by": {
+    "ar": "إعداد وتصميم",
+    "en": "Designed & developed by"
+  },
+  "decay_lbl": {
+    "ar": "نسبة التهدّم",
+    "en": "Deterioration"
+  },
+  "decay_title": {
+    "ar": "حالة التهدّم",
+    "en": "Deterioration"
+  },
+  "decayflt_lbl": {
+    "ar": "نسبة التهدّم لا تقل عن",
+    "en": "Deterioration at least"
+  },
+  "decision_m": {
+    "ar": "رقم القرار",
+    "en": "Decision no."
+  },
+  "deleted": {
+    "ar": "تم الحذف",
+    "en": "Deleted"
+  },
+  "detail_title": {
+    "ar": "بيانات الاستمارة",
+    "en": "Survey Data"
+  },
+  "dist": {
+    "ar": "التوزيع حسب المنطقة",
+    "en": "Distribution by Region"
+  },
+  "dl": {
+    "ar": "تنزيل",
+    "en": "Download"
+  },
+  "ed_bright": {
+    "ar": "السطوع",
+    "en": "Brightness"
+  },
+  "ed_cancel": {
+    "ar": "إلغاء",
+    "en": "Cancel"
+  },
+  "ed_contrast": {
+    "ar": "التباين",
+    "en": "Contrast"
+  },
+  "ed_crop": {
+    "ar": "قص",
+    "en": "Crop"
+  },
+  "ed_reset": {
+    "ar": "إعادة تعيين",
+    "en": "Reset"
+  },
+  "ed_rotate_l": {
+    "ar": "تدوير يسار",
+    "en": "Rotate left"
+  },
+  "ed_rotate_r": {
+    "ar": "تدوير يمين",
+    "en": "Rotate right"
+  },
+  "ed_save": {
+    "ar": "حفظ التعديل",
+    "en": "Save edit"
+  },
+  "ed_title": {
+    "ar": "تعديل الصورة",
+    "en": "Edit photo"
+  },
+  "elev_approx_note": {
+    "ar": "الارتفاع تقديري مبني على نموذج تضاريس",
+    "en": "Elevation is an estimate from a terrain model"
+  },
+  "elev_m": {
+    "ar": "الارتفاع التقريبي",
+    "en": "Approx. elevation"
+  },
+  "export": {
+    "ar": "تصدير المُصفّى (CSV)",
+    "en": "Export Filtered (CSV)"
+  },
+  "export_excel": {
+    "ar": "تصدير Excel منسّق",
+    "en": "Export formatted Excel"
+  },
+  "exported": {
+    "ar": "تم تصدير الملف بنجاح",
+    "en": "File exported successfully"
+  },
+  "fav": {
+    "ar": "حفظ",
+    "en": "Save"
+  },
+  "faved": {
+    "ar": "محفوظ ★",
+    "en": "Saved ★"
+  },
+  "filters": {
+    "ar": "عوامل التصفية",
+    "en": "Filters"
+  },
+  "form_added": {
+    "ar": "تم رفع الاستمارة",
+    "en": "Form uploaded"
+  },
+  "form_title": {
+    "ar": "استمارة الموقع (Word)",
+    "en": "Site Form (Word)"
+  },
+  "full_page": {
+    "ar": "الصفحة الكاملة",
+    "en": "Full Page"
+  },
+  "geo_context": {
+    "ar": "السياق الجغرافي",
+    "en": "Geographic context"
+  },
+  "gov_lbl": {
+    "ar": "المحافظة",
+    "en": "Governorate"
+  },
+  "gov_m": {
+    "ar": "المحافظة",
+    "en": "Governorate"
+  },
+  "group_gov": {
+    "ar": "تجميع حسب المحافظة",
+    "en": "Group by governorate"
+  },
+  "heat_map": {
+    "ar": "الخريطة الحرارية",
+    "en": "Heat map"
+  },
+  "heat_off": {
+    "ar": "تم إيقاف الخريطة الحرارية",
+    "en": "Heat map disabled"
+  },
+  "heat_on": {
+    "ar": "الخريطة الحرارية مُفعّلة",
+    "en": "Heat map enabled"
+  },
+  "her_m": {
+    "ar": "نوع التراث",
+    "en": "Heritage type"
+  },
+  "heritage_m": {
+    "ar": "نوع التراث",
+    "en": "Heritage type"
+  },
+  "hood_m": {
+    "ar": "الحي",
+    "en": "Neighborhood"
+  },
+  "kiosk_running": {
+    "ar": "وضع العرض التقديمي قيد التشغيل",
+    "en": "Presentation mode running"
+  },
+  "kiosk_stop": {
+    "ar": "إيقاف",
+    "en": "Stop"
+  },
+  "km_u": {
+    "ar": "كم",
+    "en": "km"
+  },
+  "kpi_govs": {
+    "ar": "المحافظات",
+    "en": "Governorates"
+  },
+  "kpi_regions": {
+    "ar": "المناطق",
+    "en": "Regions"
+  },
+  "kpi_total": {
+    "ar": "إجمالي الأصول",
+    "en": "Total Assets"
+  },
+  "kpi_visible": {
+    "ar": "ظاهر حالياً",
+    "en": "Now Visible"
+  },
+  "legend": {
+    "ar": "مفتاح الخريطة",
+    "en": "Map legend"
+  },
+  "legend_class": {
+    "ar": "فئة الأهمية",
+    "en": "Significance class"
+  },
+  "legend_cluster": {
+    "ar": "التجمّعات",
+    "en": "Clusters"
+  },
+  "legend_type": {
+    "ar": "نوع الموقع",
+    "en": "Site type"
+  },
+  "lg_a": {
+    "ar": "فئة (أ) — أهمية عالية",
+    "en": "Class A — High significance"
+  },
+  "lg_b": {
+    "ar": "فئة (ب) — أهمية متوسطة",
+    "en": "Class B — Medium significance"
+  },
+  "lg_bldg": {
+    "ar": "مبنى",
+    "en": "Building"
+  },
+  "lg_c": {
+    "ar": "فئة (ج) — أهمية قليلة",
+    "en": "Class C — Low significance"
+  },
+  "lg_cluster_d": {
+    "ar": "الرقم = عدد المواقع المتجمّعة",
+    "en": "Number = clustered sites count"
+  },
+  "lg_u": {
+    "ar": "غير مصنّف",
+    "en": "Unclassified"
+  },
+  "lg_zone": {
+    "ar": "منطقة",
+    "en": "Zone"
+  },
+  "lh_class": {
+    "ar": "الفئة",
+    "en": "Class"
+  },
+  "lh_decay": {
+    "ar": "التهدّم",
+    "en": "Decay"
+  },
+  "lh_name": {
+    "ar": "اسم الموقع",
+    "en": "Site name"
+  },
+  "lh_region": {
+    "ar": "المنطقة / المحافظة",
+    "en": "Region / Governorate"
+  },
+  "loading": {
+    "ar": "موقع تراثي · جارِ التحميل",
+    "en": "heritage sites · loading"
+  },
+  "m_u": {
+    "ar": "م",
+    "en": "m"
+  },
+  "materials_m": {
+    "ar": "مواد البناء",
+    "en": "Building materials"
+  },
+  "measure": {
+    "ar": "أداة القياس",
+    "en": "Measure tool"
+  },
+  "measure_clear": {
+    "ar": "مسح القياس",
+    "en": "Clear measurement"
+  },
+  "measure_on": {
+    "ar": "القياس مُفعّل — ارسم على الخريطة",
+    "en": "Measuring — draw on the map"
+  },
+  "media_add_doc": {
+    "ar": "إضافة مستند (PDF)",
+    "en": "Add document (PDF)"
+  },
+  "media_add_photo": {
+    "ar": "إضافة صور",
+    "en": "Add photos"
+  },
+  "media_cover": {
+    "ar": "الغلاف",
+    "en": "Cover"
+  },
+  "media_delete": {
+    "ar": "حذف",
+    "en": "Delete"
+  },
+  "media_docs": {
+    "ar": "المستندات",
+    "en": "Documents"
+  },
+  "media_done": {
+    "ar": "تم",
+    "en": "Done"
+  },
+  "media_edit": {
+    "ar": "تعديل",
+    "en": "Edit"
+  },
+  "media_manage": {
+    "ar": "إدارة الصور والمستندات",
+    "en": "Manage photos & documents"
+  },
+  "media_no_photos": {
+    "ar": "لا توجد صور بعد",
+    "en": "No photos yet"
+  },
+  "media_open": {
+    "ar": "فتح",
+    "en": "Open"
+  },
+  "media_photos": {
+    "ar": "الصور",
+    "en": "Photos"
+  },
+  "media_set_cover": {
+    "ar": "تعيين كغلاف",
+    "en": "Set as cover"
+  },
+  "media_view_doc": {
+    "ar": "عرض المستند",
+    "en": "View document"
+  },
+  "nearby": {
+    "ar": "القريبة",
+    "en": "Nearby"
+  },
+  "no_form": {
+    "ar": "لم تُرفع استمارة بعد. ارفع ملف Word الخاص بالموقع.",
+    "en": "No form uploaded yet. Upload the site's Word document."
+  },
+  "no_photos": {
+    "ar": "لا توجد صور مرفقة بعد — أضف صوراً للموقع.",
+    "en": "No photos attached yet — add photos of the site."
+  },
+  "none": {
+    "ar": "غير محدد",
+    "en": "N/A"
+  },
+  "open": {
+    "ar": "عرض التفاصيل",
+    "en": "View details"
+  },
+  "overview": {
+    "ar": "نظرة عامة",
+    "en": "Overview"
+  },
+  "ownership_m": {
+    "ar": "الملكية",
+    "en": "Ownership"
+  },
+  "page_soon": {
+    "ar": "تُفتح الصفحة المستقلة في النظام الكامل",
+    "en": "Dedicated page opens in the full system"
+  },
+  "pdf_report": {
+    "ar": "تقرير PDF رسمي",
+    "en": "Official PDF report"
+  },
+  "photo_added": {
+    "ar": "تمت إضافة الصور",
+    "en": "Photos added"
+  },
+  "photos_title": {
+    "ar": "الصور",
+    "en": "Photos"
+  },
+  "proximity_m": {
+    "ar": "القرب من المدينة",
+    "en": "Proximity to city"
+  },
+  "qr_desc": {
+    "ar": "امسح الرمز للوصول إلى صفحة هذا الأصل التراثي.",
+    "en": "Scan to open the dedicated page for this heritage asset."
+  },
+  "qr_share": {
+    "ar": "رمز الاستجابة والمشاركة",
+    "en": "QR code & sharing"
+  },
+  "qr_title": {
+    "ar": "رمز الاستجابة السريعة",
+    "en": "QR Code"
+  },
+  "reg_name": {
+    "ar": "السجل الوطني للتراث العمراني",
+    "en": "National Urban Heritage Register"
+  },
+  "region_avg_decay": {
+    "ar": "متوسط التهدّم",
+    "en": "Avg. deterioration"
+  },
+  "region_by_class": {
+    "ar": "حسب التصنيف",
+    "en": "By classification"
+  },
+  "region_by_gov": {
+    "ar": "حسب المحافظة",
+    "en": "By governorate"
+  },
+  "region_calc": {
+    "ar": "احسب الإحصائيات",
+    "en": "Calculate stats"
+  },
+  "region_clear": {
+    "ar": "مسح",
+    "en": "Clear"
+  },
+  "region_close": {
+    "ar": "إنهاء الرسم",
+    "en": "Finish drawing"
+  },
+  "region_count": {
+    "ar": "عدد الأصول",
+    "en": "Assets count"
+  },
+  "region_draw": {
+    "ar": "رسم منطقة وإحصائياتها",
+    "en": "Draw region & stats"
+  },
+  "region_hint": {
+    "ar": "انقر على الخريطة لرسم حدود المنطقة، ثم اضغط (احسب)",
+    "en": "Click on the map to draw the region, then press (Calculate)"
+  },
+  "region_lbl": {
+    "ar": "المنطقة الإدارية",
+    "en": "Administrative Region"
+  },
+  "region_m": {
+    "ar": "المنطقة",
+    "en": "Region"
+  },
+  "region_need3": {
+    "ar": "حدّد 3 نقاط على الأقل",
+    "en": "Mark at least 3 points"
+  },
+  "region_none": {
+    "ar": "لم يتم العثور على أصول داخل المنطقة",
+    "en": "No assets found inside the region"
+  },
+  "region_profile": {
+    "ar": "تقرير المنطقة الشامل",
+    "en": "Full region report"
+  },
+  "region_stats": {
+    "ar": "إحصائيات المنطقة المحدّدة",
+    "en": "Selected region statistics"
+  },
+  "remove": {
+    "ar": "حذف",
+    "en": "Remove"
+  },
+  "reset": {
+    "ar": "إعادة ضبط الفلاتر",
+    "en": "Reset Filters"
+  },
+  "reset_done": {
+    "ar": "تمت إعادة ضبط الفلاتر",
+    "en": "Filters reset"
+  },
+  "saved_ok": {
+    "ar": "تم الحفظ",
+    "en": "Saved"
+  },
+  "search_ph": {
+    "ar": "ابحث باسم الموقع، المحافظة، أو المنطقة…",
+    "en": "Search by site name, governorate, or region…"
+  },
+  "share": {
+    "ar": "مشاركة",
+    "en": "Share"
+  },
+  "snapshot": {
+    "ar": "حفظ صورة الخريطة",
+    "en": "Save map image"
+  },
+  "sort_age": {
+    "ar": "العمر (الأقدم)",
+    "en": "Age (oldest)"
+  },
+  "sort_by": {
+    "ar": "ترتيب حسب",
+    "en": "Sort by"
+  },
+  "sort_decay": {
+    "ar": "نسبة التهدّم (الأعلى)",
+    "en": "Deterioration (highest)"
+  },
+  "sort_name": {
+    "ar": "الاسم",
+    "en": "Name"
+  },
+  "sort_region": {
+    "ar": "المنطقة",
+    "en": "Region"
+  },
+  "sort_risk": {
+    "ar": "مؤشّر المخاطر (الأعلى)",
+    "en": "Risk index (highest)"
+  },
+  "storage_fail": {
+    "ar": "تعذّر الحفظ — التخزين المحلي غير متاح في هذا الوضع.",
+    "en": "Could not save — local storage is unavailable in this mode."
+  },
+  "storage_off": {
+    "ar": "تخزين المرفقات غير متاح عند فتح الملف مباشرةً (file://). شغّل المنصة عبر خادم محلي لتفعيل حفظ الصور والاستمارات.",
+    "en": "Attachment storage is unavailable when the file is opened directly (file://). Run the platform via a local server to enable saving photos and forms."
+  },
+  "style_m": {
+    "ar": "الطراز المعماري",
+    "en": "Architectural style"
+  },
+  "subtype_m": {
+    "ar": "النوع الفرعي",
+    "en": "Subtype"
+  },
+  "survey_info": {
+    "ar": "بيانات الحصر الميداني",
+    "en": "Field survey data"
+  },
+  "t_fit": {
+    "ar": "عرض كامل المملكة",
+    "en": "Fit Kingdom"
+  },
+  "t_fs": {
+    "ar": "ملء الشاشة",
+    "en": "Fullscreen"
+  },
+  "t_heat": {
+    "ar": "الخريطة الحرارية",
+    "en": "Heat Map"
+  },
+  "t_kiosk": {
+    "ar": "وضع العرض التقديمي",
+    "en": "Presentation mode"
+  },
+  "t_random": {
+    "ar": "اكتشف أصلاً عشوائياً",
+    "en": "Discover a random asset"
+  },
+  "t_share_view": {
+    "ar": "مشاركة هذا العرض",
+    "en": "Share this view"
+  },
+  "type_lbl": {
+    "ar": "نوع الموقع",
+    "en": "Site Type"
+  },
+  "type_m": {
+    "ar": "النوع",
+    "en": "Type"
+  },
+  "ungroup": {
+    "ar": "قائمة عادية",
+    "en": "Flat list"
+  },
+  "upload_form": {
+    "ar": "رفع الاستمارة",
+    "en": "Upload form"
+  },
+  "urgent": {
+    "ar": "المواقع الأكثر إلحاحاً للترميم (تهدّم ≥ ٥٠٪)",
+    "en": "Most urgent for restoration (decay ≥ 50%)"
+  },
+  "use_m": {
+    "ar": "التوظيف الحالي",
+    "en": "Current use"
+  },
+  "v_dash": {
+    "ar": "التحليلات",
+    "en": "Analytics"
+  },
+  "v_list": {
+    "ar": "القائمة",
+    "en": "List"
+  },
+  "v_map": {
+    "ar": "الخريطة",
+    "en": "Map"
+  },
+  "view_copied": {
+    "ar": "تم نسخ رابط العرض",
+    "en": "View link copied"
+  },
+  "view_favs": {
+    "ar": "عرض",
+    "en": "View"
+  },
+  "visitors_m": {
+    "ar": "استقبال الزوار",
+    "en": "Visitor access"
+  },
+  "vs": {
+    "ar": "مقابل",
+    "en": "vs"
+  },
+  "welcome_start": {
+    "ar": "ابدأ الاستكشاف",
+    "en": "Start exploring"
+  },
+  "welcome_sub": {
+    "ar": "منصة تفاعلية لاستكشاف الأصول التراثية العمرانية في المملكة العربية السعودية",
+    "en": "An interactive platform to explore urban heritage assets across Saudi Arabia"
+  },
+  "welcome_title": {
+    "ar": "مرحباً بك في السجل الوطني للتراث العمراني",
+    "en": "Welcome to the National Urban Heritage Register"
+  },
+  "wf1_d": {
+    "ar": "تصفّح آلاف المواقع التراثية على الخريطة",
+    "en": "Browse thousands of heritage sites on the map"
+  },
+  "wf1_t": {
+    "ar": "خريطة تفاعلية",
+    "en": "Interactive map"
+  },
+  "wf2_d": {
+    "ar": "إحصائيات ومؤشّرات لدعم اتخاذ القرار",
+    "en": "Statistics and indicators for decision-making"
+  },
+  "wf2_t": {
+    "ar": "تحليلات شاملة",
+    "en": "Comprehensive analytics"
+  },
+  "wf3_d": {
+    "ar": "تحديد المواقع الأكثر حاجة للترميم",
+    "en": "Identify sites most in need of restoration"
+  },
+  "wf3_t": {
+    "ar": "مؤشّر المخاطر",
+    "en": "Risk index"
+  },
+  "works_m": {
+    "ar": "الأعمال الجارية",
+    "en": "Ongoing works"
+  },
+  "years_u": {
+    "ar": "سنة",
+    "en": "yrs"
+  },
+  "yr": {
+    "ar": "سنة",
+    "en": "yrs"
+  },
+  "zone": {
+    "ar": "منطقة",
+    "en": "Zone/Area"
+  }
+}
