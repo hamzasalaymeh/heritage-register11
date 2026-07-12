@@ -959,6 +959,7 @@ body.view-dash .map-legend,body.view-list .map-legend{display:none}
           <div class="field"><label data-i18n="region_lbl">المنطقة الإدارية</label><select id="regionSel"></select></div>
           <div class="field"><label data-i18n="gov_lbl">المحافظة</label><select id="govSel"></select></div>
           <div class="field"><label data-i18n="type_lbl">نوع الموقع</label><select id="typeSel"></select></div>
+          <div class="field"><label data-i18n="her_lbl">أنواع التراث</label><select id="herSel"></select></div>
           <div class="field"><label data-i18n="cat_lbl">تصنيف المبنى</label><select id="catSel"></select></div>
           <div class="field"><label data-i18n="decayflt_lbl">نسبة التهدّم لا تقل عن</label>
             <div class="range-row"><input type="range" id="decayRange" min="0" max="100" value="0" step="5"><span id="decayRangeVal" class="range-val">٠٪</span></div>
@@ -1911,7 +1912,7 @@ function setCover(code, globalIdx){ _mediaCovers[String(code)]=globalIdx; saveCo
 const I18N={
  ar:{brand:"السجل الوطني للتراث العمراني",search_ph:"ابحث باسم الموقع، المحافظة، أو المنطقة…",overview:"نظرة عامة",
    kpi_total:"إجمالي الأصول",kpi_visible:"ظاهر حالياً",kpi_regions:"المناطق",kpi_govs:"المحافظات",filters:"عوامل التصفية",
-   region_lbl:"المنطقة الإدارية",gov_lbl:"المحافظة",type_lbl:"نوع الموقع",cat_lbl:"تصنيف المبنى",cat_all:"كل التصنيفات",cls_title:"فئة الأهمية",decay_title:"حالة التهدّم",
+   region_lbl:"المنطقة الإدارية",gov_lbl:"المحافظة",type_lbl:"نوع الموقع",her_lbl:"أنواع التراث",all_her:"كل أنواع التراث",cat_lbl:"تصنيف المبنى",cat_all:"كل التصنيفات",cls_title:"فئة الأهمية",decay_title:"حالة التهدّم",
    decayflt_lbl:"نسبة التهدّم لا تقل عن",urgent:"المواقع الأكثر إلحاحاً للترميم (تهدّم ≥ ٥٠٪)",
    v_map:"الخريطة",v_dash:"التحليلات",v_list:"القائمة",sort_by:"ترتيب حسب",sort_name:"الاسم",sort_decay:"نسبة التهدّم (الأعلى)",
    sort_age:"العمر (الأقدم)",sort_region:"المنطقة",sort_risk:"مؤشّر المخاطر (الأعلى)",lh_name:"اسم الموقع",lh_region:"المنطقة / المحافظة",lh_class:"الفئة",lh_decay:"التهدّم",
@@ -1947,7 +1948,7 @@ const I18N={
    storage_fail:"تعذّر الحفظ — التخزين المحلي غير متاح في هذا الوضع."},
  en:{brand:"National Urban Heritage Register",search_ph:"Search by site name, governorate, or region…",overview:"Overview",
    kpi_total:"Total Assets",kpi_visible:"Now Visible",kpi_regions:"Regions",kpi_govs:"Governorates",filters:"Filters",
-   region_lbl:"Administrative Region",gov_lbl:"Governorate",type_lbl:"Site Type",cat_lbl:"Building category",cat_all:"All categories",cls_title:"Significance Class",decay_title:"Deterioration",
+   region_lbl:"Administrative Region",gov_lbl:"Governorate",type_lbl:"Site Type",her_lbl:"Heritage Type",all_her:"All heritage types",cat_lbl:"Building category",cat_all:"All categories",cls_title:"Significance Class",decay_title:"Deterioration",
    decayflt_lbl:"Deterioration at least",urgent:"Most urgent for restoration (decay ≥ 50%)",
    v_map:"Map",v_dash:"Analytics",v_list:"List",sort_by:"Sort by",sort_name:"Name",sort_decay:"Deterioration (highest)",
    sort_age:"Age (oldest)",sort_region:"Region",sort_risk:"Risk index (highest)",lh_name:"Site name",lh_region:"Region / Governorate",lh_class:"Class",lh_decay:"Decay",
@@ -2135,7 +2136,7 @@ function riskLabel(r){
 /* ============================================================
    FILTER STATE
    ============================================================ */
-const state={cls:null,region:"",gov:"",type:"",decayMin:0,cat:""};
+const state={cls:null,region:"",gov:"",type:"",her:"",decayMin:0,cat:""};
 function initState(){state.cls=new Set(DB.classes.map((_,i)=>i));}
 
 /* ===== Site category (mosque / tower / fort ...) from subtype ===== */
@@ -2169,6 +2170,7 @@ function passes(s){
   if(state.region!=="" && s[4]!=+state.region) return false;
   if(state.gov!=="" && s[5]!=+state.gov) return false;
   if(state.type!=="" && s[7]!=+state.type) return false;
+  if(state.her!=="" && s[8]!=+state.her) return false;
   if(state.cat!=="" && siteCat(s)!==state.cat) return false;
   if(state.decayMin>0){ const d=s[10]; if(d==null || d*100<state.decayMin) return false; }
   return true;
@@ -2506,6 +2508,14 @@ function buildSelects(){
   const ty=$('typeSel');
   ty.innerHTML=`<option value="">${t('all_types')}</option>`+DB.types.map((tp,i)=>`<option value="${i}">${tp==="منطقة"?t('zone'):t('bldg')}</option>`).join('');
   ty.value=state.type;
+  // heritage type select with live counts
+  const he=$('herSel');
+  if(he){
+    const hc={}; DB.sites.forEach(s=>{ if(s[8]!=null) hc[s[8]]=(hc[s[8]]||0)+1; });
+    const opts=DB.heritage.map((h,i)=>hc[i]?`<option value="${i}">${(h==='غير محدد'?t('none'):h)} (${num(hc[i])})</option>`:'').join('');
+    he.innerHTML=`<option value="">${t('all_her')}</option>`+opts;
+    he.value=state.her;
+  }
   // category (building type) select with live counts
   const ca=$('catSel');
   if(ca){
@@ -2530,6 +2540,7 @@ $('regionSel').onchange=e=>{state.region=e.target.value;state.gov="";buildGovSel
 $('govSel').onchange=e=>{state.gov=e.target.value;render();
   if(state.gov!==""){const b=filteredBounds();if(b)map.fitBounds(b,0.25);}};
 $('typeSel').onchange=e=>{state.type=e.target.value;render();};
+$('herSel').onchange=e=>{state.her=e.target.value;render(); if(state.her!==""){const b=filteredBounds();if(b)map.fitBounds(b,0.2);}};
 $('catSel').onchange=e=>{state.cat=e.target.value;render(); if(state.cat!==""){const b=filteredBounds();if(b)map.fitBounds(b,0.2);}};
 $('decayRange').oninput=e=>{
   state.decayMin=+e.target.value;
@@ -3481,6 +3492,7 @@ function encodeState(){
   if(state.region!=='')p.set('r',state.region);
   if(state.gov!=='')p.set('g',state.gov);
   if(state.type!=='')p.set('t',state.type);
+  if(state.her!=='')p.set('h',state.her);
   if(state.decayMin>0)p.set('d',state.decayMin);
   // classes (only if not all selected)
   if(state.cls.size<DB.classes.length)p.set('c',[...state.cls].join('-'));
@@ -3499,6 +3511,7 @@ function applyStateFromURL(){
   if(p.has('r'))state.region=p.get('r');
   if(p.has('g'))state.gov=p.get('g');
   if(p.has('t'))state.type=p.get('t');
+  if(p.has('h'))state.her=p.get('h');
   if(p.has('d')){state.decayMin=+p.get('d');}
   if(p.has('c')){const set=new Set(p.get('c').split('-').map(Number));state.cls=set;}
   if(p.has('f')){p.get('f').split('-').map(Number).forEach(c=>favorites.add(c));}
@@ -3716,7 +3729,7 @@ $('exportBtn').onclick=()=>{
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='heritage_register_filtered.csv';a.click();
   toast(t('exported'));
 };
-$('resetBtn').onclick=()=>{initState();state.region="";state.gov="";state.type="";state.cat="";state.decayMin=0;
+$('resetBtn').onclick=()=>{initState();state.region="";state.gov="";state.type="";state.her="";state.cat="";state.decayMin=0;
   $('decayRange').value=0;$('decayRangeVal').textContent=num(0)+'٪';$('urgentBtn').classList.remove('active');
   buildCatList();buildSelects();render();map.fitBounds(SA,0.05);toast(t('reset_done'));};
 
@@ -3757,6 +3770,7 @@ function toast(m){$('toastMsg').textContent=m;$('toast').classList.add('show');c
   if($('regionSel'))$('regionSel').value=state.region;
   if($('govSel'))$('govSel').value=state.gov;
   if($('typeSel'))$('typeSel').value=state.type;
+  if($('herSel'))$('herSel').value=state.her;
   if($('decayRange')){$('decayRange').value=state.decayMin;$('decayRangeVal').textContent=num(state.decayMin)+'٪';$('urgentBtn').classList.toggle('active',state.decayMin>=50);}
   render();
   updateFavCount();
