@@ -1574,8 +1574,9 @@ class AtlasMap{
           cx/=v.hull.length;cy/=v.hull.length;
           ctx.font='600 11px "Reem Kufi","IBM Plex Sans Arabic",sans-serif';
           ctx.textAlign='center';ctx.textBaseline='middle';
-          ctx.lineWidth=3;ctx.strokeStyle=dark?'rgba(13,29,36,.85)':'rgba(255,255,255,.9)';ctx.strokeText(v.name,cx,cy);
-          ctx.fillStyle=dark?'#cdd9dc':'#2b414a';ctx.fillText(v.name,cx,cy);
+          const vlabel=(typeof LANG!=='undefined'&&LANG==='en'&&typeof trDictVal==='function')?trDictVal(v.name):v.name;
+          ctx.lineWidth=3;ctx.strokeStyle=dark?'rgba(13,29,36,.85)':'rgba(255,255,255,.9)';ctx.strokeText(vlabel,cx,cy);
+          ctx.fillStyle=dark?'#cdd9dc':'#2b414a';ctx.fillText(vlabel,cx,cy);
         }
       }
       ctx.restore();
@@ -1620,7 +1621,7 @@ class AtlasMap{
         ctx.fillText('✈', px, py+0.5);
         // label when zoomed
         if(this.z>=7){
-          const nm=a[1];
+          const nm=(typeof airportName==='function')?airportName(a):a[1];
           ctx.font='600 11px "IBM Plex Sans Arabic",sans-serif';
           ctx.textAlign='center'; ctx.textBaseline='top';
           ctx.lineWidth=3; ctx.strokeStyle=dark?'rgba(13,29,36,.9)':'rgba(255,255,255,.92)';
@@ -1840,10 +1841,10 @@ window.CU_LOGO='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU0AAACgCAIAAAAHP6
    CONSERVATION-CLASS taxonomy (real data) + palette from logo
    ============================================================ */
 const CLASS_META = {
-  "أ":        {ar:"الفئة (أ) — أهمية عالية",  en:"Class A — High value",   short:"أ", color:"#bd343b"},
-  "ب":        {ar:"الفئة (ب) — أهمية متوسطة", en:"Class B — Medium value", short:"ب", color:"#f59e41"},
-  "ج":        {ar:"الفئة (ج) — أهمية قليلة",  en:"Class C — Lower value",  short:"ج", color:"#7fb9bb"},
-  "غير مصنّف":{ar:"غير مصنّف",                en:"Unclassified",           short:"–", color:"#9bb0b6"},
+  "أ":        {ar:"الفئة (أ) — أهمية عالية",  en:"Class A — High value",   short:"أ", eshort:"A", color:"#bd343b"},
+  "ب":        {ar:"الفئة (ب) — أهمية متوسطة", en:"Class B — Medium value", short:"ب", eshort:"B", color:"#f59e41"},
+  "ج":        {ar:"الفئة (ج) — أهمية قليلة",  en:"Class C — Lower value",  short:"ج", eshort:"C", color:"#7fb9bb"},
+  "غير مصنّف":{ar:"غير مصنّف",                en:"Unclassified",           short:"–", eshort:"–", color:"#9bb0b6"},
 };
 const HERO_BG = "linear-gradient(135deg,var(--petrol-2),var(--petrol))";
 const PIN_ICON = 'M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6';
@@ -2183,9 +2184,9 @@ function popupHTML(s,idx){
   const color=clsColor(s[6]); const clsName=CLASS_META[DB.classes[s[6]]];
   const typ=DB.types[s[7]]; const typeLabel=typ==="منطقة"?t('zone'):t('bldg');
   return `<div class="pop"><div class="pop-img" style="background:linear-gradient(135deg,#1c4a5c,#113241)">
-    <span class="cls-tag" style="background:${color}cc">${LANG==='ar'?clsName.short:'Class '+clsName.short}</span>
+    <span class="cls-tag" style="background:${color}cc">${LANG==='ar'?clsName.short:'Class '+clsName.eshort}</span>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="${PIN_ICON}"/></svg></div>
-    <div class="pop-c"><h3>${s[1]}</h3>
+    <div class="pop-c"><h3>${nm(s)}</h3>
     <div class="pm">${typeLabel} · ${DB.govs[s[5]]} · ${DB.regions[s[4]]}</div>
     <button class="pbtn" data-openstory="${idx}">${t('open')}</button></div></div>`;
 }
@@ -2293,11 +2294,11 @@ function renderDashboard(){
 
   // class distribution
   const clsMax=Math.max(...Object.values(byCls),1);
-  const clsBars=DB.classes.map((c,i)=>byCls[i]?bar((CLASS_META[c]?CLASS_META[c].ar:c),byCls[i],clsMax,CLASS_META[c]?CLASS_META[c].color:'#999'):'').join('');
+  const clsBars=DB.classes.map((c,i)=>byCls[i]?bar((CLASS_META[c]?(LANG==='ar'?CLASS_META[c].ar:CLASS_META[c].en):c),byCls[i],clsMax,CLASS_META[c]?CLASS_META[c].color:'#999'):'').join('');
 
   // heritage type
   const herMax=Math.max(...Object.values(byHer),1);
-  const herBars=DB.heritage.map((h,i)=>byHer[i]?bar(h==='غير محدد'?t('none'):h,byHer[i],herMax,'linear-gradient(90deg,var(--petrol),var(--petrol-2))'):'').join('');
+  const herBars=DB.heritage.map((h,i)=>byHer[i]?bar(h==='غير محدد'?t('none'):(LANG==='en'?trHer(h):h),byHer[i],herMax,'linear-gradient(90deg,var(--petrol),var(--petrol-2))'):'').join('');
 
   // type split
   const bldg=byType[DB.types.indexOf('مبنى')]||0, zone=byType[DB.types.indexOf('منطقة')]||0;
@@ -2376,9 +2377,9 @@ function listRowHTML(s,idx){
   const d=s[10],pct=d!=null?Math.round(d*100):null;
   const dc=d==null?'var(--border)':d<0.2?'#7fb9bb':d<0.35?'#f59e41':d<0.5?'#e95345':'#bd343b';
   return `<div class="list-row" data-idx="${idx}">
-    <div class="lr-name"><span class="lr-dot" style="background:${cls.color}"></span><span>${s[1]}</span></div>
+    <div class="lr-name"><span class="lr-dot" style="background:${cls.color}"></span><span>${nm(s)}</span></div>
     <div class="lr-reg">${DB.govs[s[5]]} · ${DB.regions[s[4]]}</div>
-    <div class="lr-cls" style="color:${cls.color}">${LANG==='ar'?cls.short:'Class '+cls.short}</div>
+    <div class="lr-cls" style="color:${cls.color}">${LANG==='ar'?cls.short:'Class '+cls.eshort}</div>
     <div class="lr-decay">${pct!=null?`<div class="ld-bar"><div class="ld-f" style="width:${pct}%;background:${dc}"></div></div><span class="ld-v">${num(pct)}٪</span>`:`<span class="ld-v">—</span>`}</div>
   </div>`;
 }
@@ -2573,12 +2574,12 @@ searchEl.addEventListener('input',()=>{
     for(let i=0;i<DB.sites.length && hits.length<10;i++){
       const s=DB.sites[i];
       if(s[1].includes(q)||DB.govs[s[5]].includes(q)||DB.regions[s[4]].includes(q)||
-         s[1].toLowerCase().includes(ql)) hits.push([s,i]);
+         s[1].toLowerCase().includes(ql)||(LANG==='en'&&nm(s).toLowerCase().includes(ql))) hits.push([s,i]);
     }
     if(!hits.length){resultsEl.innerHTML=`<div class="res-empty">${LANG==='ar'?'لا توجد نتائج مطابقة':'No matching results'}</div>`;resultsEl.classList.add('show');return;}
     resultsEl.innerHTML=hits.map(([s,i])=>`<div class="res-item" onclick="gotoSite(${i})">
       <span class="res-dot" style="background:${clsColor(s[6])}"></span>
-      <div><div class="res-name">${s[1]}</div><div class="res-meta">${DB.govs[s[5]]} · ${DB.regions[s[4]]}</div></div></div>`).join('');
+      <div><div class="res-name">${nm(s)}</div><div class="res-meta">${DB.govs[s[5]]} · ${DB.regions[s[4]]}</div></div></div>`).join('');
     resultsEl.classList.add('show');
   },140);
 });
@@ -2602,7 +2603,7 @@ window.openStory=function(idx){
   const clsName=CLASS_META[DB.classes[s[6]]]; const color=clsName.color;
   const typ=DB.types[s[7]]; const typeLabel=typ==="منطقة"?t('zone'):t('bldg');
   $('sHero').style.background=HERO_BG.replace(/var\(--petrol-2\)/,'#1c4a5c').replace(/var\(--petrol\)/,'#113241');
-  $('sTitle').textContent=s[1];
+  $('sTitle').textContent=nm(s);
   $('sSub').textContent=`${DB.govs[s[5]]} · ${DB.regions[s[4]]}`;
   $('sCatBadge').innerHTML=`<span style="width:9px;height:9px;border-radius:3px;background:${color};display:inline-block"></span>${LANG==='ar'?clsName.ar:clsName.en}`;
   // composite risk index badge
@@ -2622,12 +2623,12 @@ window.openStory=function(idx){
   const mc=(k,icon,v,full)=>`<div class="meta-cell ${full?'full':''}"><div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="${icon}"/></svg>${k}</div><div class="v">${v||t('none')}</div></div>`;
   $('sMeta').innerHTML=
     mc(t('type_m'),'M3 21h18M5 21V8',typeLabel)+
-    mc(t('cls_m'),'M9 12l2 2 4-4',LANG==='ar'?clsName.short:'Class '+clsName.short)+
-    mc(t('her_m'),'M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z',DB.heritage[s[8]]==='غير محدد'?t('none'):DB.heritage[s[8]])+
+    mc(t('cls_m'),'M9 12l2 2 4-4',LANG==='ar'?clsName.short:'Class '+clsName.eshort)+
+    mc(t('her_m'),'M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z',herLabel(s))+
     mc(t('age_m'),'M12 6v6l4 2M12 22a10 10 0 110-20 10 10 0 010 20z',s[9]?num(s[9])+' '+t('yr'):null)+
     mc(t('decision_m'),'M9 11l3 3 8-8M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11',s[11]?num(s[11]):null)+
     mc(t('code_m'),'M16 18l6-6-6-6M8 6l-6 6 6 6',s[0]?num(s[0]):null)+
-    mc(t('branch_m'),'M3 21h18M5 21V8l3 2V6l4-3 4 3v4l3-2v13',DB.branches[s[12]])+
+    mc(t('branch_m'),'M3 21h18M5 21V8l3 2V6l4-3 4 3v4l3-2v13',brLabel(s))+
     mc(t('coords_m'),'M12 21s7-5.5 7-11a7 7 0 10-14 0c0 5.5 7 11 7 11z',`${s[2].toFixed(4)}, ${s[3].toFixed(4)}`,true);
 
   // geographic context: elevation + nearest airport
@@ -2635,7 +2636,7 @@ window.openStory=function(idx){
   if(ex){
     const ap=DB.airports[ex[0]];
     const elevHtml=`<div class="meta-cell"><div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20h18L13 4l-4 7-2-3z"/></svg>${t('elev_m')}</div><div class="v">${num(ex[2])} ${t('m_u')}</div></div>`;
-    const apHtml=`<div class="meta-cell full"><div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.5L2 12V9l20 4.5zM6 13l3 6 2-0.5-1-5z"/></svg>${t('airport_m')}</div><div class="v">${ap?ap[1]:'—'} <span style="color:var(--accent);font-weight:700">· ${num(ex[1])} ${t('km_u')}</span></div></div>`;
+    const apHtml=`<div class="meta-cell full"><div class="k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.5L2 12V9l20 4.5zM6 13l3 6 2-0.5-1-5z"/></svg>${t('airport_m')}</div><div class="v">${ap?airportName(ap):'—'} <span style="color:var(--accent);font-weight:700">· ${num(ex[1])} ${t('km_u')}</span></div></div>`;
     $('sMeta').innerHTML += elevHtml + apHtml;
   }
 
@@ -2643,7 +2644,7 @@ window.openStory=function(idx){
   const sp=$('sPhotos'); if(sp){ sp.style.display='none'; sp.innerHTML=''; }
 
   // full survey detail (indices 13..21) — only render rows that exist
-  const dv=i=>(i>=0?DB.dict[i]:null);
+  const dv=i=>{ const raw=(i>=0?DB.dict[i]:null); return (raw!=null&&LANG==='en')?trDictVal(raw):raw; };
   const rows=[];
   const add=(label,val)=>{ if(val) rows.push(`<div class="detail-row"><span class="dk">${label}</span><span class="dv">${val}</span></div>`); };
   add(t('hood_m'),dv(s[13]));
@@ -2701,14 +2702,14 @@ window.openAssetPage=function openAssetPage(idx){
   const basics=[
     F(t('type_m'),typeLabel),
     F(t('class_m'),LANG==='ar'?cls.ar:cls.en),
-    F(t('heritage_m'),DB.heritage[s[8]]&&DB.heritage[s[8]]!=='غير محدد'?DB.heritage[s[8]]:null),
+    F(t('heritage_m'),DB.heritage[s[8]]&&DB.heritage[s[8]]!=='غير محدد'?herLabel(s):null),
     F(t('age_m'),s[9]!=null?num(s[9])+' '+t('years_u'):null),
     F(t('decision_m'),s[11]!=null?num(s[11]):null),
     F(t('code_m'),num(s[0])),
-    F(t('branch_m'),DB.branches[s[12]]||null),
+    F(t('branch_m'),brLabel(s)||null),
     F(t('coords_m'),`${s[2].toFixed(5)}, ${s[3].toFixed(5)}`),
     (DB.siteExtra?F(t('elev_m'),num(DB.siteExtra[idx][2])+' '+t('m_u')):''),
-    (DB.siteExtra&&DB.airports[DB.siteExtra[idx][0]]?F(t('airport_m'),DB.airports[DB.siteExtra[idx][0]][1]+' · '+num(DB.siteExtra[idx][1])+' '+t('km_u')):''),
+    (DB.siteExtra&&DB.airports[DB.siteExtra[idx][0]]?F(t('airport_m'),airportName(DB.airports[DB.siteExtra[idx][0]])+' · '+num(DB.siteExtra[idx][1])+' '+t('km_u')):''),
   ].join('');
 
   // survey detail rows
@@ -2763,14 +2764,14 @@ window.openAssetPage=function openAssetPage(idx){
       <div class="ap-hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="${PIN_ICON}"/></svg></div>
       <div class="ap-hero-txt">
         <div class="ap-code">${t('code_m')}: ${num(s[0])}</div>
-        <h1>${s[1]}</h1>
+        <h1>${nm(s)}</h1>
         <div class="ap-loc"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${DB.govs[s[5]]} · ${DB.regions[s[4]]}</div>
       </div>
     </div>
     <div class="ap-badges">
       <div class="ap-badge"><span class="apb-dot" style="background:${cls.color}"></span>${LANG==='ar'?cls.ar:cls.en}</div>
       <div class="ap-badge">${typeLabel}</div>
-      ${DB.heritage[s[8]]&&DB.heritage[s[8]]!=='غير محدد'?`<div class="ap-badge">${DB.heritage[s[8]]}</div>`:''}
+      ${DB.heritage[s[8]]&&DB.heritage[s[8]]!=='غير محدد'?`<div class="ap-badge">${herLabel(s)}</div>`:''}
     </div>
     ${gallerySec}
     <div class="ap-section"><h2>${t('basic_info')}</h2><div class="ap-fields">${basics}</div></div>
@@ -2809,12 +2810,12 @@ function buildSiteCard(idx){
     <div class="sc-head">${window.HC_LOGO?`<img src="${window.HC_LOGO}" alt="">`:''}<div class="sc-htxt"><h2>${t('reg_name')}</h2><p>${LANG==='ar'?'بطاقة أصل تراثي':'Heritage Asset Card'}</p></div></div>
     <div class="sc-hero${_heroCls}"><span class="sc-cls" style="background:${cls.color}">${LANG==='ar'?cls.ar:cls.en}</span>
       <svg class="sc-hero-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="${PIN_ICON}"/></svg></div>
-    <div class="sc-title">${s[1]}</div>
+    <div class="sc-title">${nm(s)}</div>
     <div class="sc-loc">${DB.govs[s[5]]} · ${DB.regions[s[4]]}</div>
     <div class="sc-fields">
       ${F(t('code_m'),num(s[0]))}
       ${F(t('type_m'),typeLabel)}
-      ${F(t('heritage_m'),DB.heritage[s[8]]&&DB.heritage[s[8]]!=='غير محدد'?DB.heritage[s[8]]:'—')}
+      ${F(t('heritage_m'),DB.heritage[s[8]]&&DB.heritage[s[8]]!=='غير محدد'?herLabel(s):'—')}
       ${F(t('age_m'),s[9]!=null?num(s[9])+' '+t('years_u'):'—')}
       ${F(t('lh_decay'),pct)}
       ${F(t('coords_m'),`${s[2].toFixed(4)}, ${s[3].toFixed(4)}`)}
@@ -3045,17 +3046,17 @@ function onMapPlaceClick(latlng){
 }
 
 function buildAddSiteSelects(){
-  // region select
-  const rs=$('asRegion'); if(rs && !rs.dataset.built){
-    rs.innerHTML=DB.regions.map((r,i)=>`<option value="${i}">${r}</option>`).join(''); rs.dataset.built='1';
+  // region select (rebuilt every time so it follows the current language)
+  const rs=$('asRegion'); if(rs){
+    rs.innerHTML=DB.regions.map((r,i)=>`<option value="${i}">${r}</option>`).join('');
   }
   // type select
-  const ts=$('asType'); if(ts && !ts.dataset.built){
-    ts.innerHTML=DB.types.map((r,i)=>`<option value="${i}">${r}</option>`).join(''); ts.dataset.built='1';
+  const ts=$('asType'); if(ts){
+    ts.innerHTML=DB.types.map((r,i)=>`<option value="${i}">${r==="منطقة"?t('zone'):t('bldg')}</option>`).join('');
   }
   // class select
-  const cs=$('asClass'); if(cs && !cs.dataset.built){
-    cs.innerHTML=DB.classes.map((r,i)=>`<option value="${i}">${r}</option>`).join(''); cs.dataset.built='1';
+  const cs=$('asClass'); if(cs){
+    cs.innerHTML=DB.classes.map((r,i)=>`<option value="${i}">${LANG==='ar'?r:(CLASS_META[r]?CLASS_META[r].eshort:r)}</option>`).join('');
   }
 }
 
@@ -3236,7 +3237,7 @@ function buildPDFReport(){
   const rows=vis.slice(0,cap).map((s,i)=>{
     const cls=CLASS_META[DB.classes[s[6]]];
     const pct=s[10]!=null?Math.round(s[10]*100)+'٪':'—';
-    return `<tr><td>${num(i+1)}</td><td>${s[1]}</td><td>${DB.regions[s[4]]}</td><td>${DB.govs[s[5]]}</td><td>${LANG==='ar'?cls.short:cls.short}</td><td>${pct}</td></tr>`;
+    return `<tr><td>${num(i+1)}</td><td>${nm(s)}</td><td>${DB.regions[s[4]]}</td><td>${DB.govs[s[5]]}</td><td>${LANG==='ar'?cls.short:cls.eshort}</td><td>${pct}</td></tr>`;
   }).join('');
 
   $('pdfReport').innerHTML=`<div class="pdfr-inner">
@@ -3298,7 +3299,7 @@ function buildRegionProfile(ri){
   const govRows=govSorted.map(([gi,n])=>`<tr><td>${DB.govs[gi]}</td><td style="text-align:center">${num(n)}</td>
     <td><div style="height:8px;background:#eee;border-radius:4px;overflow:hidden"><div style="height:100%;width:${(n/govMax*100).toFixed(0)}%;background:#113241"></div></div></td></tr>`).join('');
   const clsRows=DB.classes.map((c,i)=>byCls[i]?`<div class="rp-cls"><span class="rp-cdot" style="background:${CLASS_META[c]?CLASS_META[c].color:'#999'}"></span>${CLASS_META[c]?(LANG==='ar'?CLASS_META[c].ar:CLASS_META[c].en):c}: <b>${num(byCls[i])}</b></div>`:'').join('');
-  const riskRows=topRisk.map((o,i)=>{const rc=riskColor(o.r);return `<tr><td>${num(i+1)}</td><td>${o.s[1]}</td><td>${DB.govs[o.s[5]]}</td><td style="text-align:center;color:${rc};font-weight:700">${num(o.r)}</td><td style="text-align:center">${o.s[10]!=null?num(Math.round(o.s[10]*100))+'٪':'—'}</td></tr>`;}).join('');
+  const riskRows=topRisk.map((o,i)=>{const rc=riskColor(o.r);return `<tr><td>${num(i+1)}</td><td>${nm(o.s)}</td><td>${DB.govs[o.s[5]]}</td><td style="text-align:center;color:${rc};font-weight:700">${num(o.r)}</td><td style="text-align:center">${o.s[10]!=null?num(Math.round(o.s[10]*100))+'٪':'—'}</td></tr>`;}).join('');
 
   $('pdfReport').innerHTML=`<div class="pdfr-inner">
     <div class="pdfr-head">
@@ -3458,7 +3459,7 @@ function exportExcel(){
   let rows='';
   for(const s of vis){
     const cls=CLASS_META[DB.classes[s[6]]];
-    const cells=[s[0],s[1],DB.regions[s[4]],DB.govs[s[5]],(LANG==='ar'?cls.ar:cls.en),DB.types[s[7]]==='منطقة'?t('zone'):t('bldg'),(DB.heritage[s[8]]==='غير محدد'?'':DB.heritage[s[8]]),s[9]??'',s[10]!=null?Math.round(s[10]*100):'',riskScore(s),s[2],s[3]];
+    const cells=[s[0],nm(s),DB.regions[s[4]],DB.govs[s[5]],(LANG==='ar'?cls.ar:cls.en),DB.types[s[7]]==='منطقة'?t('zone'):t('bldg'),(DB.heritage[s[8]]==='غير محدد'?'':herLabel(s)),s[9]??'',s[10]!=null?Math.round(s[10]*100):'',riskScore(s),s[2],s[3]];
     rows+='<Row>'+cells.map((c,i)=>{
       const isNum=(i===0||i>=7);
       return `<Cell><Data ss:Type="${isNum&&c!==''?'Number':'String'}">${esc(c)}</Data></Cell>`;
@@ -3725,8 +3726,10 @@ $('exportBtn').onclick=()=>{
   const head=['Code','Name','Type','Class','Region','Governorate','Branch','Heritage','Age','Decay%','Decision','Lat','Lng'];
   const lines=[head.join(',')];
   for(let i=0;i<DB.sites.length;i++){const s=DB.sites[i];if(!passes(s))continue;
-    lines.push([s[0],`"${(s[1]||'').replace(/"/g,'""')}"`,DB.types[s[7]],DB.classes[s[6]],DB.regions[s[4]],DB.govs[s[5]],
-      DB.branches[s[12]],DB.heritage[s[8]],s[9]??'',s[10]!=null?Math.round(s[10]*100):'',s[11]??'',s[2],s[3]].join(','));
+    const typ=LANG==='en'?(DB.types[s[7]]==='منطقة'?'Zone':'Building'):DB.types[s[7]];
+    const cls=LANG==='en'?(CLASS_META[DB.classes[s[6]]]?CLASS_META[DB.classes[s[6]]].en:DB.classes[s[6]]):DB.classes[s[6]];
+    lines.push([s[0],`"${(nm(s)||'').replace(/"/g,'""')}"`,typ,cls,DB.regions[s[4]],DB.govs[s[5]],
+      brLabel(s),herLabel(s),s[9]??'',s[10]!=null?Math.round(s[10]*100):'',s[11]??'',s[2],s[3]].join(','));
   }
   const blob=new Blob(['\uFEFF'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='heritage_register_filtered.csv';a.click();
@@ -3793,6 +3796,226 @@ function toast(m){$('toastMsg').textContent=m;$('toast').classList.add('show');c
     }
   },650);
 })();})(window.__HERITAGE_DB__);
+</script>
+<script>
+/* ============================================================
+   DATA TRANSLATION LAYER — makes region/governorate/class/heritage/
+   branch/dict/site-name values follow the EN/AR toggle everywhere,
+   not just static UI labels.
+   ============================================================ */
+(function(){
+'use strict';
+try{ if(!DB) return; }catch(e){ return; }
+
+const REGION_EN={
+ "الباحة":"Al Bahah","عسير":"Asir","مكة المكرمة":"Makkah Al Mukarramah","الرياض":"Riyadh",
+ "الحدود الشمالية":"Northern Borders","المنطقة الشرقية":"Eastern Province","الجوف":"Al Jouf",
+ "حائل":"Hail","المدينة المنورة":"Al Madinah Al Munawwarah","تبوك":"Tabuk","القصيم":"Al Qassim",
+ "نجران":"Najran","جازان":"Jazan"
+};
+
+const GOV_EN={
+ "الباحة":"Al Bahah","تنومة":"Tanumah","النماص":"An Namas","أبها":"Abha","المجاردة":"Al Majaridah",
+ "بارق":"Baariq","محايل":"Muhayil","المندق":"Al Mandaq","بني حسن":"Bani Hasan","العرضيات":"Al Ardiyat",
+ "بلجرشي":"Baljurashi","القرى":"Al Qura","القويعية":"Al Quwayiyah","بلقرن":"Balqarn",
+ "رجال ألمع":"Rijal Almaa","أحد رفيدة":"Ahad Rafidah","جده":"Jeddah","الرياض":"Riyadh",
+ "الأفلاج":"Al Aflaj","عرعر":"Arar","قريةالعليا":"Qaryat Al Ulya","بحرة":"Bahrah",
+ "حفرالباطن":"Hafr Al Batin","رماح":"Rumah","سكاكا":"Sakaka","الشنان":"Ash Shinan",
+ "السليمي":"As Sulaymi","المدينة المنورة":"Al Madinah Al Munawwarah","الجبيل":"Al Jubail",
+ "الحائط":"Al Hait","الطائف":"Taif","المخواة":"Al Mikhwah","الزلفى":"Az Zulfi","الأحساء":"Al Ahsa",
+ "مكة المكرمة":"Makkah Al Mukarramah","الدرعية":"Ad Diriyah","الخرج":"Al Kharj","الغزالة":"Al Ghazalah",
+ "حريملاء":"Huraymila","أملج":"Umluj","تربة":"Turubah","ينبع":"Yanbu","رنيه":"Ranyah",
+ "ميسان":"Maysan","الوجه":"Al Wajh","الحريق":"Al Hariq","القريات":"Al Qurayyat","القطيف":"Al Qatif",
+ "عنيزه":"Unaizah","الخبر":"Al Khobar","الغاط":"Al Ghat","موقق":"Muwaqqaq","النبهانية":"An Nabhaniyah",
+ "بريدة":"Buraydah","رابغ":"Rabigh","سميراء":"Sumayra","خميس مشيط":"Khamis Mushait",
+ "ظهران الجنوب":"Dhahran Al Janub","رياض الخبراء":"Riyadh Al Khabra","المذنب":"Al Mithnab",
+ "عيون الجواء":"Uyun Al Jiwa","نجران":"Najran","جزر فرسان":"Farasan Islands","فيفاء":"Fifa",
+ "الدائر":"Ad Dair","المجمعة":"Al Majmaah","شقراء":"Shaqra","تثليث":"Tathlith","رفحاء":"Rafha",
+ "الدلم":"Ad Dilam","الجموم":"Al Jumum","ضرما":"Dharma","مرات":"Muraat","بدر":"Badr",
+ "الأسياح":"Al Asyah","الحناكية":"Al Hinakiyah","بدرالجنوب":"Badr Al Janub","الشملي":"Ash Shamli",
+ "ضباء":"Duba","قلوة":"Qalwah","المهد":"Al Mahd","حبونا":"Habuna","شرورة":"Sharurah",
+ "ثادق":"Thadiq","وادى الدواسر":"Wadi Ad Dawasir","وادي الفرع":"Wadi Al Fara","البدائع":"Al Badai",
+ "الرس":"Ar Rass","الدمام":"Dammam","النعيرية":"An Nuayriyah","بيشة":"Bishah","سراة عبيده":"Sarat Abida",
+ "تبوك":"Tabuk","حقل":"Haql","حائل":"Hail","العويقيلة":"Al Uwayqilah","غامد الزناد":"Ghamid Az Zinad",
+ "دومة الجندل":"Dumat Al Jandal","دومةالجندل":"Dumat Al Jandal"
+};
+
+const HER_EN={
+ "تراث عمراني":"Urban Heritage","غير محدد":"Unspecified","تراث حديث":"Modern Heritage","تراث صناعي":"Industrial Heritage"
+};
+
+const INNER_EN={ // for "أخرى [ X ]" bracket patterns
+ "هجرة":"Hijrah settlement","مدرسة":"School","مدرسة ابوبكر الرازي":"Abu Bakr Al-Razi School","سوق":"Market",
+ "متحف":"Museum","جامع":"Mosque","سبيل":"Sabil (fountain)","فندق":"Hotel","قهوة":"Coffee house",
+ "مزرعة":"Farm","باب":"Gate","جزيرة":"Island","مبرة":"Charity house","رباط":"Ribat","مهجور":"Abandoned",
+ "بئر":"Well","سد":"Dam","ممر":"Passage","حي":"District","منطقة":"Area","حضيرة":"Enclosure",
+ "مجلس":"Majlis","قناة":"Canal","قصبة":"Qasabah","دكان":"Shop","نفق":"Tunnel","سجن":"Prison",
+ "ساحة":"Square","قرميد":"Roof tile","الرمل والبحص":"Sand and gravel","سياحي":"Tourist site",
+ "محلات تجارية":"Commercial shops","سكني":"Residential"
+};
+
+const DICT_EN={
+ "لا يوجد":"None","لا":"No","نعم":"Yes","غير معروف":"Unknown","سكني تراثي":"Heritage residential",
+ "سكني":"Residential","بعيد عن التجمعات الحضارية":"Far from urban clusters",
+ "بعيد عن التجمعات الحضارية ":"Far from urban clusters","قريب من التجمعات الحضارية":"Near urban clusters",
+ "معزول ويصعب الوصول له":"Isolated, hard to access","جذوع شجر":"Tree trunks","حجر":"Stone","حجر ":"Stone",
+ "غير موظف":"Unstaffed","غیر موظف":"Unstaffed","طين":"Mud/clay","طين ":"Mud/clay","خشب":"Wood",
+ "جص":"Gypsum","اسمنت":"Cement","مختلط":"Mixed","المنطقة الجنوبية":"Southern area",
+ "المنطقة الغربية":"Western area","المنطقة الشمالية":"Northern area","المنطقة الوسطى":"Central area",
+ "مسجد":"Mosque","بئر":"Well","برج":"Tower","حصن":"Fort","قصر":"Palace","قلعة":"Castle","سور":"Wall",
+ "ديني":"Religious","ديني , سكني":"Religious, residential","تجاري":"Commercial",
+ "تجاري , سكني":"Commercial, residential","زراعي":"Agricultural","صناعي":"Industrial",
+ "تعليمي":"Educational","ترفيهي":"Recreational","قروي":"Rural","تحت التأهيل":"Under rehabilitation",
+ "تحت الترميم":"Under restoration","بركة":"Pool","متحف":"Museum","فندق":"Hotel","مطعم":"Restaurant",
+ "سوق شعبي":"Traditional market","سوق تاريخي":"Historic market","حى تاريخي":"Historic district",
+ "حي تاريخي":"Historic district","وسط مدينة":"City center","وسط المدينة":"City center","بلدة":"Town",
+ "هجرة":"Hijrah settlement","خاص: أفراد":"Private: individuals","خاص: قطاع خاص":"Private: private sector",
+ "حكومية":"Governmental","مقر حكومي":"Government headquarters","وقف":"Endowment (Waqf)",
+ "طراز معاصر":"Contemporary style","نزل تراثي":"Heritage inn","NA":"N/A","غير محدد":"Unspecified","-":"—",
+ "قرن ظبی":"Qarn Dhabi"
+};
+
+/* ---- lightweight Arabic → Latin transliteration (approximate) ---- */
+const TL={'ا':'a','أ':'a','إ':'i','آ':'aa','ء':'','ب':'b','ت':'t','ث':'th','ج':'j','ح':'h','خ':'kh',
+ 'د':'d','ذ':'dh','ر':'r','ز':'z','س':'s','ش':'sh','ص':'s','ض':'d','ط':'t','ظ':'dh','ع':'',
+ 'غ':'gh','ف':'f','ق':'q','ك':'k','ل':'l','م':'m','ن':'n','ه':'h','و':'w','ي':'y','ة':'h',
+ 'ى':'a','ئ':'i','ؤ':'u','٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9'};
+function translitWord(w){
+  if(!w) return w;
+  let out='';
+  if(w.indexOf('ال')===0 && w.length>2){ out='Al-'; w=w.slice(2); }
+  let prevConsonant=false;
+  for(let i=0;i<w.length;i++){
+    const ch=w[i];
+    const mapped=TL[ch];
+    if(mapped==null){ out+=ch; prevConsonant=false; continue; }
+    const isVowel = (mapped==='a'||mapped==='i'||mapped==='u'||mapped==='aa'||mapped==='');
+    if(!isVowel && prevConsonant && mapped.length && !/[aeiouAEIOU]/.test(out.slice(-1))){
+      out+='a';
+    }
+    out+=mapped;
+    prevConsonant = !isVowel && mapped.length>0;
+  }
+  out=out.replace(/aa+/g,'a').trim();
+  return out ? out.charAt(0).toUpperCase()+out.slice(1) : out;
+}
+function translit(s){
+  if(s==null) return s;
+  if(!/[؀-ۿ]/.test(s)) return s; // no Arabic chars -> leave as-is
+  return String(s).split(/\s+/).filter(Boolean).map(translitWord).join(' ');
+}
+
+/* ---- public translators ---- */
+function trRegion(ar){ return (ar==null)?ar:(REGION_EN[ar]||translit(ar)); }
+function trGov(ar){ return (ar==null)?ar:(GOV_EN[ar]||translit(ar)); }
+function trHer(ar){ return (ar==null)?ar:(HER_EN[ar]||translit(ar)); }
+function trBranch(ar){
+  if(ar==null) return ar;
+  const m=ar.match(/^فرع\s+(.+)$/);
+  if(m){ const nm2=m[1].trim(); return (REGION_EN[nm2]||GOV_EN[nm2]||translit(nm2))+' Branch'; }
+  return REGION_EN[ar]||GOV_EN[ar]||translit(ar);
+}
+function trDictVal(ar){
+  if(ar==null) return ar;
+  if(DICT_EN[ar]!=null) return DICT_EN[ar];
+  let m;
+  if((m=ar.match(/^أخرى\s*\[\s*(.+?)\s*\]$/))) return 'Other ['+(INNER_EN[m[1]]||translit(m[1]))+']';
+  if((m=ar.match(/^قرية\s+(.+?)\s+التراثية\s*$/))) return translit(m[1])+' Heritage Village';
+  if((m=ar.match(/^قرية\s+(.+)$/))) return translit(m[1])+' Village';
+  if((m=ar.match(/^حي\s+(.+)$/))) return translit(m[1])+' District';
+  if((m=ar.match(/^بلدة\s+(.+)$/))) return translit(m[1])+' Town';
+  if((m=ar.match(/^منطقة\s+(.+)$/))) return translit(m[1])+' Area';
+  if((m=ar.match(/^قصر\s+(.+)$/))) return translit(m[1])+' Palace';
+  if((m=ar.match(/^حصن\s+(.+)$/))) return translit(m[1])+' Fort';
+  if((m=ar.match(/^آل\s+(.+)$/))) return 'Al '+translit(m[1]);
+  if((m=ar.match(/^ال\s+(.+)$/))) return 'Al '+translit(m[1]);
+  return translit(ar);
+}
+function trSiteNameStr(s1){
+  if(!s1) return s1;
+  let m;
+  if((m=s1.match(/^مبن[ىي]\s+رقم\s+(\d+)\s+في\s+قرية\s+(.+?)\s+التراثية\s*$/)))
+    return 'Building No. '+m[1]+' in '+translit(m[2])+' Heritage Village';
+  if((m=s1.match(/^مبن[ىي]\s+رقم\s+(\d+)\s+في\s+(.+)$/)))
+    return 'Building No. '+m[1]+' in '+translit(m[2]);
+  if((m=s1.match(/^قرية\s+(.+?)\s+التراثية\s*$/)))
+    return translit(m[1])+' Heritage Village';
+  if((m=s1.match(/^قرية\s+(.+)$/)))
+    return translit(m[1])+' Village';
+  if((m=s1.match(/^منطقة\s+(.+)$/)))
+    return translit(m[1])+' Area';
+  return translit(s1);
+}
+
+/* ---- Proxy-wrap region/gov arrays: safe everywhere (never string-matched by logic) ---- */
+function wrapLookup(arr,map){
+  return new Proxy(arr,{
+    get(target,prop,receiver){
+      if(typeof prop==='string' && /^\d+$/.test(prop)){
+        const raw=target[prop];
+        if(typeof LANG!=='undefined' && LANG==='en') return map[raw]||translit(raw);
+        return raw;
+      }
+      return Reflect.get(target,prop,receiver);
+    }
+  });
+}
+DB.regions=wrapLookup(DB.regions,REGION_EN);
+DB.govs=wrapLookup(DB.govs,GOV_EN);
+
+const AIRPORT_EN={
+ RUH:"King Khalid International Airport",JED:"King Abdulaziz International Airport",
+ DMM:"King Fahd International Airport",MED:"Prince Mohammad bin Abdulaziz International Airport",
+ AHB:"Abha International Airport",TIF:"Taif International Airport",TUU:"Tabuk Regional Airport",
+ GIZ:"Jazan Regional Airport",ELQ:"Al Qassim Regional Airport",HAS:"Hail Regional Airport",
+ EAM:"Najran Regional Airport",YNB:"Yanbu Airport",GZP:"Al Qurayyat Airport",
+ AJF:"Al Jouf Regional Airport",SHW:"Sharurah Airport",WAE:"Wadi Ad Dawasir Airport",
+ BHH:"Bishah Airport",ABT:"Al Bahah Airport",RAH:"Rafha Airport",AQI:"Hafr Al Batin Airport",
+ ULH:"Al Ula Airport",DWD:"Al Dawadmi Airport",EJH:"Al Wajh Airport",AKH:"Al Ahsa International Airport",
+ TUI:"Turubah Airport",RAE:"Arar Airport",NUM:"Neom Bay Airport"
+};
+window.airportName=function(a){
+  if(!a) return a;
+  if(typeof LANG!=='undefined' && LANG==='en') return AIRPORT_EN[a[0]]||translit(a[1]);
+  return a[1];
+};
+
+/* ---- site-name + label helpers (cached) ---- */
+const _nmCache=new Map();
+window.nm=function(s){
+  if(typeof LANG==='undefined'||LANG!=='en') return s[1];
+  const code=s[0];
+  let v=_nmCache.get(code);
+  if(v==null){ v=trSiteNameStr(s[1]); _nmCache.set(code,v); }
+  return v;
+};
+window.herLabel=function(s){
+  const h=DB.heritage[s[8]];
+  if(h==null||h==='غير محدد') return t('none');
+  return (typeof LANG!=='undefined'&&LANG==='en')?trHer(h):h;
+};
+window.brLabel=function(s){
+  const b=DB.branches[s[12]];
+  if(b==null) return b;
+  return (typeof LANG!=='undefined'&&LANG==='en')?trBranch(b):b;
+};
+window.clsShortEN={'أ':'A','ب':'B','ج':'C','غير مصنّف':'–'};
+window.trDictVal=trDictVal;
+window.trHer=trHer;
+window.trBranch=trBranch;
+
+/* ---- monkey-patch the global dval() (used by openAssetPage + buildSiteCard) ---- */
+try{
+  const _dval0=dval;
+  dval=function(di){
+    const raw=_dval0(di);
+    if(raw==null) return raw;
+    return (typeof LANG!=='undefined'&&LANG==='en')?trDictVal(raw):raw;
+  };
+}catch(e){}
+
+console.log('✓ i18n data-translation layer loaded');
+})();
 </script>
 <style>
 /* ============ ADVANCED SUITE UI ============ */
@@ -3987,6 +4210,7 @@ function xhVillages(){
   }).sort((a,b)=>b.idxs.length-a.idxs.length);
   return _xhVillages;
 }
+function vname(v){ return (LANG==='en' && typeof trDictVal==='function') ? trDictVal(v.name) : v.name; }
 
 /* ---------- map overlay layer (buffers + routes) ---------- */
 const XHOV={buffers:null,route:null};
@@ -4163,7 +4387,7 @@ function answer(q){
   if(wantTop){
     const top=hits.map(i=>({i,r:riskScore(DB.sites[i])})).sort((a,b)=>b.r-a.r).slice(0,topN);
     const rows=top.map((o,k)=>{const s=DB.sites[o.i];
-      return `<div class="xh-row" data-goto="${o.i}"><b>${num(k+1)}.</b> ${s[1]} <span class="xh-tag" style="background:${riskColor(o.r)}22;color:${riskColor(o.r)}">${num(o.r)}</span><span class="xh-soft">${DB.govs[s[5]]}</span></div>`;}).join('');
+      return `<div class="xh-row" data-goto="${o.i}"><b>${num(k+1)}.</b> ${nm(s)} <span class="xh-tag" style="background:${riskColor(o.r)}22;color:${riskColor(o.r)}">${num(o.r)}</span><span class="xh-soft">${DB.govs[s[5]]}</span></div>`;}).join('');
     return L(`أعلى ${num(top.length)} مواقع خطورة (${scope}) — اضغط أي موقع للانتقال إليه:`,`Top ${num(top.length)} risky sites (${scope}):`)+`<div class="xh-rows">${rows}</div>`;
   }
 
@@ -4293,7 +4517,7 @@ function openPriorities(){
     L(`أعلى ${num(Math.min(100,top.length))} موقعاً حسب مؤشّر المخاطر المركّب (تهدّم × أهمية × غياب أعمال)`,`Top ${num(Math.min(100,top.length))} by composite risk`));
   const rows=top.slice(0,25).map((o,k)=>{const s=DB.sites[o.i];const rc=riskColor(o.r);
     return `<div class="xh-row" data-goto="${o.i}"><span class="xh-rank" style="background:${k<3?'#bd343b':'var(--panel-2)'};color:${k<3?'#fff':'var(--text)'}">${num(k+1)}</span>
-      <div class="xh-rowmain"><b>${s[1]}</b><span class="xh-soft">${DB.govs[s[5]]} · ${DB.regions[s[4]]}</span></div>
+      <div class="xh-rowmain"><b>${nm(s)}</b><span class="xh-soft">${DB.govs[s[5]]} · ${DB.regions[s[4]]}</span></div>
       <span class="xh-tag" style="background:${rc}22;color:${rc}">${num(o.r)}</span>
       <span class="xh-soft">${s[10]!=null?num(Math.round(s[10]*100))+'٪':'—'}</span></div>`;}).join('');
   b.innerHTML=`<div class="xh-actionrow"><button class="xh-btn" id="xhPrioPrint">🖨 ${L('طباعة القائمة الكاملة (١٠٠)','Print full list (100)')}</button></div>
@@ -4306,7 +4530,7 @@ function openPriorities(){
   $('xhPrioPrint').onclick=()=>{
     const today=new Date().toLocaleDateString(LANG==='ar'?'ar-SA':'en-GB');
     const trs=top.map((o,k)=>{const s=DB.sites[o.i];
-      return `<tr><td>${num(k+1)}</td><td>${s[1]}</td><td>${DB.regions[s[4]]}</td><td>${DB.govs[s[5]]}</td><td style="text-align:center;font-weight:700;color:${riskColor(o.r)}">${num(o.r)}</td><td style="text-align:center">${s[10]!=null?num(Math.round(s[10]*100))+'٪':'—'}</td></tr>`;}).join('');
+      return `<tr><td>${num(k+1)}</td><td>${nm(s)}</td><td>${DB.regions[s[4]]}</td><td>${DB.govs[s[5]]}</td><td style="text-align:center;font-weight:700;color:${riskColor(o.r)}">${num(o.r)}</td><td style="text-align:center">${s[10]!=null?num(Math.round(s[10]*100))+'٪':'—'}</td></tr>`;}).join('');
     $('pdfReport').innerHTML=`<div class="pdfr-inner">
       <div class="pdfr-head">${window.HC_LOGO?`<img src="${window.HC_LOGO}" alt="">`:'<span></span>'}
         <div class="pdfr-title"><h1>${t('reg_name')}</h1><p>${L('قائمة الأولويات الوطنية للترميم','National Restoration Priorities')} — ${today}</p></div></div>
@@ -4377,7 +4601,7 @@ function openVillages(){
     $('xvList').innerHTML=list.map((v,k)=>{
       const dc=v.avgDecay==null?'#9bb0b6':v.avgDecay<35?'#7fb9bb':v.avgDecay<50?'#f59e41':'#bd343b';
       return `<div class="xh-row" data-v="${vs.indexOf(v)}">
-        <div class="xh-rowmain"><b>${v.name}</b><span class="xh-soft">${DB.govs[v.gov]} · ${DB.regions[v.reg]}</span></div>
+        <div class="xh-rowmain"><b>${vname(v)}</b><span class="xh-soft">${DB.govs[v.gov]} · ${DB.regions[v.reg]}</span></div>
         <span class="xh-tag" style="background:var(--panel-2)">${num(v.idxs.length)} ${L('مبنى','bldg')}</span>
         ${v.avgDecay!=null?`<span class="xh-tag" style="background:${dc}22;color:${dc}">${num(v.avgDecay)}٪</span>`:''}</div>`;
     }).join('')||`<div class="xh-note">${L('لا نتائج','No results')}</div>`;
@@ -4392,9 +4616,9 @@ function openVillages(){
     v.idxs.forEach(i=>{const x=DB.sites[i];s0=Math.min(s0,x[2]);n0=Math.max(n0,x[2]);w=Math.min(w,x[3]);e0=Math.max(e0,x[3]);});
     map.fitBounds([[s0,w],[n0,e0]],0.25);
     // profile card popup at centroid
-    const clsRows=Object.entries(v.cls).sort((a,b)=>b[1]-a[1]).map(([ci,n])=>`${DB.classes[ci]}: ${num(n)}`).join(' · ');
+    const clsRows=Object.entries(v.cls).sort((a,b)=>b[1]-a[1]).map(([ci,n])=>`${LANG==='ar'?DB.classes[ci]:(CLASS_META[DB.classes[ci]]?CLASS_META[DB.classes[ci]].eshort:DB.classes[ci])}: ${num(n)}`).join(' · ');
     setTimeout(()=>{
-      map.openPopup(`<div class="pop"><div class="pop-c" style="min-width:230px"><h3>${v.name}</h3>
+      map.openPopup(`<div class="pop"><div class="pop-c" style="min-width:230px"><h3>${vname(v)}</h3>
         <div class="pm">${DB.govs[v.gov]} · ${DB.regions[v.reg]}</div>
         <div class="pm" style="margin-top:6px"><b>${num(v.idxs.length)}</b> ${L('مبنى تراثي','heritage buildings')}${v.avgDecay!=null?` · ${L('متوسط التهدّم','avg decay')} <b>${num(v.avgDecay)}٪</b>`:''}</div>
         <div class="pm" style="margin-top:4px;font-size:11px">${clsRows}</div></div></div>`,[v.lat,v.lng]);
@@ -4417,13 +4641,13 @@ function openRoutes(){
   b.querySelectorAll('.xh-chip').forEach(c=>c.onclick=()=>buildRoute(+c.dataset.ri));
   function buildRoute(ri){
     const vs=xhVillages().filter(v=>v.reg===ri).slice(0,8);
-    let stops=vs.map(v=>({lat:v.lat,lng:v.lng,name:v.name,n:v.idxs.length}));
+    let stops=vs.map(v=>({lat:v.lat,lng:v.lng,name:vname(v),n:v.idxs.length}));
     if(stops.length<3){
       // fall back to top class-A / risky standalone sites
       const extra=[];
       for(let i=0;i<DB.sites.length;i++){const s=DB.sites[i];
         if(s[4]!==ri)continue;
-        if(DB.classes[s[6]]==='أ')extra.push({lat:s[2],lng:s[3],name:s[1],n:1,r:riskScore(s)});}
+        if(DB.classes[s[6]]==='أ')extra.push({lat:s[2],lng:s[3],name:nm(s),n:1,r:riskScore(s)});}
       extra.sort((a,b)=>(b.r||0)-(a.r||0));
       stops=stops.concat(extra.slice(0,8-stops.length));
     }
@@ -4479,7 +4703,7 @@ function tourStep(vs){
   setTimeout(()=>{
     if(!_tourOn)return;
     card.innerHTML=`<div class="xtc-k">${L('محطة','Stop')} ${num(_tourI%vs.length+1)} / ${num(vs.length)}</div>
-      <div class="xtc-name">${v.name}</div>
+      <div class="xtc-name">${vname(v)}</div>
       <div class="xtc-meta">${DB.govs[v.gov]} · ${DB.regions[v.reg]} — <b>${num(v.idxs.length)}</b> ${L('مبنى تراثي','heritage buildings')}${v.avgDecay!=null?` · ${L('تهدّم','decay')} ${num(v.avgDecay)}٪`:''}</div>`;
     card.classList.add('in');
   },1400);
@@ -4621,7 +4845,7 @@ function buildAtlas(){
       <h3 style="font-size:13px;color:#113241;margin:14px 0 8px">${L('التوزيع حسب المحافظة','By governorate')}</h3>
       <table class="pdfr-table"><tbody>${govSorted.slice(0,12).map(([gi,n])=>`<tr><td>${DB.govs[gi]}</td><td style="text-align:center">${num(n)}</td></tr>`).join('')}</tbody></table>
       <h3 style="font-size:13px;color:#113241;margin:14px 0 8px">${L('أعلى ١٠ مواقع خطورة','Top 10 by risk')}</h3>
-      <table class="pdfr-table"><tbody>${topRisk.map((o,i)=>`<tr><td>${num(i+1)}</td><td>${o.s[1]}</td><td>${DB.govs[o.s[5]]}</td><td style="text-align:center;font-weight:700">${num(o.r)}</td></tr>`).join('')}</tbody></table>
+      <table class="pdfr-table"><tbody>${topRisk.map((o,i)=>`<tr><td>${num(i+1)}</td><td>${nm(o.s)}</td><td>${DB.govs[o.s[5]]}</td><td style="text-align:center;font-weight:700">${num(o.r)}</td></tr>`).join('')}</tbody></table>
     </div>`;
   }
   $('pdfReport').innerHTML=`<div class="pdfr-inner">
@@ -4648,7 +4872,7 @@ function openGeoExport(){
       <button class="xh-btn" id="xgJson">🌍 GeoJSON</button>
       <button class="xh-btn" id="xgKml">🛰 KML (Google Earth)</button></div>`;
   const dl=(txt,name,type)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type}));a.download=name;a.click();toast(t('exported'));};
-  const props=s=>({code:s[0],name:s[1],region:DB.regions[s[4]],governorate:DB.govs[s[5]],class:DB.classes[s[6]],type:DB.types[s[7]],heritage:DB.heritage[s[8]]||'',age:s[9],decay_pct:s[10]!=null?Math.round(s[10]*100):null,risk:riskScore(s)});
+  const props=s=>({code:s[0],name:nm(s),region:DB.regions[s[4]],governorate:DB.govs[s[5]],class:(LANG==='en'?(CLASS_META[DB.classes[s[6]]]?CLASS_META[DB.classes[s[6]]].eshort:DB.classes[s[6]]):DB.classes[s[6]]),type:(LANG==='en'?(DB.types[s[7]]==='منطقة'?'Zone':'Building'):DB.types[s[7]]),heritage:herLabel(s)||'',age:s[9],decay_pct:s[10]!=null?Math.round(s[10]*100):null,risk:riskScore(s)});
   $('xgJson').onclick=()=>{
     const feats=[];
     for(const s of DB.sites){if(!passes(s))continue;
@@ -4660,7 +4884,7 @@ function openGeoExport(){
     let pm='';
     for(const s of DB.sites){if(!passes(s))continue;
       const p=props(s);
-      pm+=`<Placemark><name>${esc(s[1])}</name><description>${esc(p.region+' · '+p.governorate+' — '+L('فئة ','Class ')+p.class+(p.decay_pct!=null?' — '+L('تهدّم ','decay ')+p.decay_pct+'%':''))}</description><Point><coordinates>${s[3]},${s[2]},0</coordinates></Point></Placemark>`;}
+      pm+=`<Placemark><name>${esc(nm(s))}</name><description>${esc(p.region+' · '+p.governorate+' — '+L('فئة ','Class ')+p.class+(p.decay_pct!=null?' — '+L('تهدّم ','decay ')+p.decay_pct+'%':''))}</description><Point><coordinates>${s[3]},${s[2]},0</coordinates></Point></Placemark>`;}
     dl(`<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>${esc(t('reg_name'))}</name>${pm}</Document></kml>`,'heritage_sites.kml','application/vnd.google-earth.kml+xml');
   };
 }
@@ -4804,7 +5028,7 @@ try{
       setTimeout(()=>{
         const card=$('xhSotd');
         card.innerHTML=`<div class="xh-sotd-k">✨ ${L('موقع اليوم','Site of the day')}</div>
-          <div class="xh-sotd-n">${s[1]}</div>
+          <div class="xh-sotd-n">${nm(s)}</div>
           <div class="xh-sotd-m">${DB.govs[s[5]]} · ${DB.regions[s[4]]}</div>
           <div class="xh-sotd-a"><button class="xh-btn" id="xhSotdGo">${L('اكتشفه','Explore')}</button>
           <button class="xh-btn ghost" id="xhSotdX">${L('لاحقاً','Later')}</button></div>`;
@@ -5002,7 +5226,7 @@ function makeShareCard(idx){
     ctx.fillText(L('السجل الوطني للتراث العمراني','National Urban Heritage Register'),tx,92);
     // title
     ctx.fillStyle='#ffffff';ctx.font='700 52px "Reem Kufi","IBM Plex Sans Arabic",sans-serif';
-    const lines=wrapText(ctx,s[1],photo?540:1000);
+    const lines=wrapText(ctx,nm(s),photo?540:1000);
     lines.forEach((ln,i)=>ctx.fillText(ln,tx,190+i*68));
     let y=190+lines.length*68+18;
     // location
@@ -5018,7 +5242,7 @@ function makeShareCard(idx){
       return x-w-16;
     };
     let bx=tx;
-    bx=badge(L('فئة ','Class ')+cls.short,cls.color,bx);
+    bx=badge(L('فئة ','Class ')+(LANG==='ar'?cls.short:cls.eshort),cls.color,bx);
     if(s[10]!=null)bx=badge(L('تهدّم ','Decay ')+num(Math.round(s[10]*100))+'٪',decayColor(s[10]),bx);
     if(s[9]!=null)badge(num(s[9])+' '+L('سنة','yrs'),'#2f6f72',bx);
     // footer
