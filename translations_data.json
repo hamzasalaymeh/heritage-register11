@@ -850,5 +850,9 @@
   "zone": {
     "ar": "منطقة",
     "en": "Zone/Area"
+  },
+  "all_her": {
+    "ar": "كل أنواع التراث",
+    "en": "All heritage types"
   }
 }
