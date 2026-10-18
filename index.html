@@ -2004,13 +2004,13 @@ window.__ATLAS_NUM__=n=>num(n); // cluster labels use localized numerals
 
 // Tile sources. Base maps are LABEL-FREE so we render our own Arabic place names on top.
 const TILES={
-  streets:{base:['https://a.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png'],overlay:[],attr:'© OpenStreetMap © CARTO'},
+  streets:{base:['https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'],overlay:[],attr:'© Esri'},
   satellite:{base:['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
              overlay:['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'],
              attr:'© Esri, Maxar'},
-  terrain:{base:['https://a.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png'],overlay:[],attr:'© CARTO'},
+  terrain:{base:['https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}'],overlay:[],attr:'© Esri'},
 };
-const DARK_TILE='https://a.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}{r}.png';
+const DARK_TILE='https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}';
 let baseKey='streets';
 function applyTiles(){
   const dark=document.body.dataset.theme==='dark';
